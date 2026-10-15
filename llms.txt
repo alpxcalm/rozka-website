@@ -1,0 +1,24 @@
+# Rozka
+
+> Attendance and payroll software for businesses that run on people. Rozka records every punch at your door (face, fingerprint, card or QR), works out each day's pay by your own rules, recovers advances as EMI and locks every payout with proof, with a payslip for each person. Built inside a working print shop in India.
+
+## Pages
+
+- [Home](https://rozka.work/): what Rozka does, how one day becomes a payslip, who it is for, and answers to common questions
+- [Automation](https://rozka.work/automation/): small repeated jobs (job cards, stuck-job alerts, stock reminders, daily summaries) built to order into the same system
+- [About](https://rozka.work/about/): where the name and the product come from
+- [Book a 1-month demo](https://rozka.work/contact/): request a call back and run Rozka on your own staff for a month
+
+## Key facts
+
+- Workers punch only at the device at the door; only the owner and managers log in, from any browser.
+- Punching keeps working without internet; punches are stored on the device and upload with their real time later.
+- Rozka does not send salaries from your bank account. You pay as you do today; marking a month paid records who got what, locks it and makes payslips.
+- PF, ESI and TDS are entered as deductions and shown on the payslip. Rozka does not calculate them.
+- Shift times, breaks, half-day limits, overtime and penalties are settings. Small customisations are available.
+- Pricing depends on staff count and the punch device chosen. A 1-month demo on your own staff comes first.
+
+## Contact
+
+- Phone / WhatsApp: +91 91752 12447
+- Email: team@alpxcalm.cloud
