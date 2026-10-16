@@ -22,6 +22,7 @@ const SITE = 'https://rozka.work';
 const PHONE_DISPLAY = '+91 91752 12447';
 const PHONE_E164 = '+91-91752-12447';
 const EMAIL = 'team@alpxcalm.cloud';
+const GA_ID = 'G-VFS8DRQ3D7'; // Google Analytics 4; set to '' to leave the tag out
 const OG_IMAGE = { url: `${SITE}/og-image.png`, w: 1200, h: 630, alt: 'Rozka: Attendance in. Salaries out. No register in between.' };
 
 // ---------------------------------------------------------------- CONFIG
@@ -116,7 +117,19 @@ function jsonLd(name) {
 function headBlock(name) {
   const pg = PAGES[name];
   const ogT = pg.ogTitle || pg.title, ogD = pg.ogDescription || pg.description;
+  const gtag = !GA_ID ? [] : [
+    '<!-- Google tag (gtag.js) -->',
+    `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>`,
+    '<script>',
+    '  window.dataLayer = window.dataLayer || [];',
+    '  function gtag(){dataLayer.push(arguments);}',
+    "  gtag('js', new Date());",
+    '',
+    `  gtag('config', '${GA_ID}');`,
+    '</script>',
+  ];
   return [
+    ...gtag,
     '<link rel="icon" href="/favicon.ico" sizes="48x48">',
     '<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">',
     '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
@@ -278,7 +291,7 @@ a{color:#FFC02E;font-weight:600}
 </html>
 `);
 
-write('CNAME', 'rozka.work\n');
+write('CNAME', 'rozka.work'); // no trailing newline: matches what GitHub's Pages settings write
 write('.nojekyll', '');
 
 console.log('done');
