@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- seo:head:start -->
-<script>(function(){var live=["rozka.work","www.rozka.work"].indexOf(location.hostname)>=0,r=!live&&/[?&]rzr=/.test(location.search);window.ROZKA={endpoint:"https://script.google.com/macros/s/AKfycbxobz6jdyG8KKNSDXl5aA3EFlAUoG9xIZqqBkaHe1CYkbcgHDsRzwU6qZOXW2TcTOfm/exec",ts:"0x4AAAAAAFYLJAHwOknhzkt_",live:live,replay:r};if(!live)window['ga-disable-G-VFS8DRQ3D7']=true;})();</script>
+<script>(function(){var live=["rozka.work","www.rozka.work"].indexOf(location.hostname)>=0,r=!live&&/[?&]rzr=/.test(location.search);window.ROZKA={endpoint:"https://script.google.com/macros/s/AKfycbxobz6jdyG8KKNSDXl5aA3EFlAUoG9xIZqqBkaHe1CYkbcgHDsRzwU6qZOXW2TcTOfm/exec",ts:"0x4AAAAAAFYLJAHwOknhzkt_",an:"https://script.google.com/macros/s/AKfycbzjbAgndppGXAeSiNpmeFHzSyOEnwd6EE6S8IjuSY9Hw77vbORKvc7d2VBBJvrxQslM/exec",live:live,replay:r};if(!live)window['ga-disable-G-VFS8DRQ3D7']=true;})();</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VFS8DRQ3D7"></script>
 <script>
@@ -495,6 +495,7 @@ input[type=range].slider{width:100%;margin-top:8px;accent-color:var(--cad);heigh
 .foot nav{display:flex;flex-wrap:wrap;gap:6px 24px}
 .foot nav a{text-decoration:none;color:var(--ink300);font-size:15px;padding:6px 0}
 .foot nav a:hover{color:#fff}
+.foot-note{margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink300)}
 .foot-bot{display:flex;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.12);margin-top:24px;padding-top:18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em}
 
 /* ---------- inner pages ---------- */
@@ -1475,6 +1476,7 @@ img{max-width:100%}
       </nav>
     </div>
     <div class="foot-bot"><span>© 2026 ROZKA</span><span>team@alpxcalm.cloud · +91 91752 12447</span></div>
+    <p class="foot-note" id="footNote">We count visits anonymously to improve this site.</p>
   </div>
 </footer>
 <script>
@@ -1487,7 +1489,7 @@ img{max-width:100%}
    Config arrives in <head> from scripts/build.mjs: window.ROZKA={endpoint,replay}. In replay mode (?rzr=) everything here is off. ---------- */
 (function(){
   'use strict';
-  var CFG=window.ROZKA||{},REPLAY=!!CFG.replay,EP=CFG.endpoint||'',TSKEY=CFG.ts||'',WA='919175212447';
+  var CFG=window.ROZKA||{},REPLAY=!!CFG.replay,EP=CFG.endpoint||'',TSKEY=CFG.ts||'',ANEP=CFG.an||'',WA='919175212447';
   var $=function(id){return document.getElementById(id);};
   var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
   var reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -1527,16 +1529,50 @@ img{max-width:100%}
   else{
     if(S&&now()-S.last<14*864e5)ret={at:S.last,top:topSec(S)};
     T.n++;
-    S={sid:rid('s'),t0:now(),last:now(),n:T.n,act:0,ref:document.referrer||'',utm:utm(),env:env(),ev:[]};
+    S={sid:rid('s'),t0:now(),last:now(),n:T.n,act:0,lp:pg(),ref:document.referrer||'',utm:utm(),env:env(),ev:[]};
     T.sessions.push(S);while(T.sessions.length>MAXS)T.sessions.shift();
   }
+
+  /* ================= site analytics: anonymous, live site only =================
+     Sends a trimmed copy of the trail (page views, section time, scroll depth, CTA clicks, widget use, card outcomes) to the analytics
+     Apps Script, so the owner can see which pages and sections people use. No names, phones, typed text or IPs.
+     Off on localhost, for bots, for Do-Not-Track / Global Privacy Control, and in browsers where the owner visited ?an=off. */
+  var dnt=(navigator.doNotTrack==='1'||window.doNotTrack==='1'||navigator.globalPrivacyControl===true),anOff=false;
+  (function(){
+    var m=/[?&]an=(on|off)\b/.exec(location.search);
+    try{if(m){if(m[1]==='off')localStorage.setItem('rozka_an_off','1');else localStorage.removeItem('rozka_an_off');}anOff=localStorage.getItem('rozka_an_off')==='1';}catch(e){}
+  })();
+  var AN=!!(CFG.live&&ANEP&&!dnt&&!anOff&&!navigator.webdriver&&!/bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|bingpreview/i.test(navigator.userAgent||''));
+  (function(){var fn=$('footNote');if(!fn)return;if(dnt)fn.textContent='Your browser asks not to be tracked, so we count nothing.';else if(anOff)fn.textContent='Counting is switched off in this browser.';})();
+  var AQ=[],aT=null,aSeq=0,AKEEP={pv:1,sec:1,sd:1,clk:1,w:1,chg:1,fld:1,nd:1,lead:1},CHGOK={fWhat:1,fStaff:1,rWorkers:1,rSalary:1,rMin:1};
+  function hostOf(u){try{var h=new URL(u).hostname.replace(/^www\./,'');return h===location.hostname.replace(/^www\./,'')?'':h;}catch(e){return '';}}
+  function anSession(){return {sid:S.sid,vid:T.vid,t0:S.t0,visit:S.n,lp:S.lp||'',ref:hostOf(S.ref),utm:S.utm,w:S.env.w,h:S.env.h,touch:S.env.touch,lang:S.env.lang,tz:S.env.tz};}
+  function anPush(e){
+    if(!AN||!AKEEP[e.k])return;
+    if(e.k==='chg'&&!CHGOK[e.f])return;
+    var o={};for(var x in e)o[x]=e[x];
+    if(!o.pg)o.pg=pg();
+    if(o.k==='clk'){delete o.sel;delete o.x;delete o.y;}
+    if(o.k==='lead')delete o.id;
+    AQ.push(o);
+    if(AQ.length>=20)anFlush(false);else if(!aT)aT=setTimeout(function(){anFlush(false);},15000);
+  }
+  function anFlush(unload){
+    clearTimeout(aT);aT=null;if(!AN||!AQ.length)return;
+    var body=JSON.stringify({v:1,bid:rid('b').toLowerCase().replace(/[^a-z0-9-]/g,''),seq:++aSeq,s:anSession(),ev:AQ.splice(0,60)});
+    var sent=false;
+    try{if(unload&&navigator.sendBeacon)sent=navigator.sendBeacon(ANEP,new Blob([body],{type:'text/plain;charset=UTF-8'}));}catch(e){}
+    if(!sent){try{fetch(ANEP,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:body,keepalive:body.length<60000}).catch(function(){});}catch(e){}}
+    if(AQ.length)anFlush(unload);
+  }
+
   var tmr=null;
   function save(){clearTimeout(tmr);tmr=null;ls.set(TK,T);}
   function dirty(){if(!tmr)tmr=setTimeout(save,800);}
   function rec(k,d,at){
     var e={t:(at||now())-S.t0,k:k};
     for(var x in d)if(d[x]!==undefined)e[x]=d[x];
-    S.ev.push(e);S.last=now();
+    S.ev.push(e);S.last=now();anPush(e);
     if(S.ev.length>MAXEV){var i=0;for(var j=0;j<S.ev.length;j++){if(S.ev[j].k==='sc'||S.ev[j].k==='vis'){i=j;break;}}S.ev.splice(i,1);}
     dirty();return e;
   }
@@ -1550,15 +1586,15 @@ img{max-width:100%}
     return '';
   }
 
-  var cur='',curAt=now(),vis=!document.hidden,dwell={},dwellScored={};
+  var cur='',curPg=pg(),curAt=now(),vis=!document.hidden,dwell={},dwellScored={};
   var DW={problem:2,product:2,how:2,industries:3,faq:1,recipes:2,story:1,promises:1};
   function closeSec(){
     if(!cur||!vis)return;
     var d=now()-curAt;dwell[cur]=(dwell[cur]||0)+d;
-    if(d>=1000)rec('sec',{s:cur,d:Math.round(d)},curAt);
+    if(d>=1000)rec('sec',{s:cur,pg:curPg,d:Math.round(d)},curAt);
     if(DW[cur]&&!dwellScored[cur]&&dwell[cur]>=6000){dwellScored[cur]=1;add(DW[cur]);}
   }
-  function checkSec(){var n=sectionAtCenter();if(n!==cur){closeSec();cur=n;curAt=now();}}
+  function checkSec(){var n=sectionAtCenter();if(n!==cur||pg()!==curPg){closeSec();cur=n;curPg=pg();curAt=now();}}
 
   /* clicks: every one, with a selector the replay can find again and a short label */
   function sel(el){
@@ -1615,10 +1651,10 @@ img{max-width:100%}
 
   /* visibility + page views */
   document.addEventListener('visibilitychange',function(){
-    if(document.hidden){closeSec();vis=false;rec('vis',{v:0});save();}
+    if(document.hidden){closeSec();vis=false;rec('vis',{v:0});save();anFlush(true);}
     else{vis=true;curAt=now();rec('vis',{v:1});}
   });
-  window.addEventListener('pagehide',function(){closeSec();save();});
+  window.addEventListener('pagehide',function(){closeSec();save();anFlush(true);});
   var lastPg=pg();
   function pv(){rec('pv',{pg:pg(),h:location.hash||undefined});}
   pv();setTimeout(checkSec,300);
@@ -1673,11 +1709,11 @@ img{max-width:100%}
       },80);
     }else if((b=t.closest('.cap'))){
       var k=b.getAttribute('data-cap');
-      if(!G.caps[k]){G.caps[k]=1;add(1);rec('w',{w:'cap',i:+k});}
+      if(!G.caps[k]){G.caps[k]=1;add(1);rec('w',{w:'cap',i:+k,n:lbl(b)});}
       if(count(G.caps)>=4)moment('product',{pri:5,delay:3500,ttl:60000,make:CTX.product});
     }else if((b=t.closest('#scen button'))){
       var s=b.getAttribute('data-s');
-      if(!G.scn[s]){G.scn[s]=1;add(2);rec('w',{w:'scn',i:+s});}
+      if(!G.scn[s]){G.scn[s]=1;add(2);rec('w',{w:'scn',i:+s,n:lbl(b)});}
       if(count(G.scn)>=2)moment('product',{pri:5,delay:3500,ttl:60000,make:CTX.product});
     }else if((b=t.closest('#ilist button,#ilist [role=tab]'))){
       var i=$$('#ilist > *').indexOf(b);
@@ -1686,7 +1722,7 @@ img{max-width:100%}
       moment('industry',{pri:6,delay:9000,ttl:40000,make:CTX.industry});
     }else if((b=t.closest('#rlist button'))){
       var r=$$('#rlist > *').indexOf(b);
-      if(!G.rec[r]){G.rec[r]=1;add(1);rec('w',{w:'rec',i:r});}
+      if(!G.rec[r]){G.rec[r]=1;add(1);rec('w',{w:'rec',i:r,n:lbl(b)});}
       if(count(G.rec)>=2)moment('recipes',{pri:5,delay:4000,ttl:60000,make:CTX.recipes});
     }
   });

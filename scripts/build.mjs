@@ -28,6 +28,8 @@ const LEAD_ENDPOINT = process.env.LEAD_ENDPOINT ?? 'https://script.google.com/ma
 // Cloudflare Turnstile SITE key (public). Create an "Invisible" widget for rozka.work; the SECRET key goes in Apps Script properties
 // as TURNSTILE_SECRET, never here. While '' the invisible check is skipped (honeypot, timing and server scoring still run).
 const TURNSTILE_SITEKEY = process.env.TURNSTILE_SITEKEY ?? '0x4AAAAAAFYLJAHwOknhzkt_';
+// Analytics web app URL (apps-script/Analytics.gs, a separate project from the leads one). While '' no visit data is collected.
+const ANALYTICS_ENDPOINT = process.env.ANALYTICS_ENDPOINT ?? 'https://script.google.com/macros/s/AKfycbzjbAgndppGXAeSiNpmeFHzSyOEnwd6EE6S8IjuSY9Hw77vbORKvc7d2VBBJvrxQslM/exec';
 const OG_IMAGE = { url: `${SITE}/og-image.png`, w: 1200, h: 630, alt: 'Rozka: Attendance in. Salaries out. No register in between.' };
 
 // ---------------------------------------------------------------- CONFIG
@@ -125,7 +127,7 @@ function headBlock(name) {
   // Runs before gtag: tells the page where leads go. Google Analytics only counts the live site (never localhost, file:// or previews),
   // and the local replay viewer (?rzr=...) exists only off the live host.
   const liveHosts = JSON.stringify([new URL(SITE).hostname, 'www.' + new URL(SITE).hostname]);
-  const config = `<script>(function(){var live=${liveHosts}.indexOf(location.hostname)>=0,r=!live&&/[?&]rzr=/.test(location.search);window.ROZKA={endpoint:${JSON.stringify(LEAD_ENDPOINT)},ts:${JSON.stringify(TURNSTILE_SITEKEY)},live:live,replay:r};${GA_ID ? `if(!live)window['ga-disable-${GA_ID}']=true;` : ''}})();</script>`;
+  const config = `<script>(function(){var live=${liveHosts}.indexOf(location.hostname)>=0,r=!live&&/[?&]rzr=/.test(location.search);window.ROZKA={endpoint:${JSON.stringify(LEAD_ENDPOINT)},ts:${JSON.stringify(TURNSTILE_SITEKEY)},an:${JSON.stringify(ANALYTICS_ENDPOINT)},live:live,replay:r};${GA_ID ? `if(!live)window['ga-disable-${GA_ID}']=true;` : ''}})();</script>`;
   const gtag = !GA_ID ? [] : [
     '<!-- Google tag (gtag.js) -->',
     `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>`,
