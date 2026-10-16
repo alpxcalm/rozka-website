@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- seo:head:start -->
+<script>(function(){var live=["rozka.work","www.rozka.work"].indexOf(location.hostname)>=0,r=!live&&/[?&]rzr=/.test(location.search);window.ROZKA={endpoint:"https://script.google.com/macros/s/AKfycbxobz6jdyG8KKNSDXl5aA3EFlAUoG9xIZqqBkaHe1CYkbcgHDsRzwU6qZOXW2TcTOfm/exec",ts:"0x4AAAAAAFYLJAHwOknhzkt_",live:live,replay:r};if(!live)window['ga-disable-G-VFS8DRQ3D7']=true;})();</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VFS8DRQ3D7"></script>
 <script>
@@ -796,6 +797,20 @@ input[type=range].slider{width:100%;margin-top:8px;accent-color:var(--cad);heigh
 .lc-fine{font-size:12.5px!important;color:var(--muted)!important;margin-top:10px}
 .lc-pill{position:fixed;z-index:60;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;background:var(--cad);color:var(--ink);border:2px solid var(--ink);border-radius:30px;padding:12px 16px;font-family:var(--display);font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:4px 4px 0 var(--ink),0 14px 30px -12px rgba(16,20,24,.5);min-height:46px;animation:lcIn .45s var(--ease) both}
 .lc-pill svg{width:16px;height:16px;color:var(--ink)}
+/* lead card: the form inside the side card */
+.lc-body{max-height:min(74vh,560px);overflow:auto}
+.lc .lc-small{margin-top:6px}
+.ld-form{display:grid;gap:10px;margin-top:14px}
+.ld-f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ld-f label{font-size:13.5px;font-weight:500}
+.ld-f input{font-family:var(--display);font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--ink300);border-radius:var(--r);padding:10px 12px;width:100%;min-height:44px}
+.ld-f input:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 3px var(--cobalt-tint)}
+.ld-f input[aria-invalid="true"]{border-color:var(--red)}
+.ld-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;pointer-events:none}
+.ld-go{width:100%;margin-top:2px}
+.ld-fine{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.45}
+.lc-foot a{color:var(--cobalt);font-weight:600;text-decoration:none}
+.lc-foot a:hover{text-decoration:underline}
 @media (max-width:700px){
   .lc{right:0;left:0;bottom:0;width:auto;max-width:none;border-radius:16px 16px 0 0;border-width:2px 0 0;box-shadow:0 -6px 0 rgba(16,20,24,.9),0 -20px 40px -10px rgba(16,20,24,.4);padding-bottom:env(safe-area-inset-bottom,0px);animation-name:lcUp}
   .lc-top{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
@@ -1401,7 +1416,7 @@ img{max-width:100%}
 
     <form class="form" id="demoForm" novalidate>
       <h2>Request a call back</h2>
-      <p class="sub">Takes a minute. Your details reach us on WhatsApp.</p>
+      <p class="sub">Takes a minute. We'll call you back, or you can message us on WhatsApp.</p>
       <div class="fgrid">
         <div class="f"><label for="fName">Your name</label><input id="fName" name="name" autocomplete="name" required placeholder="Sanjay Deshmukh" aria-describedby="eName"><span class="err" id="eName"></span></div>
         <div class="f"><label for="fPhone">Phone number</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="98xxxxxxxx" aria-describedby="ePhone"><span class="err" id="ePhone"></span></div>
@@ -1413,9 +1428,10 @@ img{max-width:100%}
           <select id="fStaff" name="staff"><option>Under 10</option><option selected>10 to 30</option><option>30 to 100</option><option>More than 100</option></select></div>
         <div class="f full"><label for="fMsg">What takes up most of your day? <span style="color:var(--muted);font-weight:400">(optional)</span></label><textarea id="fMsg" name="message" placeholder="e.g. Writing job slips by hand and calling customers when orders are ready."></textarea></div>
       </div>
-      <div class="form-actions"><button class="btn btn-cobalt" type="submit"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>Send on WhatsApp</button></div>
+      <input class="ld-hp" id="fHp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="form-actions"><button class="btn btn-cobalt" type="submit"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>Request a call back</button><a class="btn btn-line" id="fWa" href="https://wa.me/919175212447?text=Hi%20Rozka%20team%2C%20I%27d%20like%20a%201-month%20demo." target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>WhatsApp us instead</a></div>
       <div class="sent" id="sent" hidden></div>
-      <p class="form-note">Prefer to call? Ring Aryan on <span class="mono nowrap">+91 91752 12447</span> or write to <span class="mono">team@alpxcalm.cloud</span>.</p>
+      <p class="form-note">Prefer to call? Ring Aryan on <span class="mono nowrap">+91 91752 12447</span> or write to <span class="mono">team@alpxcalm.cloud</span>. We also note which pages you looked at, so we can help better.</p>
     </form>
   </div>
 </section>
@@ -1435,16 +1451,16 @@ img{max-width:100%}
 </main>
 <div class="audit-toast" id="auditToast" role="status" hidden></div>
 
-<!-- QUICK QUESTION side card (non-modal; never blocks reading) -->
+<!-- LEAD CARD (non-modal; shown only on real intent signals, see the lead engine script) -->
 <aside class="lc" id="lc" role="dialog" aria-modal="false" aria-labelledby="lcQ" hidden>
   <div class="lc-top">
-    <span class="lc-tag"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/> <path d="M20 2v4"/> <path d="M22 4h-4"/> <circle cx="4" cy="20" r="2"/></svg><span id="lcTag">Quick question</span></span>
+    <span class="lc-tag"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/> <path d="M20 2v4"/> <path d="M22 4h-4"/> <circle cx="4" cy="20" r="2"/></svg><span id="lcTag">Talk to us</span></span>
     <button type="button" class="lc-ico" id="lcMin" aria-label="Minimise"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
-    <button type="button" class="lc-ico" id="lcClose" aria-label="Close and stop these questions"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></svg></button>
+    <button type="button" class="lc-ico" id="lcClose" aria-label="Close"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></svg></button>
   </div>
   <div class="lc-body" id="lcBody"></div>
 </aside>
-<button type="button" class="lc-pill" id="lcPill" hidden aria-controls="lc"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/> <path d="M20 2v4"/> <path d="M22 4h-4"/> <circle cx="4" cy="20" r="2"/></svg><span>1 quick question</span></button>
+<button type="button" class="lc-pill" id="lcPill" hidden aria-controls="lc"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/> <path d="M20 2v4"/> <path d="M22 4h-4"/> <circle cx="4" cy="20" r="2"/></svg><span>Get a call back</span></button>
 
 <footer class="foot">
   <div class="wrap">
@@ -1461,6 +1477,430 @@ img{max-width:100%}
     <div class="foot-bot"><span>© 2026 ROZKA</span><span>team@alpxcalm.cloud · +91 91752 12447</span></div>
   </div>
 </footer>
+<script>
+/* ---------- lead engine ----------
+   1. Trail: a timed JSON of what a visitor DOES (pages, sections, clicks, scroll, widget use) kept in localStorage.
+      It never records what they type.
+   2. Intent: signals from that trail pick a logical moment (a price question, a calculator result, an industry they linger on...)
+      and show ONE lead card for it. No timers popping questions at random.
+   3. Submit: any form posts its fields plus the trail to Apps Script (apps-script/Code.gs). WhatsApp stays as the alternative.
+   Config arrives in <head> from scripts/build.mjs: window.ROZKA={endpoint,replay}. In replay mode (?rzr=) everything here is off. ---------- */
+(function(){
+  'use strict';
+  var CFG=window.ROZKA||{},REPLAY=!!CFG.replay,EP=CFG.endpoint||'',TSKEY=CFG.ts||'',WA='919175212447';
+  var $=function(id){return document.getElementById(id);};
+  var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
+  var reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function now(){return Date.now();}
+  function rid(p){return p+'-'+now().toString(36)+Math.random().toString(36).slice(2,7);}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function slug(t){return String(t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+  function count(o){return Object.keys(o).length;}
+
+  if(REPLAY){ // the owner is replaying a visit: record nothing, show nothing, send nothing
+    window.RZ={data:{},open:function(){},submit:function(){return Promise.resolve(false);}};
+    // the viewer lives in tools/ (git-ignored, never deployed) and only loads off the live host; from disk open the root index.html?rzr=paste
+    try{
+      var nm=document.createElement('meta');nm.name='robots';nm.content='noindex,nofollow';document.head.appendChild(nm);
+      var rs=document.createElement('script');rs.src=location.protocol==='file:'?'tools/replay.js':'/tools/replay.js';document.head.appendChild(rs);
+    }catch(e){}
+    return;
+  }
+
+  var mem={};
+  var ls={
+    get:function(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return mem[k]||null;}},
+    set:function(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  };
+  function ga(n,p){try{if(typeof window.gtag==='function')window.gtag('event',n,p||{});}catch(e){}}
+
+  /* ================= trail ================= */
+  var TK='rozka_trail_v1',MAXEV=700,MAXS=6,GAP=30*60*1000,KEEP=30*864e5,loadAt=now();
+  var T=ls.get(TK);
+  if(!T||T.v!==1||!T.sessions)T={v:1,vid:rid('v'),first:now(),n:0,sessions:[]};
+  T.sessions=T.sessions.filter(function(s){return s&&s.ev&&now()-s.last<KEEP;});
+  function env(){var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone;}catch(e){}return {w:innerWidth,h:innerHeight,dpr:window.devicePixelRatio||1,touch:('ontouchstart' in window)?1:0,lang:navigator.language||'',tz:tz};}
+  function utm(){var o={};location.search.replace(/^\?/,'').split('&').forEach(function(kv){var p=kv.split('=');if(/^utm_/.test(p[0])){try{o[p[0]]=decodeURIComponent(p[1]||'').slice(0,120);}catch(e){}}});return o;}
+  function topSec(s){var d={},best='',max=0;s.ev.forEach(function(e){if(e.k==='sec'){d[e.s]=(d[e.s]||0)+e.d;if(d[e.s]>max){max=d[e.s];best=e.s;}}});return best;}
+  var S=T.sessions[T.sessions.length-1],ret=null;
+  if(S&&now()-S.last<GAP){S.resumed=(S.resumed||0)+1;}
+  else{
+    if(S&&now()-S.last<14*864e5)ret={at:S.last,top:topSec(S)};
+    T.n++;
+    S={sid:rid('s'),t0:now(),last:now(),n:T.n,act:0,ref:document.referrer||'',utm:utm(),env:env(),ev:[]};
+    T.sessions.push(S);while(T.sessions.length>MAXS)T.sessions.shift();
+  }
+  var tmr=null;
+  function save(){clearTimeout(tmr);tmr=null;ls.set(TK,T);}
+  function dirty(){if(!tmr)tmr=setTimeout(save,800);}
+  function rec(k,d,at){
+    var e={t:(at||now())-S.t0,k:k};
+    for(var x in d)if(d[x]!==undefined)e[x]=d[x];
+    S.ev.push(e);S.last=now();
+    if(S.ev.length>MAXEV){var i=0;for(var j=0;j<S.ev.length;j++){if(S.ev[j].k==='sc'||S.ev[j].k==='vis'){i=j;break;}}S.ev.splice(i,1);}
+    dirty();return e;
+  }
+
+  function pg(){var p=document.querySelector('.page:not([hidden])');return p?p.getAttribute('data-page'):'home';}
+  var SECN={'hero-h':'hero','prob-h':'problem','prod-h':'product','how-h':'how','ind-h':'industries','why-h':'why','bey-h':'beyond','faq-h':'faq','close-h':'close','ap-h':'automation-hero','rec-h':'recipes','proc-h':'process','cmp-h':'vs-it','ab-h':'about-hero','name-h':'name','story-h':'story','pr-h':'promises','contact-h':'contact-hero','after-h':'after-send'};
+  function secName(el){return slug(el.id||SECN[el.getAttribute('aria-labelledby')||'']||el.getAttribute('aria-label')||'');}
+  function sectionAtCenter(){
+    var y=innerHeight*.42,list=$$('.page:not([hidden]) section');
+    for(var i=0;i<list.length;i++){var r=list[i].getBoundingClientRect();if(r.top<=y&&r.bottom>=y){var n=secName(list[i]);if(n)return n;}}
+    return '';
+  }
+
+  var cur='',curAt=now(),vis=!document.hidden,dwell={},dwellScored={};
+  var DW={problem:2,product:2,how:2,industries:3,faq:1,recipes:2,story:1,promises:1};
+  function closeSec(){
+    if(!cur||!vis)return;
+    var d=now()-curAt;dwell[cur]=(dwell[cur]||0)+d;
+    if(d>=1000)rec('sec',{s:cur,d:Math.round(d)},curAt);
+    if(DW[cur]&&!dwellScored[cur]&&dwell[cur]>=6000){dwellScored[cur]=1;add(DW[cur]);}
+  }
+  function checkSec(){var n=sectionAtCenter();if(n!==cur){closeSec();cur=n;curAt=now();}}
+
+  /* clicks: every one, with a selector the replay can find again and a short label */
+  function sel(el){
+    var parts=[],n=0;
+    while(el&&el.nodeType===1&&el!==document.body&&n<8){
+      if(el.id){parts.unshift('#'+el.id);break;}
+      var p=el.parentElement,i=p?[].indexOf.call(p.children,el)+1:1;
+      parts.unshift(el.tagName.toLowerCase()+':nth-child('+i+')');el=p;n++;
+    }
+    return parts.join('>');
+  }
+  function lbl(el){
+    var a=el.getAttribute&&(el.getAttribute('aria-label')||el.getAttribute('title'));
+    if(!a&&!/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))a=el.textContent;
+    return (a||'').replace(/\s+/g,' ').trim().slice(0,48);
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target;if(!t||!t.closest)return;
+    var m=t.closest('a,button,summary,label,input,select,textarea,[role=tab]')||t;
+    rec('clk',{sel:sel(m),tx:lbl(m),h:m.tagName==='A'?(m.getAttribute('href')||'').slice(0,120):undefined,s:cur||undefined,x:Math.round(e.clientX/innerWidth*100),y:Math.round(e.clientY/innerHeight*100)});
+  },true);
+
+  /* bot defence, human signals: real (trusted) key/pointer events, and when each form was first touched */
+  var HM={ev:0,first:{}};
+  ['keydown','pointerdown','touchstart'].forEach(function(k){document.addEventListener(k,function(e){if(e.isTrusted)HM.ev++;},true);});
+
+  /* fields: which one was touched and what option/slider value was picked, never typed text */
+  var fl={};
+  document.addEventListener('focusin',function(e){
+    var t=e.target;
+    if(!/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.type==='hidden'||t.classList.contains('ld-hp'))return;
+    var fid=t.form?t.form.id:'';
+    if((fid==='demoForm'||fid==='ldForm')&&!HM.first[fid]){HM.first[fid]=now();tsLoad();}   // warm up the invisible check while they type
+    var k=t.id||t.name;if(fl[k]&&now()-fl[k]<3000)return;fl[k]=now();
+    rec('fld',{f:k,fm:t.form?t.form.id||undefined:undefined});
+    if(t.form&&t.form.id==='demoForm')G.formStarted=true;
+  },true);
+  document.addEventListener('change',function(e){
+    var t=e.target;
+    if(t.tagName==='SELECT')rec('chg',{f:t.id,v:t.options[t.selectedIndex].text});
+    else if(t.type==='range')rec('chg',{f:t.id,v:+t.value});
+  },true);
+
+  /* scroll: positions (sparse), depth milestones, current section */
+  var lastY=0,depthHit={},lastScrollT=0,sct=null;
+  function scrollTick(){
+    var y=Math.round(scrollY),H=document.documentElement.scrollHeight;
+    if(Math.abs(y-lastY)>=150){lastY=y;rec('sc',{y:y,h:H});}
+    var d=(y+innerHeight)/H*100;
+    [25,50,75,100].forEach(function(m){var k=pg()+m;if(d>=m-1&&!depthHit[k]){depthHit[k]=1;rec('sd',{d:m});onDepth(m);}});
+    checkSec();
+  }
+  window.addEventListener('scroll',function(){lastScrollT=now();if(!sct)sct=setTimeout(function(){sct=null;scrollTick();},350);},{passive:true});
+
+  /* visibility + page views */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){closeSec();vis=false;rec('vis',{v:0});save();}
+    else{vis=true;curAt=now();rec('vis',{v:1});}
+  });
+  window.addEventListener('pagehide',function(){closeSec();save();});
+  var lastPg=pg();
+  function pv(){rec('pv',{pg:pg(),h:location.hash||undefined});}
+  pv();setTimeout(checkSec,300);
+  window.addEventListener('rozka:route',function(){
+    var was=lastPg;lastPg=pg();pv();setTimeout(checkSec,450);
+    if(lastPg==='contact'){hide();}
+    if(was==='contact'&&lastPg!=='contact'&&G.formStarted&&!L.sent)moment('formback',{pri:7,delay:8000,ttl:60000,make:CTX.formback});
+  });
+
+  /* ================= intent ================= */
+  var G={score:0,tscore:0,leaks:0,caps:{},scn:{},rec:{},calc:0,ind:null,audit:0,shown:0,last:0,fired:{},idea:null,formStarted:false,list:[]};
+  var L=ls.get('rozka_lead_v1')||{sent:0,dismissed:0,seen:{},who:null};
+  if(!L.seen)L.seen={};
+  function saveL(){ls.set('rozka_lead_v1',L);}
+  function add(n){G.score+=n;}
+  var pend=[];
+  function moment(id,o){
+    if(L.seen[id]&&now()-L.seen[id]<7*864e5)return;
+    if(G.fired[id])return;
+    var m=null;for(var i=0;i<pend.length;i++)if(pend[i].id===id)m=pend[i];
+    if(!m){m={id:id};pend.push(m);}
+    m.pri=o.pri;m.min=o.min||0;m.ripe=now()+(o.delay||0);m.exp=m.ripe+(o.ttl||60000);m.make=o.make;
+  }
+
+  function amt(){return String($('leakMonth')?$('leakMonth').textContent:'').replace(/[−-]/g,'').trim();}
+  function ind(){return ((window.RZ&&RZ.data.ind)||[])[G.ind?G.ind.i:0]||{};}
+  function wa(t){return 'https://wa.me/'+WA+'?text='+encodeURIComponent('Hi Rozka team, '+t);}
+  var TOPIC={problem:'registers and where hours leak',product:'how Rozka works',how:'how a day becomes a payslip',industries:'Rozka for your kind of business',faq:'your questions about Rozka',recipes:'automating your daily work',story:'how Rozka started','automation-hero':'automating your daily work'};
+  var CTX={
+    price:function(){return {tag:'Pricing',h:'Want a straight number?',sub:'Tell us about your business and we\'ll give you a straight number.',cta:'Call me with a price',wa:wa('what would Rozka cost for my business?')};},
+    calc:function(){var w=+$('rWorkers').value,s=+$('rSalary').value,mn=+$('rMin').value,a=amt();return {tag:'Your number',h:'At '+w+' staff you could be losing '+a+' a month.',sub:'That\'s an illustration. Share your number and we\'ll work out your real figure.',cta:'Work out my real number',wa:wa('I tried the loss calculator ('+w+' staff, '+a+' a month). Can you work out my real number?'),data:{calc:{staff:w,salary:s,min:mn,loss:a}}};},
+    industry:function(){var d=ind();return {tag:d.n||'Your business',h:d.q||'Running this kind of business?',sub:'A short call is enough to show what changes on day one.',cta:'Call me back',wa:wa('I run a business in this line: '+(d.n||'')+'. Can you show me what changes on day one?'),data:{industry:d.id}};},
+    leaks:function(){return {tag:'The register',h:'You caught '+G.leaks+' of 5 leaks in a sample register.',sub:'Want to know how many your own register has?',cta:'Show me on my staff',wa:wa('I caught '+G.leaks+' of 5 leaks in the sample register. Can you check how many my business has?')};},
+    product:function(){return {tag:'See it on your staff',h:'Want to see this running on your own staff?',sub:'Run Rozka on your own staff for a month, then decide.',cta:'Book my 1-month demo',wa:wa('I looked through how Rozka works. I\'d like to run it on my own staff for a month.')};},
+    recipes:function(){return {tag:'Automation',h:'Got a job you do by hand every day?',sub:'Tell us the WHEN and THEN. We\'ll say honestly if we can build it.',cta:'Call me back',wa:wa('I looked at the automation examples. Can you tell me if you can build one for my business?')};},
+    audit:function(){return {tag:'Audit complete',h:'You\'ve checked what most owners never do.',sub:'Want us to walk through it on your business?',cta:'Walk me through it',wa:wa('I finished the owner\'s audit on your website. Can you walk me through it for my business?')};},
+    exit:function(){return {tag:'Before you go',h:'Not ready to commit? Just talk to us.',sub:'Leave your number and we\'ll call you back.',cta:'Call me back',wa:wa('I was looking at Rozka and have a question.')};},
+    returning:function(){var t=TOPIC[ret&&ret.top]||'Rozka';return {tag:'Welcome back',h:'Still thinking about '+t+'?',sub:'Leave your number and we\'ll call you back.',cta:'Call me back',wa:wa('I visited before and I\'m still thinking about Rozka. Can we talk?')};},
+    depth:function(){return {tag:'Talk to the team',h:'Want to hear how this works for a business like yours?',sub:'Leave your number and we\'ll call you back.',cta:'Call me back',wa:wa('I read through your site and would like to know how Rozka works for my business.')};},
+    formback:function(){return {tag:'Almost there',h:'Short on time? Just leave your number.',sub:'Two fields, and we\'ll call you back.',cta:'Call me back',wa:wa('I started the demo form but ran out of time. Can we talk?')};}
+  };
+
+  /* signals come from the page's own widgets, read through the DOM so nothing in the main script has to change */
+  document.addEventListener('click',function(e){
+    var t=e.target;if(!t.closest)return;
+    var b;
+    if((b=t.closest('.leak-row,#revealAll'))){
+      setTimeout(function(){
+        var n=$$('.leak-row[aria-pressed="true"]').length;
+        if(n>G.leaks){add(n-G.leaks);G.leaks=n;rec('w',{w:'leak',c:n});}
+        if(n>=3)moment('leaks',{pri:7,delay:2500,ttl:45000,make:CTX.leaks});
+      },80);
+    }else if((b=t.closest('.cap'))){
+      var k=b.getAttribute('data-cap');
+      if(!G.caps[k]){G.caps[k]=1;add(1);rec('w',{w:'cap',i:+k});}
+      if(count(G.caps)>=4)moment('product',{pri:5,delay:3500,ttl:60000,make:CTX.product});
+    }else if((b=t.closest('#scen button'))){
+      var s=b.getAttribute('data-s');
+      if(!G.scn[s]){G.scn[s]=1;add(2);rec('w',{w:'scn',i:+s});}
+      if(count(G.scn)>=2)moment('product',{pri:5,delay:3500,ttl:60000,make:CTX.product});
+    }else if((b=t.closest('#ilist button,#ilist [role=tab]'))){
+      var i=$$('#ilist > *').indexOf(b);
+      if(!G.ind)add(2);
+      G.ind={i:i};rec('w',{w:'industry',i:i,n:lbl(b)});
+      moment('industry',{pri:6,delay:9000,ttl:40000,make:CTX.industry});
+    }else if((b=t.closest('#rlist button'))){
+      var r=$$('#rlist > *').indexOf(b);
+      if(!G.rec[r]){G.rec[r]=1;add(1);rec('w',{w:'rec',i:r});}
+      if(count(G.rec)>=2)moment('recipes',{pri:5,delay:4000,ttl:60000,make:CTX.recipes});
+    }
+  });
+  document.addEventListener('toggle',function(e){
+    var d=e.target;if(!d||d.tagName!=='DETAILS'||!d.open)return;
+    var q=((d.querySelector('summary')||{}).textContent||'').replace(/\s+/g,' ').trim().slice(0,60);
+    rec('w',{w:'faq',q:q});
+    if(/cost|price/i.test(q)){add(5);moment('price',{pri:9,delay:1500,ttl:60000,make:CTX.price});}else add(1);
+  },true);
+  ['rWorkers','rSalary','rMin'].forEach(function(id){
+    var el=$(id);if(!el)return;
+    el.addEventListener('change',function(){
+      G.calc++;add(G.calc===1?3:1);
+      rec('w',{w:'calc',n:+$('rWorkers').value,sal:+$('rSalary').value,min:+$('rMin').value,loss:amt()});
+      moment('calc',{pri:8,delay:4500,ttl:45000,make:CTX.calc});
+    });
+  });
+  var auditReady=false,auditN=0;
+  setTimeout(function(){auditReady=true;auditN=+($('auditN')||{}).textContent||0;},120);
+  if($('auditN')&&window.MutationObserver)new MutationObserver(function(){
+    if(!auditReady)return;
+    var n=+$('auditN').textContent||0;if(n===auditN)return;auditN=n;
+    rec('w',{w:'audit',n:n});add(2);
+    if(n===3){add(4);moment('audit',{pri:8,delay:2500,ttl:120000,make:CTX.audit});}
+  }).observe($('auditN'),{childList:true,characterData:true,subtree:true});
+  function onDepth(m){
+    if(m<75||(pg()!=='home'&&pg()!=='about'))return;
+    add(2);moment('depth',{pri:2,min:5,delay:3000,ttl:30000,make:CTX.depth});
+  }
+  document.addEventListener('mouseout',function(e){
+    if(e.relatedTarget||e.clientY>8)return;
+    if(window.matchMedia&&matchMedia('(pointer:coarse)').matches)return;
+    moment('exit',{pri:4,min:6,delay:0,ttl:4000,make:CTX.exit});
+  });
+  if(ret){add(2);moment('returning',{pri:3,delay:25000,ttl:5*60000,make:CTX.returning});}   // a return visit within 14 days is itself a buying signal
+
+  /* ================= the card ================= */
+  var lc=$('lc'),pill=$('lcPill'),body=$('lcBody'),tag=$('lcTag'),open=null,state='idle';
+  var WA_ICON='<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>';
+  function hide(){if(lc)lc.hidden=true;if(pill)pill.hidden=true;}
+  function paneIn(){body.classList.remove('enter');if(!reduce){void body.offsetWidth;body.classList.add('enter');}}
+  function typing(){var a=document.activeElement;return !!(a&&!lc.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!/^(range|checkbox|radio|button|submit)$/.test(a.type));}
+  function calm(){var ap=$('auditPop'),at=$('auditToast'),nv=$('nav');return (!ap||ap.hidden)&&(!at||at.hidden)&&!(nv&&nv.classList.contains('open'));}
+
+  function can(m){
+    var t=now();
+    if(!lc||!lc.hidden||(pill&&!pill.hidden))return false;               // a card is already on screen (or minimised)
+    if(L.sent&&t-L.sent<30*864e5)return false;                            // already left their number
+    if(L.dismissed&&t-L.dismissed<2*864e5)return false;                   // closed it recently
+    if(pg()==='contact'||document.hidden)return false;
+    if(t-loadAt<20000||G.shown>=2||t-G.last<60000)return false;           // never early, max 2 a visit, never back to back
+    if(G.score<Math.max(2,m.min||0))return false;                         // needs real engagement first
+    if(t-lastScrollT<1200||typing()||!calm())return false;               // never while reading fast, typing or another prompt is open
+    return true;
+  }
+
+  function show(m,forced){
+    open=m;state='ask';G.shown++;G.last=now();G.fired[m.id]=1;L.seen[m.id]=now();saveL();
+    G.list.push({id:m.id,t:now()-S.t0});
+    tag.textContent=m.tag;renderAsk();
+    pill.hidden=true;lc.hidden=false;lc.classList.remove('swap');if(!reduce){void lc.offsetWidth;lc.classList.add('swap');}
+    tsLoad();
+    rec('nd',{a:'show',id:m.id,f:forced?1:undefined,sc:G.score});
+    ga('lead_nudge_shown',{trigger:m.id,page:pg()});
+  }
+
+  function renderAsk(){
+    var m=open,who=L.who||{};
+    body.innerHTML='<p class="lc-q" id="lcQ">'+esc(m.h)+'</p><p class="lc-small">'+esc(m.sub)+'</p>'+
+      '<form class="ld-form" id="ldForm" novalidate>'+
+        '<div class="ld-f"><label for="ldName">Your name</label><input id="ldName" name="name" autocomplete="name" required placeholder="Sanjay Deshmukh" value="'+esc(who.n||'')+'" aria-describedby="ldEName"><span class="err" id="ldEName"></span></div>'+
+        '<div class="ld-f"><label for="ldPhone">Phone number</label><input id="ldPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="98xxxxxxxx" value="'+esc(who.p||'')+'" aria-describedby="ldEPhone"><span class="err" id="ldEPhone"></span></div>'+
+        '<input class="ld-hp" id="ldHp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">'+
+        '<button class="btn btn-cobalt ld-go" type="submit">'+esc(m.cta)+'</button>'+
+      '</form>'+
+      '<div class="lc-foot"><a href="'+esc(m.wa)+'" target="_blank" rel="noopener" id="ldWa">Or message us on WhatsApp</a><button type="button" class="lc-back" id="ldLater">Not now</button></div>'+
+      '<p class="ld-fine">We\'ll call you back. We also note which pages you looked at, so we can help better.</p>';
+    $('ldForm').addEventListener('submit',onSubmit);
+    $('ldLater').addEventListener('click',function(){rec('nd',{a:'later',id:m.id});hide();state='idle';});
+    $('ldWa').addEventListener('click',function(){rec('nd',{a:'wa',id:m.id});L.seen[m.id]=now();saveL();});
+    paneIn();
+  }
+
+  function onSubmit(e){
+    e.preventDefault();
+    var m=open,nm=$('ldName').value.trim(),ph=$('ldPhone').value.trim(),ok=true;
+    $('ldEName').textContent='';$('ldEPhone').textContent='';$('ldName').removeAttribute('aria-invalid');$('ldPhone').removeAttribute('aria-invalid');
+    if(!nm){$('ldEName').textContent='Add your name so we know who to ask for.';$('ldName').setAttribute('aria-invalid','true');ok=false;}
+    if(ph.replace(/\D/g,'').length<10){$('ldEPhone').textContent='Enter a 10-digit phone number.';$('ldPhone').setAttribute('aria-invalid','true');ok=false;}
+    if(!ok){rec('nd',{a:'invalid',id:m.id});(nm?$('ldPhone'):$('ldName')).focus();return;}
+    var btn=e.target.querySelector('.ld-go');btn.disabled=true;btn.textContent='Sending...';state='sending';
+    submit('nudge_'+m.id,{name:nm,phone:ph,hp:$('ldHp').value},m.data).then(function(sent){done(sent,nm,ph);});
+  }
+
+  function done(sent,nm,ph){
+    state='done';
+    var first=esc(nm.split(' ')[0]),msg=open.wa+encodeURIComponent('\nName: '+nm+'\nPhone: '+ph);
+    if(sent){
+      body.innerHTML='<p class="lc-q" id="lcQ">Thanks, '+first+'. We\'ll call you.</p><p class="lc-small">On <b>'+esc(ph)+'</b>. A real person from Rozka will ring you.</p>'+
+        '<a class="btn lc-wa" href="'+esc(msg)+'" target="_blank" rel="noopener">'+WA_ICON+'Prefer WhatsApp? Message us</a>'+
+        '<div class="lc-foot"><span></span><button type="button" class="lc-back" id="ldClose2">Close</button></div>';
+    }else{
+      body.innerHTML='<p class="lc-q" id="lcQ">Please send this on WhatsApp.</p><p class="lc-small">We couldn\'t save your details online just now. WhatsApp reaches us straight away, or call <span class="mono nowrap">+91 91752 12447</span>.</p>'+
+        '<a class="btn lc-wa" href="'+esc(msg)+'" target="_blank" rel="noopener">'+WA_ICON+'Send on WhatsApp</a>'+
+        '<div class="lc-foot"><span></span><button type="button" class="lc-back" id="ldClose2">Close</button></div>';
+    }
+    $('ldClose2').addEventListener('click',function(){hide();state='idle';});
+    rec('nd',{a:'done',id:open.id,ok:sent?1:0});
+    paneIn();
+  }
+
+  if(lc){
+    tag.textContent='Talk to us';
+    var ps=pill.querySelector('span');if(ps)ps.textContent='Get a call back';
+    $('lcMin').addEventListener('click',function(){lc.hidden=true;pill.hidden=(state!=='ask');rec('nd',{a:'min',id:open&&open.id});});
+    $('lcClose').addEventListener('click',function(){hide();state='idle';L.dismissed=now();saveL();rec('nd',{a:'close',id:open&&open.id});});
+    pill.addEventListener('click',function(){pill.hidden=true;lc.hidden=false;rec('nd',{a:'reopen',id:open&&open.id});});
+    lc.addEventListener('keydown',function(e){if(e.key==='Escape'){e.stopPropagation();lc.hidden=true;pill.hidden=(state!=='ask');}});
+  }
+
+  /* ================= submit ================= */
+  function summary(){
+    var secs=0;T.sessions.forEach(function(s){secs+=s.act||0;});
+    return {score:G.score,active:secs,leaks:G.leaks||undefined,caps:count(G.caps)||undefined,industry:G.ind?ind().id:undefined,idea:G.idea||undefined,cards:G.list};
+  }
+  var PQ='rozka_pending_v1';
+  function post(p){
+    if(!EP)return Promise.resolve(false);
+    var b=JSON.stringify(p),o={method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:b};
+    if(b.length<60000)o.keepalive=true;
+    return fetch(EP,o).then(function(){return true;},function(){return false;});
+  }
+  function queue(p){p.tk='';var q=ls.get(PQ)||[];q.push(p);while(q.length>3)q.shift();ls.set(PQ,q);}   // tokens are single-use and expire, so a retry goes without one
+
+  /* Cloudflare Turnstile, invisible: loaded only once someone touches a form or a card opens, never on page load.
+     No site key, no script, no token. A blocked or slow check never blocks the visitor: the lead is sent without a token and the server scores it. */
+  var tsP=null,tsWid=null,tsBox=null,tsCb=null;
+  function tsLoad(){
+    if(!TSKEY||tsP)return tsP;
+    tsP=new Promise(function(res){
+      window.__rzTs=function(){res(true);};
+      var sc=document.createElement('script');sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__rzTs';sc.async=true;sc.onerror=function(){res(false);};
+      document.head.appendChild(sc);setTimeout(function(){res(false);},8000);
+    });
+    return tsP;
+  }
+  function tsToken(){
+    if(!TSKEY)return Promise.resolve('');
+    return tsLoad().then(function(ok){
+      if(!ok||!window.turnstile)return '';
+      return new Promise(function(res){
+        var fin=false;function end(t){if(!fin){fin=true;tsCb=null;res(t||'');}}
+        tsCb=end;setTimeout(function(){end('');},9000);
+        try{
+          if(!tsBox){tsBox=document.createElement('div');tsBox.style.cssText='position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:70';document.body.appendChild(tsBox);}
+          if(tsWid===null)tsWid=window.turnstile.render(tsBox,{sitekey:TSKEY,appearance:'interaction-only',execution:'execute',callback:function(t){if(tsCb)tsCb(t);},'error-callback':function(){if(tsCb)tsCb('');}});
+          else window.turnstile.reset(tsWid);
+          window.turnstile.execute(tsWid);
+        }catch(e){end('');}
+      });
+    });
+  }
+  function retry(){
+    var q=ls.get(PQ)||[];if(!q.length||!EP)return;
+    ls.set(PQ,[]);
+    q.reduce(function(chain,p){return chain.then(function(){return post(p).then(function(ok){if(!ok)queue(p);});});},Promise.resolve());
+  }
+  window.addEventListener('online',retry);setTimeout(retry,4000);
+
+  function submit(source,fields,extra){
+    fields=fields||{};
+    var hp=fields.hp||'';delete fields.hp;
+    if(hp){return Promise.resolve(true);}                                  // honeypot: a bot, say nothing
+    if(now()-(L.lastSend||0)<3000)return Promise.resolve(!!L.lastOk);      // double click: same answer, send nothing twice
+    L.lastSend=now();
+    closeSec();curAt=now();
+    var fk=source==='contact_form'?'demoForm':'ldForm';
+    var hm={dt:HM.first[fk]?now()-HM.first[fk]:undefined,ev:HM.ev};
+    var id='L-'+(now().toString(36)+Math.random().toString(36).slice(2,8)).replace(/[^a-z0-9]/g,'');   // matches ^L-[a-z0-9]+$ in Code.gs
+    rec('lead',{id:id,src:source});save();
+    var ctx=summary();for(var x in (extra||{}))ctx[x]=extra[x];
+    var p={v:1,id:id,ts:new Date().toISOString(),source:source,page:pg(),section:cur||'',fields:fields,ctx:ctx,
+      host:location.hostname||'file',visitor:{vid:T.vid,visit:S.n,first:new Date(T.first).toISOString()},env:S.env,ref:S.ref,utm:S.utm,hp:'',hm:hm,tk:'',trail:T};
+    L.sent=now();L.who={n:fields.name||'',p:fields.phone||''};saveL();
+    if(!EP){rec('nd',{a:'no-endpoint'});return Promise.resolve(false);}
+    return tsToken().then(function(tok){p.tk=tok;return post(p);}).then(function(ok){
+      L.lastOk=ok;saveL();
+      if(ok){ga('generate_lead',{source:source,page:pg()});}else{queue(p);}
+      return ok;
+    });
+  }
+
+  window.RZ={
+    data:{},
+    submit:submit,
+    open:function(id,o){
+      if(id!=='idea'||!o||!o.idea)return;
+      G.idea=o.idea;add(4);
+      show({id:'idea',tag:'Your idea',h:'Where should we reply?',sub:'We\'ll tell you honestly if we can build it.',cta:'Send my idea',wa:o.wa,data:{idea:o.idea}},true);
+    }
+  };
+
+  /* ================= tick ================= */
+  setInterval(function(){
+    if(vis){S.act=(S.act||0)+1;if(S.act%30===0&&G.tscore<4){G.tscore++;add(1);}}
+    checkSec();
+    var t=now();
+    pend=pend.filter(function(m){return t<=m.exp&&!G.fired[m.id];});
+    var best=null;
+    pend.forEach(function(m){if(m.ripe<=t&&(!best||m.pri>best.pri))best=m;});
+    if(best&&can(best)){var c=best.make();c.id=best.id;show(c,false);}
+  },1000);
+})();
+</script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
@@ -1484,7 +1924,7 @@ img{max-width:100%}
   var AUD=(function(){
     var KEY='rozka_audit',st={leaks:[],parts:[0],day:[],done:false};
     try{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.leaks){st=s;}}catch(e){}
-    function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+    function save(){if(window.ROZKA&&ROZKA.replay)return;try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
     var NEED={leaks:5,parts:5,day:2},LABEL={leaks:'Leaks caught',parts:'All five parts seen',day:'Sunita\'s day, run two ways'};
     var chip=$('auditChip'),pop=$('auditPop'),toastEl=$('auditToast'),tT=null;
     function ok(t){return st[t].length>=NEED[t];}
@@ -1723,6 +2163,7 @@ img{max-width:100%}
     {id:'other',ic:'building-2',n:'Something else',q:'Tell us about your business.',h:'Your business isn\'t on this list?',p:'If your business runs on people and repeats the same work every day, Rozka fits. Tell us how your day goes and we\'ll show you where it helps.'}
   ];
   var ilist=$('ilist'),ipanel=$('ipanel'),iBtns=[];
+  if(window.RZ)RZ.data.ind=IND;
   function col(cls,title,color,items){return '<div class="ip-col '+cls+'"><h4><i style="background:'+color+'"></i>'+title+'</h4><ul>'+items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>';}
   function renderI(k,focus){
     var d=IND[k];
@@ -1782,14 +2223,27 @@ img{max-width:100%}
     var w=$('yWhen').value.trim(),t=$('yThen').value.trim(),m=$('yMsg');m.hidden=false;
     if(!w||!t){m.style.color='var(--red)';m.textContent='Fill in both WHEN and THEN, so we know what should happen.';(w?$('yThen'):$('yWhen')).focus();return;}
     var url='https://wa.me/'+WA+'?text='+encodeURIComponent('Hi Rozka team, can you automate this for my business?\nWHEN: '+w+'\nTHEN: '+t);
-    m.style.color='var(--ink)';m.innerHTML='Your idea is ready to send. <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600">Open WhatsApp to send it</a>.';
+    m.style.color='var(--ink)';m.innerHTML='Nice. Add your number in the box that just opened. Prefer WhatsApp? <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600">Send it there</a>.';
+    if(window.RZ)RZ.open('idea',{idea:{when:w,then:t},wa:url});
   });
 
   /* ---------- copy ---------- */
   $$('.copy').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-copy'),lab=b.querySelector('span');function done(){lab.textContent='Copied';setTimeout(function(){lab.textContent='Copy';},1600);}function fb(){var a=b.previousElementSibling,r=document.createRange();r.selectNodeContents(a);var s=window.getSelection();s.removeAllRanges();s.addRange(r);lab.textContent='Selected';setTimeout(function(){lab.textContent='Copy';},1600);}try{navigator.clipboard.writeText(t).then(done,fb);}catch(e){fb();}});});
 
-  /* ---------- demo form → WhatsApp ---------- */
-  var f=$('demoForm'),sent=$('sent');
+  /* ---------- demo form: saved for a call back (Apps Script), WhatsApp stays as the alternative ---------- */
+  var f=$('demoForm'),sent=$('sent'),fWa=$('fWa'),fBtn=f.querySelector('button[type=submit]'),fBtnHTML=fBtn.innerHTML;
+  function demoLines(){
+    var lines=['Hi Rozka team, I would like a 1-month demo.'],name=$('fName').value.trim(),phone=$('fPhone').value.trim();
+    if(name)lines.push('Name: '+name);
+    if(phone)lines.push('Phone: '+phone);
+    if($('fBiz').value.trim())lines.push('Business: '+$('fBiz').value.trim());
+    if($('fCity').value.trim())lines.push('City: '+$('fCity').value.trim());
+    lines.push('Wants to automate: '+$('fWhat').value,'Staff: '+$('fStaff').value);
+    if($('fMsg').value.trim())lines.push('Note: '+$('fMsg').value.trim());
+    return 'https://wa.me/'+WA+'?text='+encodeURIComponent(lines.join('\n'));
+  }
+  f.addEventListener('input',function(){fWa.href=demoLines();});
+  f.addEventListener('change',function(){fWa.href=demoLines();});
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var name=$('fName').value.trim(),phone=$('fPhone').value.trim(),ok=true;
@@ -1797,14 +2251,15 @@ img{max-width:100%}
     if(!name){$('eName').textContent='Add your name so we know who to ask for.';$('fName').setAttribute('aria-invalid','true');ok=false;}
     if(phone.replace(/\D/g,'').length<10){$('ePhone').textContent='Enter a 10-digit phone number.';$('fPhone').setAttribute('aria-invalid','true');ok=false;}
     if(!ok){(name?$('fPhone'):$('fName')).focus();return;}
-    var lines=['Hi Rozka team, I would like a 1-month demo.','Name: '+name,'Phone: '+phone];
-    if($('fBiz').value.trim())lines.push('Business: '+$('fBiz').value.trim());
-    if($('fCity').value.trim())lines.push('City: '+$('fCity').value.trim());
-    lines.push('Wants to automate: '+$('fWhat').value,'Staff: '+$('fStaff').value);
-    if($('fMsg').value.trim())lines.push('Note: '+$('fMsg').value.trim());
-    var url='https://wa.me/'+WA+'?text='+encodeURIComponent(lines.join('\n'));
-    sent.hidden=false;
-    sent.innerHTML='Your message is ready. <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600">Open WhatsApp to send it</a>. If WhatsApp doesn\'t open, call <span class="mono">+91 91752 12447</span>.';
+    var url=demoLines();
+    fBtn.disabled=true;fBtn.textContent='Sending...';
+    var p=window.RZ?RZ.submit('contact_form',{name:name,phone:phone,business:$('fBiz').value.trim(),city:$('fCity').value.trim(),what:$('fWhat').value,staff:$('fStaff').value,message:$('fMsg').value.trim(),hp:$('fHp').value}):Promise.resolve(false);
+    p.then(function(saved){
+      fBtn.disabled=false;fBtn.innerHTML=fBtnHTML;sent.hidden=false;
+      sent.innerHTML=saved
+        ?'Thanks, '+esc(name.split(' ')[0])+'. We\'ll call you on <span class="mono">'+esc(phone)+'</span>. Prefer WhatsApp? <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600">Message us there</a>.'
+        :'We couldn\'t save your details online just now. <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600">Open WhatsApp to send them</a>, or call <span class="mono">+91 91752 12447</span>.';
+    });
   });
 
   /* ---------- clocks in the wordmark (brand motif: roz = every day) ---------- */
@@ -1816,97 +2271,6 @@ img{max-width:100%}
     setInterval(set,20000);
   })();
 
-
-  /* ---------- quick questions: a new one-tap prompt roughly every 30s while the visitor reads ---------- */
-  (function(){
-    var KEY='rozka_qq',lc=$('lc'),pill=$('lcPill'),body=$('lcBody'),tag=$('lcTag');
-    var WA_ICON='<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>';
-    var Q=[
-      {q:'Be honest. Last month, did you pay for hours nobody worked?',a:[
-        ['No, never','Most owners say that, until they see their punch data.'],
-        ['Maybe a few','"A few" is how it starts. Nobody notices until it\'s a habit.'],
-        ['I can\'t tell','That\'s the real problem. A register can\'t tell you either.']]},
-      {q:'Is anyone on your staff marking attendance for a friend?',a:[
-        ['No','How would you find out if they were?'],
-        ['I hope not','Hope is all a register gives you. A photo on every punch gives you proof.'],
-        ['I can\'t be sure','Neither can most owners. That\'s exactly the gap Rozka closes.']]},
-      {q:'If you\'re not at work tomorrow morning, how will you know who came in on time?',a:[
-        ['I\'d call someone','And trust whatever they tell you?'],
-        ['I\'d check later','By then the day is gone, and so is the chance to fix it.'],
-        ['I wouldn\'t know','You could know from your phone, before you finish your tea.']]},
-      {q:'Has a worker ever said "I stayed late", and you couldn\'t prove otherwise?',a:[
-        ['Never','Lucky. Or nobody has tried it yet.'],
-        ['Once or twice','Once is enough to start the habit.'],
-        ['Every month','Then salary day is costing you money and trust.']]},
-      {q:'Right now, do you know exactly who still owes you an advance?',a:[
-        ['Yes, exactly','Good. Could anyone else in your business say the same?'],
-        ['Roughly','"Roughly" is where advances quietly disappear.'],
-        ['I\'d check the notebook','And if the notebook is wrong, who would know?']]},
-      {q:'If the person who does your salaries left tomorrow, could anyone else do them?',a:[
-        ['Yes','On time, with no mistakes, the very first month?'],
-        ['It would be a mess','Then your payroll lives in one person\'s head.'],
-        ['Only I can','That\'s a lot of your evenings, every single month.']]},
-      {q:'Does salary day ever end in an argument?',a:[
-        ['Never','Then you\'ve got a rare team. Or a very patient one.'],
-        ['Sometimes','Arguments start where proof is missing.'],
-        ['Every month','It doesn\'t have to. Proof ends arguments before they start.']]},
-      {q:'When a customer asks "Is my order ready?", how fast can you answer?',a:[
-        ['Instantly','Even when you\'re not at the counter?'],
-        ['After a few calls','Every call is someone stopping their work to find out.'],
-        ['Depends who\'s around','So the answer lives in someone\'s memory. That can run on its own.']]}
-    ];
-    var TAGS=['Quick question','Be honest','One more','Quick one','Honest answer?','Think about it','Quick question','Last one'];
-    var idx=0,timer=null,armed=false,state='idle',idleT=null;
-    function get(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
-    function put(v){try{localStorage.setItem(KEY,JSON.stringify({s:v,t:Date.now()}));}catch(e){}}
-    function blocked(){var v=get();if(!v)return false;var age=Date.now()-v.t;return (v.s==='closed'&&age<864e5)||(v.s==='sent'&&age<7*864e5);}
-    function onPage(n){var p=document.querySelector('.page:not([hidden])');return p&&p.getAttribute('data-page')===n;}
-    function typing(){var a=document.activeElement;return a&&!lc.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);}
-    function schedule(ms){clearTimeout(timer);if(idx>=Q.length||blocked())return;timer=setTimeout(tryShow,ms);}
-    function tryShow(){
-      if(blocked()||idx>=Q.length)return;
-      if(document.hidden||onPage('contact')||typing()){schedule(5000);return;}
-      if(state==='answered'&&!lc.hidden){schedule(15000);return;}
-      render(idx++);
-    }
-    function paneIn(){body.classList.remove('enter');if(!reduce){void body.offsetWidth;body.classList.add('enter');}}
-    function render(k){
-      var d=Q[k];state='asking';
-      tag.textContent=TAGS[k%TAGS.length];
-      body.innerHTML='<p class="lc-q" id="lcQ">'+esc(d.q)+'</p><div class="lc-opts">'+d.a.map(function(o,j){return '<button type="button" class="lc-opt" data-j="'+j+'"><i></i>'+esc(o[0])+'</button>';}).join('')+'</div>';
-      $$('.lc-opt',body).forEach(function(b){b.addEventListener('click',function(){answer(k,+b.getAttribute('data-j'),b);});});
-      pill.hidden=true;lc.hidden=false;lc.classList.remove('swap');if(!reduce){void lc.offsetWidth;lc.classList.add('swap');}
-      paneIn();
-      // left untouched? tuck it away so it never sits on the page for long, then the next question comes ~30s later
-      clearTimeout(idleT);idleT=setTimeout(function(){if(state==='asking'&&!lc.hidden&&!lc.contains(document.activeElement)){tuck();}},20000);
-      schedule(60000);
-    }
-    function answer(k,j,btn){
-      var d=Q[k],o=d.a[j];state='answered';clearTimeout(idleT);
-      $$('.lc-opt',body).forEach(function(b){b.classList.toggle('picked',b===btn);});
-      var msg='Hi Rozka team, I saw this on your website:\n"'+d.q+'"\nMy answer: '+o[0]+'\nCan you show me how Rozka would handle this in my business?';
-      var url='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
-      setTimeout(function(){
-        body.innerHTML='<p class="lc-q lc-q-sm" id="lcQ">'+esc(d.q)+'</p><p class="lc-you">You said: <b>'+esc(o[0])+'</b></p><p class="lc-react">'+esc(o[1])+'</p>'+
-          '<a class="btn lc-wa" id="lcWa" href="'+url+'" target="_blank" rel="noopener">'+WA_ICON+'Show me how Rozka fixes this</a>'+
-          '<div class="lc-foot"><span>Opens WhatsApp with your answer filled in.</span><button type="button" class="lc-back" id="lcLater">Not now</button></div>';
-        $('lcWa').addEventListener('click',function(){put('sent');clearTimeout(timer);setTimeout(function(){state='done';body.innerHTML='<p class="lc-q" id="lcQ">Thank you. Press send in WhatsApp.</p><p class="lc-react" style="margin-top:10px">A real person from Rozka replies. If WhatsApp didn\'t open, call Aryan on <span class="mono nowrap">+91 91752 12447</span>.</p>';paneIn();},300);});
-        $('lcLater').addEventListener('click',function(){state='idle';tuck();schedule(60000);});
-        paneIn();
-      },reduce?0:240);
-    }
-    function tuck(){lc.hidden=true;pill.hidden=(state!=='asking');}
-    function stop(){clearTimeout(timer);clearTimeout(idleT);lc.hidden=true;pill.hidden=true;put('closed');}
-    $('lcMin').addEventListener('click',function(){lc.hidden=true;pill.hidden=false;});
-    $('lcClose').addEventListener('click',stop);
-    pill.addEventListener('click',function(){pill.hidden=true;lc.hidden=false;clearTimeout(idleT);});
-    lc.addEventListener('keydown',function(e){if(e.key==='Escape'){e.stopPropagation();lc.hidden=true;pill.hidden=false;pill.focus();}});
-    window.addEventListener('rozka:route',function(){if(onPage('contact')){lc.hidden=true;pill.hidden=true;}});
-    // first question only after ~90s on the site (and at least 10s after they start scrolling), so it never interrupts the first read
-    var loadedAt=Date.now();
-    function onScroll(){if(armed||window.scrollY<40)return;armed=true;window.removeEventListener('scroll',onScroll);if(!blocked())timer=setTimeout(tryShow,Math.max(90000-(Date.now()-loadedAt),10000));}
-    window.addEventListener('scroll',onScroll,{passive:true});
-  })();
 
   route();
 })();

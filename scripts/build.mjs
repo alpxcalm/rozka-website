@@ -23,6 +23,11 @@ const PHONE_DISPLAY = '+91 91752 12447';
 const PHONE_E164 = '+91-91752-12447';
 const EMAIL = 'team@alpxcalm.cloud';
 const GA_ID = 'G-VFS8DRQ3D7'; // Google Analytics 4; set to '' to leave the tag out
+// Apps Script web app URL (see apps-script/Code.gs, ends in /exec). While '' the forms save nothing online and fall back to WhatsApp.
+const LEAD_ENDPOINT = process.env.LEAD_ENDPOINT ?? 'https://script.google.com/macros/s/AKfycbxobz6jdyG8KKNSDXl5aA3EFlAUoG9xIZqqBkaHe1CYkbcgHDsRzwU6qZOXW2TcTOfm/exec';
+// Cloudflare Turnstile SITE key (public). Create an "Invisible" widget for rozka.work; the SECRET key goes in Apps Script properties
+// as TURNSTILE_SECRET, never here. While '' the invisible check is skipped (honeypot, timing and server scoring still run).
+const TURNSTILE_SITEKEY = process.env.TURNSTILE_SITEKEY ?? '0x4AAAAAAFYLJAHwOknhzkt_';
 const OG_IMAGE = { url: `${SITE}/og-image.png`, w: 1200, h: 630, alt: 'Rozka: Attendance in. Salaries out. No register in between.' };
 
 // ---------------------------------------------------------------- CONFIG
@@ -117,6 +122,10 @@ function jsonLd(name) {
 function headBlock(name) {
   const pg = PAGES[name];
   const ogT = pg.ogTitle || pg.title, ogD = pg.ogDescription || pg.description;
+  // Runs before gtag: tells the page where leads go. Google Analytics only counts the live site (never localhost, file:// or previews),
+  // and the local replay viewer (?rzr=...) exists only off the live host.
+  const liveHosts = JSON.stringify([new URL(SITE).hostname, 'www.' + new URL(SITE).hostname]);
+  const config = `<script>(function(){var live=${liveHosts}.indexOf(location.hostname)>=0,r=!live&&/[?&]rzr=/.test(location.search);window.ROZKA={endpoint:${JSON.stringify(LEAD_ENDPOINT)},ts:${JSON.stringify(TURNSTILE_SITEKEY)},live:live,replay:r};${GA_ID ? `if(!live)window['ga-disable-${GA_ID}']=true;` : ''}})();</script>`;
   const gtag = !GA_ID ? [] : [
     '<!-- Google tag (gtag.js) -->',
     `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>`,
@@ -129,6 +138,7 @@ function headBlock(name) {
     '</script>',
   ];
   return [
+    config,
     ...gtag,
     '<link rel="icon" href="/favicon.ico" sizes="48x48">',
     '<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">',
@@ -233,7 +243,7 @@ write('sitemap.xml',
   Object.keys(PAGES).map((p) => `  <url>\n    <loc>${url(p)}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`).join('\n') +
   '\n</urlset>\n');
 
-write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /apps-script/\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 write('llms.txt', `# Rozka
 
