@@ -1562,7 +1562,7 @@ img{max-width:100%}
     var body=JSON.stringify({v:1,bid:rid('b').toLowerCase().replace(/[^a-z0-9-]/g,''),seq:++aSeq,s:anSession(),ev:AQ.splice(0,60)});
     var sent=false;
     try{if(unload&&navigator.sendBeacon)sent=navigator.sendBeacon(ANEP,new Blob([body],{type:'text/plain;charset=UTF-8'}));}catch(e){}
-    if(!sent){try{fetch(ANEP,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:body,keepalive:body.length<60000}).catch(function(){});}catch(e){}}
+    if(!sent){try{fetch(ANEP,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:body,keepalive:body.length<60000}).catch(function(){AN=false;AQ.length=0;});}catch(e){}}   // blocked by an extension or offline: stop for this visit
     if(AQ.length)anFlush(unload);
   }
 
@@ -1906,11 +1906,13 @@ img{max-width:100%}
     var ctx=summary();for(var x in (extra||{}))ctx[x]=extra[x];
     var p={v:1,id:id,ts:new Date().toISOString(),source:source,page:pg(),section:cur||'',fields:fields,ctx:ctx,
       host:location.hostname||'file',visitor:{vid:T.vid,visit:S.n,first:new Date(T.first).toISOString()},env:S.env,ref:S.ref,utm:S.utm,hp:'',hm:hm,tk:'',trail:T};
-    L.sent=now();L.who={n:fields.name||'',p:fields.phone||''};saveL();
-    if(!EP){rec('nd',{a:'no-endpoint'});return Promise.resolve(false);}
+    L.who={n:fields.name||'',p:fields.phone||''};saveL();                  // remembered only to prefill the next form
+    if(!EP){rec('nd',{a:'no-endpoint'});L.dismissed=now();saveL();return Promise.resolve(false);}
     return tsToken().then(function(tok){p.tk=tok;return post(p);}).then(function(ok){
-      L.lastOk=ok;saveL();
-      if(ok){ga('generate_lead',{source:source,page:pg()});}else{queue(p);}
+      L.lastOk=ok;
+      if(ok){L.sent=now();ga('generate_lead',{source:source,page:pg()});}   // saved: no more cards for 30 days
+      else{L.dismissed=now();queue(p);}                                   // blocked or offline: keep it to retry, and stop prompting for 2 days
+      saveL();
       return ok;
     });
   }
