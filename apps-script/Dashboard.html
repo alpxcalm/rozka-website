@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!-- Rozka analytics dashboard. Served by Analytics.gs (doGet) to the signed-in owner only; data comes from getDashboardData().
+     Self-contained: no external scripts, fonts or images. In the Apps Script editor create an HTML file named exactly "Dashboard". -->
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rozka analytics</title>
+<style>
+:root{--cobalt:#0B4EA2;--cobalt-deep:#083A79;--cobalt-tint:#D9E6F7;--cobalt-wash:#EEF4FC;--cad:#FFC02E;--cad-deep:#E0A211;--ink:#101418;--ink600:#4A5058;--muted:#5b6067;--line:rgba(16,20,24,.12);--surface:#F7F5F0;--paper:#fff;--green:#1B7A4B;--red:#C7362F;--r:12px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface);color:var(--ink);font:15px/1.5 "Anek Latin",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.top{background:var(--cobalt);color:#fff;position:sticky;top:0;z-index:5}
+.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:12px}
+.brand{font-weight:800;font-size:22px;letter-spacing:-.03em;display:flex;align-items:center;gap:10px}
+.brand .dot{width:22px;height:22px;border-radius:50%;background:var(--cad);display:inline-block;position:relative}
+.brand .dot::after{content:"";position:absolute;left:50%;top:50%;width:2px;height:8px;background:var(--cobalt-deep);transform:translate(-50%,-85%);border-radius:2px}
+.brand small{font-weight:500;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--cad);font-family:ui-monospace,Menlo,Consolas,monospace}
+.range{display:flex;gap:6px;margin-left:auto}
+.range button{font:600 14px inherit;font-family:inherit;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;min-height:40px}
+.range button[aria-pressed="true"]{background:var(--cad);color:var(--ink);border-color:var(--cad)}
+.range button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.upd{flex-basis:100%;font:12px ui-monospace,Menlo,Consolas,monospace;color:rgba(255,255,255,.75)}
+@media(min-width:720px){.upd{flex-basis:auto;margin-left:8px}}
+main.wrap{padding:22px 20px 48px}
+.state{padding:48px 20px;text-align:center;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:var(--r)}
+.state.err{color:var(--red)}
+.banner{background:#FFF4D6;border:1px solid var(--cad-deep);border-radius:var(--r);padding:12px 16px;margin-bottom:18px;color:#5a4400}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi .v{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12.5px;margin-top:2px;color:var(--muted)}
+.kpi .d.up{color:var(--green)}.kpi .d.down{color:var(--red)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.card h2{margin:0;font-size:17px;letter-spacing:-.015em}
+.card .sub{margin:2px 0 14px;font-size:13px;color:var(--muted)}
+.card.wide{margin-bottom:18px}
+.grid .card.wide{grid-column:1/-1;margin-bottom:0}
+.heads{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.heads li{padding-left:14px;border-left:3px solid var(--cad)}
+.heads b{display:block;font-weight:600}
+.heads span{display:block;font-size:13.5px;color:var(--ink600);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.bar{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;align-items:center;gap:10px;margin:7px 0;font-size:14px}
+.bar .lab{line-height:1.25;overflow-wrap:anywhere}
+.bar .track{height:14px;background:var(--cobalt-wash);border-radius:7px;overflow:hidden}
+.bar .fill{height:100%;background:var(--cobalt);border-radius:7px;min-width:2px}
+.bar .fill.hot{background:var(--cad-deep)}
+.bar .val{font-variant-numeric:tabular-nums;color:var(--ink600);font-size:13px;text-align:right;white-space:nowrap}
+.muted{color:var(--muted);font-size:14px;margin:6px 0}
+.stack{display:flex;height:22px;border-radius:11px;overflow:hidden;background:var(--cobalt-wash)}
+.stack i{display:block;height:100%}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13.5px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:right;padding:7px 6px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12.5px}
+.cols{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:8px}
+.cols div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;height:100%}
+.cols .c{width:100%;background:var(--cobalt);border-radius:6px 6px 0 0;min-height:2px}
+.cols small{font-size:12px;color:var(--muted);text-align:center;line-height:1.2}
+.cols b{font-size:13px;font-variant-numeric:tabular-nums}
+svg.trend{width:100%;height:auto;display:block}
+.defs{margin-top:22px;font-size:13px;color:var(--muted)}
+.defs b{color:var(--ink600)}
+@media(max-width:720px){.top{position:static}}
+@media(max-width:560px){.bar{grid-template-columns:1fr auto}.bar .track{grid-column:1/-1;order:3}.kpi .v{font-size:26px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><span class="dot" aria-hidden="true"></span>Rozka <small>Analytics</small></div>
+  <div class="range" role="group" aria-label="Date range">
+    <button type="button" data-r="7" aria-pressed="false">Last 7 days</button>
+    <button type="button" data-r="30" aria-pressed="true">Last 30 days</button>
+    <button type="button" data-r="90" aria-pressed="false">Last 90 days</button>
+  </div>
+  <div class="upd" id="upd"></div>
+</div></header>
+<main class="wrap">
+  <div class="state" id="state" role="status">Loading your numbers...</div>
+  <div id="app" hidden>
+    <div id="banner"></div>
+    <div class="kpis" id="kpis"></div>
+    <section class="card wide" id="headlines" aria-labelledby="hh"></section>
+    <div class="grid" id="charts"></div>
+    <p class="defs"><b>Engaged session</b>: 15+ seconds reading, 2+ pages, or any widget used. <b>Showed buying interest</b>: opened the Pricing page, used the price estimator or the calculator, opened the price FAQ, picked an industry, ran a day scenario, finished the owner's audit or caught 3+ leaks. <b>Reach</b>: share of that page's visits that spent 1+ second in the section. Counts exclude you (visit /?an=off once), bots, and anyone who sends Do-Not-Track.</p>
+  </div>
+</main>
+<script>
+(function () {
+  var DATA = null, range = '30';
+  function $(id) { return document.getElementById(id); }
+  function esc(t) { return String(t === undefined || t === null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function n(v) { return typeof v === 'number' ? v.toLocaleString('en-IN') : esc(v); }
+  function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+
+  function state(msg, err) { var s = $('state'); s.hidden = false; s.className = 'state' + (err ? ' err' : ''); s.textContent = msg; $('app').hidden = true; }
+
+  function load() {
+    if (!window.google || !google.script || !google.script.run) { state('This page must be opened from the Apps Script web app link.', true); return; }
+    google.script.run
+      .withSuccessHandler(function (d) { DATA = d; boot(); })
+      .withFailureHandler(function (e) { state('Could not load the data: ' + (e && e.message ? e.message : e) + '. Open the link that is set to "Only myself", while signed in.', true); })
+      .getDashboardData();
+  }
+
+  function boot() {
+    if (!DATA || DATA.empty || !DATA.ranges) { state('No data yet. In the Analytics Sheet choose Rozka > Refresh insights and dashboard now, then reload this page.'); return; }
+    $('upd').textContent = 'Updated ' + DATA.updated;
+    $('state').hidden = true; $('app').hidden = false;
+    render();
+  }
+
+  /* ---- builders ---- */
+  function card(title, sub, body, cls) { return '<section class="card ' + (cls || '') + '"><h2>' + esc(title) + '</h2><p class="sub">' + esc(sub) + '</p>' + body + '</section>'; }
+  function none() { return '<p class="muted">Nothing yet. This fills in as visitors use the site.</p>'; }
+
+  function bars(rows, o) {
+    if (!rows || !rows.length) return none();
+    o = o || {}; var max = Math.max.apply(null, rows.map(function (r) { return r[1]; })) || 1, hi = o.hot;
+    return rows.map(function (r, i) {
+      var w = Math.max(r[1] / (o.max || max) * 100, 0);
+      return '<div class="bar"><div class="lab" title="' + esc(r[0]) + '">' + esc(r[0]) + '</div><div class="track"><div class="fill' + (hi === i ? ' hot' : '') + '" style="width:' + w.toFixed(1) + '%"></div></div><div class="val">' + (o.val ? o.val(r) : n(r[1])) + '</div></div>';
+    }).join('');
+  }
+
+  function trend(rows) {
+    if (!rows || !rows.length) return none();
+    var W = 960, H = 210, L = 36, B = 26, T = 10, R = 8, max = Math.max.apply(null, rows.map(function (r) { return r[1]; })) || 1;
+    function x(i) { return L + (rows.length === 1 ? 0 : i / (rows.length - 1) * (W - L - R)); }
+    function y(v) { return T + (1 - v / max) * (H - T - B); }
+    function path(k) { return rows.map(function (r, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(r[k]).toFixed(1); }).join(' '); }
+    var grid = [0, .5, 1].map(function (f) { var v = Math.round(max * f), yy = y(v); return '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#e2e4e6"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11" fill="#5b6067">' + v + '</text>'; }).join('');
+    function d(i) { return rows[i][0].slice(5).replace('-', '/'); }
+    var mid = Math.floor((rows.length - 1) / 2);
+    var xl = [[0, 'start'], [mid, 'middle'], [rows.length - 1, 'end']].map(function (p) { return '<text x="' + x(p[0]) + '" y="' + (H - 6) + '" text-anchor="' + p[1] + '" font-size="11" fill="#5b6067">' + esc(d(p[0])) + '</text>'; }).join('');
+    var tS = rows.reduce(function (a, r) { return a + r[1]; }, 0), tL = rows.reduce(function (a, r) { return a + r[2]; }, 0);
+    return '<svg class="trend" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Sessions and leads per day: ' + tS + ' sessions and ' + tL + ' leads in total">' + grid + xl +
+      '<path d="' + path(1) + '" fill="none" stroke="#0B4EA2" stroke-width="2.5" stroke-linejoin="round"/><path d="' + path(2) + '" fill="none" stroke="#E0A211" stroke-width="2.5" stroke-linejoin="round"/></svg>' +
+      '<div class="legend"><span style="--c:#0B4EA2">Sessions (' + n(tS) + ')</span><span style="--c:#E0A211">Leads (' + n(tL) + ')</span></div>';
+  }
+
+  function funnel(rows) {
+    if (!rows || !rows.length) return none();
+    var top = rows[0][1] || 1;
+    return rows.map(function (r, i) {
+      var step = i && rows[i - 1][1] ? ' · ' + pct(r[1], rows[i - 1][1]) + '% of previous' : '';
+      return '<div class="bar"><div class="lab">' + esc(r[0]) + '</div><div class="track"><div class="fill' + (i === rows.length - 1 ? ' hot' : '') + '" style="width:' + (r[1] / top * 100).toFixed(1) + '%"></div></div><div class="val">' + n(r[1]) + ' (' + pct(r[1], top) + '%)' + esc(step) + '</div></div>';
+    }).join('');
+  }
+
+  function devices(rows) {
+    if (!rows || !rows.length) return none();
+    var tot = rows.reduce(function (a, r) { return a + r[1]; }, 0) || 1, col = ['#0B4EA2', '#E0A211', '#1B7A4B', '#8a8f96'];
+    return '<div class="stack" role="img" aria-label="' + esc(rows.map(function (r) { return r[0] + ' ' + pct(r[1], tot) + '%'; }).join(', ')) + '">' +
+      rows.map(function (r, i) { return '<i style="width:' + (r[1] / tot * 100).toFixed(1) + '%;background:' + col[i % 4] + '"></i>'; }).join('') + '</div>' +
+      '<div class="legend">' + rows.map(function (r, i) { return '<span style="--c:' + col[i % 4] + '">' + esc(r[0]) + ' ' + pct(r[1], tot) + '% (' + n(r[1]) + ')</span>'; }).join('') + '</div>';
+  }
+
+  function cols(rows) {
+    if (!rows || !rows.length) return none();
+    var max = Math.max.apply(null, rows.map(function (r) { return r[1]; })) || 1;
+    return '<div class="cols">' + rows.map(function (r) { return '<div><b>' + n(r[1]) + '</b><span class="c" style="height:' + (r[1] / max * 100).toFixed(1) + '%"></span><small>' + esc(r[0].replace(' staff', '')) + '</small></div>'; }).join('') + '</div>';
+  }
+
+  function cards(rows) {
+    if (!rows || !rows.length) return none();
+    return '<table><thead><tr><th>Card</th><th>Shown</th><th>Left a number</th><th>Conversion</th></tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + n(r[1]) + '</td><td>' + n(r[2]) + '</td><td>' + pct(r[2], r[1]) + '%</td></tr>'; }).join('') + '</tbody></table>';
+  }
+
+  /* ---- page ---- */
+  function render() {
+    var R = DATA.ranges[range], I = R.insights, D = R.dash, nums = {};
+    I.numbers.forEach(function (r) { nums[r[0]] = r; });
+    Array.prototype.forEach.call(document.querySelectorAll('.range button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-r') === range)); });
+
+    $('banner').innerHTML = I.enough ? '' : '<div class="banner" role="status"><b>Not enough data yet:</b> ' + I.sessions + ' sessions in the last ' + I.days + ' days. Written headlines appear at ' + I.min + ' sessions; the numbers and charts below already show what exists.</div>';
+
+    var K = [['Sessions', 'Sessions'], ['Visitors', 'Visitors'], ['Engagement rate', 'Engagement rate'], ['Avg active seconds per session', 'Avg seconds on site'], ['Leads', 'Leads'], ['Lead rate (leads / sessions)', 'Lead rate']];
+    $('kpis').innerHTML = K.map(function (k) {
+      var r = nums[k[0]]; if (!r) return '';
+      var ch = r[3] || '', cls = ch.charAt(0) === '+' ? 'up' : ch.charAt(0) === '-' ? 'down' : '';
+      return '<div class="kpi"><div class="l">' + esc(k[1]) + '</div><div class="v">' + n(r[1]) + '</div><div class="d ' + cls + '">' + (ch && ch !== 'n/a' ? esc(ch) + ' vs previous ' + I.days + ' days' : 'previous: ' + n(r[2])) + '</div></div>';
+    }).join('');
+
+    $('headlines').innerHTML = '<h2 id="hh">What the numbers say</h2>' + (I.enough
+      ? '<ol class="heads">' + I.headlines.map(function (h) { return '<li><b>' + esc(h[0]) + '</b><span>' + esc(h[1]) + '</span></li>'; }).join('') + '</ol>'
+      : '<p class="muted">Headlines appear once there is enough data.</p>');
+
+    var secHot = -1, secMax = 0; (D.sections || []).forEach(function (r, i) { if (r[2] > secMax) { secMax = r[2]; secHot = i; } });
+    var out = '';
+    out += card('Sessions and leads per day', 'Last ' + I.days + ' days', trend(D.trend), 'wide');
+    out += card('Which pages are used', 'Sessions that opened each page', bars(D.pages));
+    out += card('Funnel: from visit to lead', 'Sessions at each step, and how many carry on', funnel(D.funnel));
+    out += card('Home page: where visitors go', 'Bar = % of Home visitors who reach the section. Number = average seconds there. Gold = most time spent.',
+      bars(D.sections, { max: 100, hot: secHot, val: function (r) { return r[1] + '% · ' + r[2] + 's'; } }));
+    out += card('Which industry visitors pick', 'Visitors who chose it in "Pick yours"', bars(D.industries));
+    out += card('Which questions owners open', 'FAQ questions opened', bars(D.faq));
+    out += card('Where visitors come from', 'Sessions, and the leads each channel produced', bars(D.sources, { val: function (r) { return n(r[1]) + ' · ' + n(r[2]) + (r[2] === 1 ? ' lead' : ' leads'); } }));
+    out += card('Phone, tablet or desktop', 'Share of sessions', devices(D.devices));
+    out += card('Lead cards', 'How often each card was shown, and how often it won a phone number', cards(D.cards));
+    out += card('Loss calculator: staff size', 'Staff count visitors try in the calculator', cols(D.calc));
+    $('charts').innerHTML = out;
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.range button'), function (b) {
+    b.addEventListener('click', function () { range = b.getAttribute('data-r'); if (DATA && DATA.ranges) render(); });
+  });
+  load();
+})();
+</script>
+</body>
+</html>

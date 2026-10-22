@@ -31,6 +31,6 @@ and a lead sent from any other host goes to the Quarantine tab instead of Leads.
 
 An anonymous trimmed copy of the trail goes to a second Apps Script project (`apps-script/Analytics.gs`) and its own Sheet, which rebuilds Looker-ready tabs and an Insights tab every hour.
 No names, phones, typed text or IPs. Live site only, off for bots, Do-Not-Track and Global Privacy Control, and off in any browser that visited `?an=off`.
-Set `ANALYTICS_ENDPOINT` in `scripts/build.mjs`, then follow `apps-script/Looker-Studio-guide.md` to build the dashboard.
+Set `ANALYTICS_ENDPOINT` in `scripts/build.mjs`. The project serves a private HTML dashboard (`apps-script/Dashboard.html`, owner-only link with a 7/30/90 day switch) and the Sheet draws its own Dashboard and Insights tabs every hour; `apps-script/Looker-Studio-guide.md` is the optional Looker Studio version.
 
 Until `LEAD_ENDPOINT` is set, forms fall back to WhatsApp only.

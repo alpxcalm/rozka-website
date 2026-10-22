@@ -495,6 +495,15 @@ input[type=range].slider{width:100%;margin-top:8px;accent-color:var(--cad);heigh
 .foot nav{display:flex;flex-wrap:wrap;gap:6px 24px}
 .foot nav a{text-decoration:none;color:var(--ink300);font-size:15px;padding:6px 0}
 .foot nav a:hover{color:#fff}
+.px-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 16px;margin-top:26px}
+.px-price b{font-size:clamp(72px,11vw,132px);font-weight:800;font-stretch:112.5%;letter-spacing:-.05em;line-height:.88;color:var(--cad);font-variant-numeric:tabular-nums}
+.px-price span{font-size:clamp(19px,2vw,26px);font-weight:600;color:#fff;letter-spacing:-.01em}
+.page-hero .px-line{font-size:16px;color:#fff;max-width:36em;margin-top:22px;padding:12px 16px;border-left:3px solid var(--cad);background:rgba(255,255,255,.08);border-radius:0 var(--r) var(--r) 0}
+.px-light{font-size:15.5px;color:var(--ink600);max-width:34em;margin-top:18px;padding:2px 0 2px 14px;border-left:3px solid var(--cad-deep)}
+.est-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:center}
+.est .loss-big{color:var(--cad)}
+.px-more{font-size:14px;color:var(--cad);margin-top:8px}
+@media (max-width:920px){.est-grid{grid-template-columns:minmax(0,1fr);gap:32px}}
 .foot-note{margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink300)}
 .foot-bot{display:flex;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.12);margin-top:24px;padding-top:18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em}
 
@@ -874,6 +883,7 @@ img{max-width:100%}
       <a href="/#how" data-nav="how">How it works</a>
       <a href="/#industries" data-nav="industries">Industries</a>
       <a href="/automation/" data-nav="automation">Automation</a>
+      <a href="/pricing/" data-nav="pricing">Pricing</a>
       <a href="/about/" data-nav="about">About</a>
       <a class="btn btn-cobalt" href="/contact/" data-nav="contact">Book a 1-month demo</a>
     </nav>
@@ -1235,7 +1245,7 @@ img{max-width:100%}
       <details><summary>What happens when the internet goes down?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p>Punching carries on. Punches are stored on the device and upload with their real time once the connection is back.</p></details>
       <details><summary>Does Rozka send salaries from my bank account?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p>No. You pay the way you do today. When you mark a month as paid, Rozka records who got how much and when, locks it, and makes a payslip for each person.</p></details>
       <details><summary>What about PF, ESI and TDS?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p>You enter them as deductions and they show on the payslip. Rozka doesn't calculate them for you.</p></details>
-      <details><summary>What does it cost?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p>It depends on your staff and the punch device you choose. Tell us about your business and we'll give you a straight number. You can run Rozka on your own staff for a month before you decide.</p></details>
+      <details><summary>What does it cost?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p>Prices start at ₹29 per employee per month and may vary based on your business requirements. We customise the price to your request, and the punch device is priced separately. Setup costs nothing, and neither does our business analysis. You can run Rozka on your own staff for a free one-month trial before you decide. <a href="/pricing/" style="color:var(--cobalt);font-weight:600">See pricing</a>.</p></details>
       <details><summary>Our business works differently. Will it fit?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p>Shift times, breaks, half-day limits, overtime and penalties are all settings. If you need something beyond that, we make small customisations for you.</p></details>
     </div>
   </div>
@@ -1328,6 +1338,106 @@ img{max-width:100%}
     </div>
   </div>
 </section>
+<section class="cta-band on-dark" aria-label="Book a demo">
+  <div class="wrap cta-row">
+    <div><h2>See Rozka working on your own staff, for a whole month.</h2><p>Book in a minute, or call Aryan on <span class="mono nowrap">+91 91752 12447</span>.</p></div>
+    <div class="acts"><a class="btn btn-cad" href="/contact/"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg>Book a 1-month demo</a></div>
+  </div>
+</section>
+
+</div>
+
+<!-- =============================== PRICING =============================== -->
+<div class="page" data-page="pricing" id="pricing" data-title="Pricing from ₹29 per employee per month · Rozka" hidden>
+<section class="page-hero on-dark" aria-labelledby="px-hero-h">
+  <div class="wrap"><div class="inner">
+    <div class="kick">Pricing</div>
+    <h1 id="px-hero-h">Simple to start. Priced for your business.</h1>
+    <div class="px-price" role="group" aria-label="Starting price"><b>₹29</b><span>per employee, per month</span></div>
+    <p class="px-line">Prices start at ₹29 per employee per month and may vary based on your business requirements. Everything is customised to your request.</p>
+    <div class="hero-cta">
+      <a class="btn btn-cad" href="/contact/"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg>Get a price for my business</a>
+      <a class="btn btn-line-light" href="/pricing/#estimator">Try the estimator</a>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec" aria-labelledby="px-what-h">
+  <div class="wrap">
+    <div class="sh-row rv"><div><div class="kick">What you pay</div><h2 class="h2" id="px-what-h">No setup cost. No cost to find out.</h2></div><p class="lede" style="margin-top:0;max-width:24em">Prices start at ₹29 per employee per month and may vary based on your business requirements.</p></div>
+    <div class="principles rv">
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12"/> <path d="M6 8h12"/> <path d="m6 13 8.5 8"/> <path d="M6 13h3"/> <path d="M9 13c6.667 0 6.667-10 0-10"/></svg><h3>From ₹29</h3><p>Per employee, per month. A starting price, customised to your business and your request.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><h3>No setup cost</h3><p>We set Rozka up with you: your staff, your shifts, your rules. Setting up is free.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><h3>No-cost business analysis</h3><p>We look at how your business runs today and tell you what Rozka would cost, before you commit to anything.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/> <rect width="6" height="6" x="9" y="9" rx="1"/> <path d="M15 2v2"/> <path d="M15 20v2"/> <path d="M2 15h2"/> <path d="M2 9h2"/> <path d="M20 15h2"/> <path d="M20 9h2"/> <path d="M9 2v2"/> <path d="M9 20v2"/></svg><h3>Punch device, priced separately</h3><p>Face, fingerprint, card or QR. The price depends on the model you choose, and we tell you up front.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="estimator" aria-labelledby="px-est-h" style="padding-top:0">
+  <div class="wrap est-grid">
+    <div class="rv">
+      <div class="kick">Estimate</div>
+      <h2 class="h2" id="px-est-h">What would it start at for your team?</h2>
+      <p class="lede">Move the slider to your headcount. It's a starting point: your price is customised to your business and may vary.</p>
+      <p class="px-light">Prices start at ₹29 per employee per month and may vary based on your business requirements.</p>
+    </div>
+    <aside class="loss est on-dark rv" aria-labelledby="est-h">
+      <h3 id="est-h">Your starting price</h3>
+      <p class="sub">Staff on payroll × ₹29 a month.</p>
+      <div class="fr-row"><div class="fr-top"><label for="eStaff">Staff on payroll</label><output id="oEstStaff" for="eStaff">20</output></div><input class="slider" type="range" id="eStaff" min="1" max="300" step="1" value="20"></div>
+      <div class="loss-out" aria-live="polite">
+        <div class="k" style="color:var(--ink300)">Starting from</div>
+        <div class="loss-big" id="estMonth">₹580</div>
+        <div class="loss-yr">a month, for <b id="estStaff">20</b> staff at ₹29 each.</div>
+        <p class="px-more" id="estMore" hidden>More than 300 staff? Tell us your number and we'll quote it.</p>
+      </div>
+      <p class="loss-note">A starting estimate only. Your price is customised to your business requirements and may vary. The punch device is priced separately. No setup cost.</p>
+      <a class="btn btn-cad" href="/contact/">Get my exact number</a>
+    </aside>
+  </div>
+</section>
+
+<section class="sec" id="price-factors" aria-labelledby="px-f-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh-row rv"><div><div class="kick">What can change the price</div><h2 class="h2" id="px-f-h">Customised to your request.</h2></div><p class="lede" style="margin-top:0;max-width:24em">Prices start at ₹29 per employee per month and may vary based on your business requirements. These are the things that move it.</p></div>
+    <div class="principles rv">
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/> <circle cx="9" cy="7" r="4"/> <path d="M22 21v-2a4 4 0 0 0-3-3.87"/> <path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>Your team size</h3><p>The ₹29 is per employee, so the total follows the number of people you track.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/> <rect width="6" height="6" x="9" y="9" rx="1"/> <path d="M15 2v2"/> <path d="M15 20v2"/> <path d="M2 15h2"/> <path d="M2 9h2"/> <path d="M20 15h2"/> <path d="M20 9h2"/> <path d="M9 2v2"/> <path d="M9 20v2"/></svg><h3>The punch device you choose</h3><p>Face, fingerprint, card or QR, and how many you need.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/> <path d="M12 19H3"/> <path d="M14 3v4"/> <path d="M16 17v4"/> <path d="M21 12h-9"/> <path d="M21 19h-5"/> <path d="M21 5h-7"/> <path d="M8 10v4"/> <path d="M8 12H3"/></svg><h3>How your business runs</h3><p>Shifts, breaks, overtime and penalties are settings. If you need something beyond that, we make small customisations.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="8" x="3" y="3" rx="2"/> <path d="M7 11v4a2 2 0 0 0 2 2h4"/> <rect width="8" height="8" x="13" y="13" rx="2"/></svg><h3>What else you want automated</h3><p>Orders, jobs, reminders and daily summaries are built to order, and quoted with you.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="px-how-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh-row"><div><div class="kick">How we quote</div><h2 class="h2" id="px-how-h" style="font-size:clamp(30px,3.4vw,44px)">How we get to your price.</h2></div></div>
+    <ol class="after rv">
+      <li><span class="n">01 · TELL US</span><h3>Tell us about your business</h3><p>Your staff, your shifts and how salary works today. A short call is enough.</p></li>
+      <li><span class="n">02 · ANALYSIS</span><h3>We analyse it, at no cost</h3><p>We work out what Rozka would cost for you and give you a straight number. No setup fee, and nothing to pay for the analysis.</p></li>
+      <li><span class="n">03 · TRIAL</span><h3>Try it free for a month</h3><p>Run Rozka on your own staff with real salaries. Then you decide.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="pricing-faq" aria-labelledby="px-faq-h" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div class="rv">
+      <div class="kick">Pricing questions</div>
+      <h2 class="h2" id="px-faq-h" style="font-size:clamp(32px,3.6vw,46px)">Before you ask.</h2>
+      <p class="lede">Something else? Call Aryan on <span class="mono nowrap" style="font-size:.9em">+91 91752 12447</span>.</p>
+    </div>
+    <div class="faq">
+      <details><summary>How much does Rozka cost?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><p>Prices start at ₹29 per employee per month and may vary based on your business requirements. We customise the price to your request, and the punch device is priced separately.</p></details>
+      <details><summary>Is there a setup fee?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><p>No. Setup costs nothing, and neither does the business analysis we do before we quote you.</p></details>
+      <details><summary>Is the punch device included?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><p>No. The device is priced separately because the right one depends on your door, your staff and how they punch: face, fingerprint, card or QR. We recommend one and tell you the price up front.</p></details>
+      <details><summary>Why isn't there one fixed price?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><p>Because no two businesses run alike. Staff numbers, shifts, rules and extras differ, so we price for yours, starting at ₹29 per employee per month.</p></details>
+      <details><summary>Can I try it before I pay?<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><p>Yes. You run Rozka on your own staff for a free one-month trial, then you decide.</p></details>
+    </div>
+  </div>
+</section>
+
 <section class="cta-band on-dark" aria-label="Book a demo">
   <div class="wrap cta-row">
     <div><h2>See Rozka working on your own staff, for a whole month.</h2><p>Book in a minute, or call Aryan on <span class="mono nowrap">+91 91752 12447</span>.</p></div>
@@ -1471,6 +1581,7 @@ img{max-width:100%}
         <a href="/#how">How it works</a>
         <a href="/#industries">Industries</a>
         <a href="/automation/">Automation</a>
+        <a href="/pricing/">Pricing</a>
         <a href="/about/">About</a>
         <a href="/contact/">Contact</a>
       </nav>
@@ -1544,7 +1655,7 @@ img{max-width:100%}
   })();
   var AN=!!(CFG.live&&ANEP&&!dnt&&!anOff&&!navigator.webdriver&&!/bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|bingpreview/i.test(navigator.userAgent||''));
   (function(){var fn=$('footNote');if(!fn)return;if(dnt)fn.textContent='Your browser asks not to be tracked, so we count nothing.';else if(anOff)fn.textContent='Counting is switched off in this browser.';})();
-  var AQ=[],aT=null,aSeq=0,AKEEP={pv:1,sec:1,sd:1,clk:1,w:1,chg:1,fld:1,nd:1,lead:1},CHGOK={fWhat:1,fStaff:1,rWorkers:1,rSalary:1,rMin:1};
+  var AQ=[],aT=null,aSeq=0,AKEEP={pv:1,sec:1,sd:1,clk:1,w:1,chg:1,fld:1,nd:1,lead:1},CHGOK={fWhat:1,fStaff:1,rWorkers:1,rSalary:1,rMin:1,eStaff:1};
   function hostOf(u){try{var h=new URL(u).hostname.replace(/^www\./,'');return h===location.hostname.replace(/^www\./,'')?'':h;}catch(e){return '';}}
   function anSession(){return {sid:S.sid,vid:T.vid,t0:S.t0,visit:S.n,lp:S.lp||'',ref:hostOf(S.ref),utm:S.utm,w:S.env.w,h:S.env.h,touch:S.env.touch,lang:S.env.lang,tz:S.env.tz};}
   function anPush(e){
@@ -1578,7 +1689,7 @@ img{max-width:100%}
   }
 
   function pg(){var p=document.querySelector('.page:not([hidden])');return p?p.getAttribute('data-page'):'home';}
-  var SECN={'hero-h':'hero','prob-h':'problem','prod-h':'product','how-h':'how','ind-h':'industries','why-h':'why','bey-h':'beyond','faq-h':'faq','close-h':'close','ap-h':'automation-hero','rec-h':'recipes','proc-h':'process','cmp-h':'vs-it','ab-h':'about-hero','name-h':'name','story-h':'story','pr-h':'promises','contact-h':'contact-hero','after-h':'after-send'};
+  var SECN={'hero-h':'hero','prob-h':'problem','prod-h':'product','how-h':'how','ind-h':'industries','why-h':'why','bey-h':'beyond','faq-h':'faq','close-h':'close','ap-h':'automation-hero','rec-h':'recipes','proc-h':'process','cmp-h':'vs-it','ab-h':'about-hero','name-h':'name','story-h':'story','pr-h':'promises','contact-h':'contact-hero','after-h':'after-send','px-hero-h':'pricing-hero','px-what-h':'what-you-pay','px-how-h':'how-we-quote'};
   function secName(el){return slug(el.id||SECN[el.getAttribute('aria-labelledby')||'']||el.getAttribute('aria-label')||'');}
   function sectionAtCenter(){
     var y=innerHeight*.42,list=$$('.page:not([hidden]) section');
@@ -1587,7 +1698,7 @@ img{max-width:100%}
   }
 
   var cur='',curPg=pg(),curAt=now(),vis=!document.hidden,dwell={},dwellScored={};
-  var DW={problem:2,product:2,how:2,industries:3,faq:1,recipes:2,story:1,promises:1};
+  var DW={problem:2,product:2,how:2,industries:3,faq:1,recipes:2,story:1,promises:1,estimator:3,'price-factors':2,'pricing-faq':1};
   function closeSec(){
     if(!cur||!vis)return;
     var d=now()-curAt;dwell[cur]=(dwell[cur]||0)+d;
@@ -1655,17 +1766,17 @@ img{max-width:100%}
     else{vis=true;curAt=now();rec('vis',{v:1});}
   });
   window.addEventListener('pagehide',function(){closeSec();save();anFlush(true);});
-  var lastPg=pg();
+  var lastPg=pg(),pgAt=now();
   function pv(){rec('pv',{pg:pg(),h:location.hash||undefined});}
   pv();setTimeout(checkSec,300);
   window.addEventListener('rozka:route',function(){
-    var was=lastPg;lastPg=pg();pv();setTimeout(checkSec,450);
+    var was=lastPg;lastPg=pg();if(lastPg!==was)pgAt=now();pv();setTimeout(checkSec,450);
     if(lastPg==='contact'){hide();}
     if(was==='contact'&&lastPg!=='contact'&&G.formStarted&&!L.sent)moment('formback',{pri:7,delay:8000,ttl:60000,make:CTX.formback});
   });
 
   /* ================= intent ================= */
-  var G={score:0,tscore:0,leaks:0,caps:{},scn:{},rec:{},calc:0,ind:null,audit:0,shown:0,last:0,fired:{},idea:null,formStarted:false,list:[]};
+  var G={score:0,tscore:0,leaks:0,caps:{},scn:{},rec:{},calc:0,est:0,ind:null,audit:0,shown:0,last:0,fired:{},idea:null,formStarted:false,list:[]};
   var L=ls.get('rozka_lead_v1')||{sent:0,dismissed:0,seen:{},who:null};
   if(!L.seen)L.seen={};
   function saveL(){ls.set('rozka_lead_v1',L);}
@@ -1684,7 +1795,7 @@ img{max-width:100%}
   function wa(t){return 'https://wa.me/'+WA+'?text='+encodeURIComponent('Hi Rozka team, '+t);}
   var TOPIC={problem:'registers and where hours leak',product:'how Rozka works',how:'how a day becomes a payslip',industries:'Rozka for your kind of business',faq:'your questions about Rozka',recipes:'automating your daily work',story:'how Rozka started','automation-hero':'automating your daily work'};
   var CTX={
-    price:function(){return {tag:'Pricing',h:'Want a straight number?',sub:'Tell us about your business and we\'ll give you a straight number.',cta:'Call me with a price',wa:wa('what would Rozka cost for my business?')};},
+    price:function(){return {tag:'Pricing',h:'Want a straight number?',sub:'Prices start at ₹29 per employee per month and are customised to your business. Tell us about it and we\'ll give you a straight number.',cta:'Call me with a price',wa:wa('what would Rozka cost for my business?')};},
     calc:function(){var w=+$('rWorkers').value,s=+$('rSalary').value,mn=+$('rMin').value,a=amt();return {tag:'Your number',h:'At '+w+' staff you could be losing '+a+' a month.',sub:'That\'s an illustration. Share your number and we\'ll work out your real figure.',cta:'Work out my real number',wa:wa('I tried the loss calculator ('+w+' staff, '+a+' a month). Can you work out my real number?'),data:{calc:{staff:w,salary:s,min:mn,loss:a}}};},
     industry:function(){var d=ind();return {tag:d.n||'Your business',h:d.q||'Running this kind of business?',sub:'A short call is enough to show what changes on day one.',cta:'Call me back',wa:wa('I run a business in this line: '+(d.n||'')+'. Can you show me what changes on day one?'),data:{industry:d.id}};},
     leaks:function(){return {tag:'The register',h:'You caught '+G.leaks+' of 5 leaks in a sample register.',sub:'Want to know how many your own register has?',cta:'Show me on my staff',wa:wa('I caught '+G.leaks+' of 5 leaks in the sample register. Can you check how many my business has?')};},
@@ -1694,6 +1805,8 @@ img{max-width:100%}
     exit:function(){return {tag:'Before you go',h:'Not ready to commit? Just talk to us.',sub:'Leave your number and we\'ll call you back.',cta:'Call me back',wa:wa('I was looking at Rozka and have a question.')};},
     returning:function(){var t=TOPIC[ret&&ret.top]||'Rozka';return {tag:'Welcome back',h:'Still thinking about '+t+'?',sub:'Leave your number and we\'ll call you back.',cta:'Call me back',wa:wa('I visited before and I\'m still thinking about Rozka. Can we talk?')};},
     depth:function(){return {tag:'Talk to the team',h:'Want to hear how this works for a business like yours?',sub:'Leave your number and we\'ll call you back.',cta:'Call me back',wa:wa('I read through your site and would like to know how Rozka works for my business.')};},
+    estimate:function(){var n=$('oEstStaff').textContent,a=$('estMonth').textContent;return {tag:'Your price',h:'From '+a+' a month for '+n+' staff.',sub:'A starting estimate: prices start at ₹29 per employee per month and may vary with your business. Tell us about it and we\'ll give you a straight number.',cta:'Get my exact number',wa:wa('I tried the price estimator ('+n+' staff, from '+a+' a month). Can you give me my exact number?'),data:{estimate:{staff:+$('eStaff').value,from:a}}};},
+    pricing:function(){return {tag:'Pricing',h:'Want an exact number for your business?',sub:'Prices start at ₹29 per employee per month and are customised to your request. Leave your number and we\'ll call you back.',cta:'Call me with my price',wa:wa('I read your pricing page. Can you give me an exact number for my business?')};},
     formback:function(){return {tag:'Almost there',h:'Short on time? Just leave your number.',sub:'Two fields, and we\'ll call you back.',cta:'Call me back',wa:wa('I started the demo form but ran out of time. Can we talk?')};}
   };
 
@@ -1739,6 +1852,12 @@ img{max-width:100%}
       rec('w',{w:'calc',n:+$('rWorkers').value,sal:+$('rSalary').value,min:+$('rMin').value,loss:amt()});
       moment('calc',{pri:8,delay:4500,ttl:45000,make:CTX.calc});
     });
+  });
+  var es=$('eStaff');
+  if(es)es.addEventListener('change',function(){
+    G.est++;add(G.est===1?3:1);
+    rec('w',{w:'est',n:+es.value});
+    moment('estimate',{pri:8,delay:4500,ttl:45000,make:CTX.estimate});
   });
   var auditReady=false,auditN=0;
   setTimeout(function(){auditReady=true;auditN=+($('auditN')||{}).textContent||0;},120);
@@ -1932,6 +2051,7 @@ img{max-width:100%}
     if(vis){S.act=(S.act||0)+1;if(S.act%30===0&&G.tscore<4){G.tscore++;add(1);}}
     checkSec();
     var t=now();
+    if(pg()==='pricing'&&t-pgAt>=25000&&!G.est){if(!G.pscore){G.pscore=1;add(2);}moment('pricing',{pri:7,delay:0,ttl:60000,make:CTX.pricing});}   // reading the price page for 25s is a buying signal (unless they are using the estimator: that card is more specific)
     pend=pend.filter(function(m){return t<=m.exp&&!G.fired[m.id];});
     var best=null;
     pend.forEach(function(m){if(m.ripe<=t&&(!best||m.pri>best.pri))best=m;});
@@ -2001,7 +2121,7 @@ img{max-width:100%}
      Links between them swap pages without a reload; old #hash links are upgraded to the clean URL. ---------- */
   var pages=$$('.page');
   var LOCAL=location.protocol==='file:'; // opened straight from disk: no real URLs, fall back to #hash routing like before
-  var PATHS={home:'/',automation:'/automation/',about:'/about/',contact:'/contact/'};
+  var PATHS={home:'/',automation:'/automation/',pricing:'/pricing/',about:'/about/',contact:'/contact/'};
   var ALIAS={'attendance':'product','contact-form':'contact','top':'home','recipes-top':'automation'};
   function pageOfPath(p){p=p.replace(/index\.html$/,'');if(p.charAt(p.length-1)!=='/')p+='/';for(var k in PATHS)if(PATHS[k]===p)return k;return null;}
   function showPage(name,anchor){
@@ -2113,6 +2233,11 @@ img{max-width:100%}
   var rW=$('rWorkers'),rS=$('rSalary'),rM=$('rMin');
   function calc(){var w=+rW.value,s=+rS.value,m=+rM.value,month=w*(m/60)*26*(s/208);$('oWorkers').textContent=w;$('oSalary').textContent=inr(s);$('oMin').textContent=m+' min';$('leakMonth').textContent=inr(-month);$('leakYear').textContent=inr(month*12);}
   [rW,rS,rM].forEach(function(r){r.addEventListener('input',calc);});calc();
+
+  /* ---------- pricing estimator: staff x the starting price, labelled as a starting estimate ---------- */
+  var eS=$('eStaff'),PRICE=29;
+  function est(){var n=+eS.value,top=n>=+eS.max,t=top?n+'+':String(n);$('oEstStaff').textContent=t;$('estStaff').textContent=t;$('estMonth').textContent=inr(n*PRICE);$('estMore').hidden=!top;}
+  eS.addEventListener('input',est);est();
 
   /* ---------- capabilities ---------- */
   var caps=$$('.cap'),panels=$$('.cap-panel'),stage=$('cap-stage');

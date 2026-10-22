@@ -9,8 +9,12 @@
  *  2. Run setup() and approve the permissions. It creates the tabs and an hourly trigger that runs aggregate().
  *  3. Deploy > New deployment > type "Web app" > Execute as: Me > Who has access: Anyone > Deploy. Copy the /exec URL.
  *  4. Put that URL in ANALYTICS_ENDPOINT in scripts/build.mjs, run `node scripts/build.mjs`, push.
- *  5. After some visits, run aggregate() once (or wait an hour) and look at the Insights tab.
- *  6. Connect Looker Studio to the aggregated tabs: see apps-script/Looker-Studio-guide.md.
+ *  5. HTML DASHBOARD (private, owner only): Project files (+) > HTML > name it exactly "Dashboard" > paste Dashboard.html. Then Deploy >
+ *     New deployment > Web app > Execute as: Me > Who has access: ONLY MYSELF > Deploy. That second URL shows the dashboard to you when you are signed in.
+ *     Keep the first deployment (Anyone) for the website; it never shows the dashboard. Teammates: give them Looker Studio access instead.
+ *  6. After some visits, run aggregate() once (or wait an hour; or use the Rozka menu > Refresh now). Then open the Dashboard tab:
+ *     it is built by this script, charts included, with nothing to set up. Insights holds the plain-English headlines.
+ *  7. Optional: for a shareable version, connect Looker Studio to the aggregated tabs (apps-script/Looker-Studio-guide.md).
  *  After editing this file later: Deploy > Manage deployments > Edit > New version (the URL stays the same).
  *  Opt yourself out of the counts: visit https://rozka.work/?an=off once in each browser you use (?an=on turns it back on).
  *
@@ -21,7 +25,8 @@
  * TABS
  *  Raw (appended to):    Events, Sessions
  *  For Looker Studio:    Daily, Pages, Sections, Interactions, Clicks, Funnel, Sources, Cards, Devices   (rebuilt hourly)
- *  For people:           Insights (plain-English headlines + key numbers, last 30 days vs the 30 before)
+ *  For people:           Dashboard (charts, rebuilt hourly), Insights (plain-English headlines + key numbers, last 30 days vs the 30 before)
+ *  Chart data:           DashData (the small tables behind the Dashboard charts)
  */
 
 var CFG = {
@@ -32,15 +37,18 @@ var CFG = {
   MAX_EVENTS_PER_BATCH: 60,
   MAX_EVENTS_PER_SESSION: 800, // a person does not produce more than this; a script might
   FLOOD_PER_HOUR: 20000,       // batches per hour across the site before new ones are ignored
-  MIN_SESSIONS_FOR_INSIGHTS: 20
+  MIN_SESSIONS_FOR_INSIGHTS: 20,   // for a 30-day window; shorter and longer windows scale with it
+  RANGES: [7, 30, 90],             // day ranges the HTML dashboard can switch between
+  SNAP_CHUNK: 45000
 };
 
-var PAGES = ['home', 'automation', 'about', 'contact'];
-var PAGE_LABEL = { home: 'Home', automation: 'Automation', about: 'About', contact: 'Contact' };
+var PAGES = ['home', 'automation', 'pricing', 'about', 'contact'];
+var PAGE_LABEL = { home: 'Home', automation: 'Automation', pricing: 'Pricing', about: 'About', contact: 'Contact' };
 // Reading order of the sections on each page, used to find where visitors drop off.
 var ORDER = {
   home: ['hero', 'problem', 'product', 'how', 'industries', 'why', 'beyond', 'faq', 'close'],
   automation: ['automation-hero', 'recipes', 'process', 'vs-it', 'book-a-demo'],
+  pricing: ['pricing-hero', 'what-you-pay', 'estimator', 'price-factors', 'how-we-quote', 'pricing-faq', 'book-a-demo'],
   about: ['about-hero', 'name', 'story', 'promises', 'book-a-demo'],
   contact: ['contact-hero', 'after-send']
 };
@@ -48,6 +56,7 @@ var SECTION_LABEL = { hero: 'Hero', problem: 'Register problem + loss calculator
   industries: 'Industries', why: 'Built inside a print shop', beyond: 'Beyond attendance (automation)', faq: 'FAQ', close: 'Closing call to action',
   'automation-hero': 'Automation hero', recipes: 'Automation examples', process: 'How we build it', 'vs-it': 'Automation vs IT department',
   'book-a-demo': 'Book-a-demo band', 'about-hero': 'About hero', name: 'Where the name comes from', story: 'Where it started', promises: 'Four promises',
+  'pricing-hero': 'Pricing hero', 'what-you-pay': 'What you pay', estimator: 'Price estimator', 'price-factors': 'What can change the price', 'how-we-quote': 'How we quote', 'pricing-faq': 'Pricing FAQ',
   'contact-hero': 'Contact: form', 'after-send': 'Contact: what happens next' };
 
 var EVENT_COLS = ['Received', 'Date', 'Hour', 'Session', 'Visitor', 'Page', 'Type', 'Section', 'Label', 'Detail', 'Value'];
@@ -62,10 +71,14 @@ function setup() {
   ss.setSpreadsheetTimeZone(CFG.TZ);        // so dates read back from the Sheet match the dates written
   var ev = sheet_(ss, 'Events'), se = sheet_(ss, 'Sessions');
   head_(ev, EVENT_COLS, '#0B4EA2'); head_(se, SESSION_COLS, '#0B4EA2');
-  ['Daily', 'Pages', 'Sections', 'Interactions', 'Clicks', 'Funnel', 'Sources', 'Cards', 'Devices', 'Insights'].forEach(function (n) { sheet_(ss, n); });
+  ['Dashboard', 'Insights', 'Daily', 'Pages', 'Sections', 'Interactions', 'Clicks', 'Funnel', 'Sources', 'Cards', 'Devices', 'DashData', 'DashJson'].forEach(function (n) { sheet_(ss, n); });
   ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'aggregate') ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger('aggregate').timeBased().everyHours(1).create();
   Logger.log('Setup finished. Deploy as a Web app, paste the /exec URL into scripts/build.mjs (ANALYTICS_ENDPOINT).');
+}
+
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('Rozka').addItem('Refresh insights and dashboard now', 'aggregate').addToUi();
 }
 
 function sheet_(ss, name) { return ss.getSheetByName(name) || ss.insertSheet(name); }
@@ -77,7 +90,30 @@ function head_(sh, cols, color) {
 
 /* ---------------------------------------------------------------- endpoint */
 
-function doGet() { return out_({ ok: true, service: 'rozka-analytics' }); }   // health check only
+// The public deployment (Anyone) never knows who is asking, so it can only answer the health check. The dashboard page is served
+// only when the visitor is the signed-in owner, which happens on the "Only myself" deployment.
+function doGet() {
+  if (ownerOnly_()) {
+    return HtmlService.createHtmlOutputFromFile('Dashboard').setTitle('Rozka analytics').addMetaTag('viewport', 'width=device-width, initial-scale=1');
+  }
+  return out_({ ok: true, service: 'rozka-analytics' });
+}
+
+function ownerOnly_() {
+  var me = '', you = '';
+  try { me = String(Session.getEffectiveUser().getEmail() || '').toLowerCase(); you = String(Session.getActiveUser().getEmail() || '').toLowerCase(); } catch (e) { return false; }
+  return !!me && me === you;
+}
+
+// Called by the dashboard page (google.script.run). Checks the owner again, so the data is never reachable any other way.
+function getDashboardData() {
+  if (!ownerOnly_()) throw new Error('Not allowed');
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('DashJson');
+  var last = sh ? sh.getLastRow() : 0;
+  if (last < 2) return { empty: true };
+  var rows = sh.getRange(2, 1, last - 1, 3).getValues().sort(function (a, b) { return Number(a[0]) - Number(b[0]); });
+  return JSON.parse(rows.map(function (r) { return String(r[2]); }).join(''));
+}
 
 function doPost(e) {
   var lock = LockService.getScriptLock(), locked = false;
@@ -170,7 +206,8 @@ function eventRow_(s, e, received) {
     case 'clk': type = 'click'; sec = str_(e.s, 40); label = str_(e.tx, 60); detail = str_(e.h, 80); break;
     case 'w':
       type = 'widget'; label = str_(e.w, 20);
-      if (e.w === 'calc') { detail = [e.n, e.sal, e.min, str_(e.loss, 14)].join('|'); val = Number(e.n) || ''; }
+      if (e.w === 'est') { detail = str_(e.n, 10); val = Number(e.n) || ''; }
+      else if (e.w === 'calc') { detail = [e.n, e.sal, e.min, str_(e.loss, 14)].join('|'); val = Number(e.n) || ''; }
       else {
         detail = str_(e.n !== undefined ? e.n : (e.q !== undefined ? e.q : ''), 70);
         val = e.w === 'leak' ? Number(e.c) : e.w === 'audit' ? Number(e.n) : (e.w === 'cap' || e.w === 'scn' || e.w === 'rec' || e.w === 'industry') ? Number(e.i) : '';
@@ -195,6 +232,8 @@ function aggregate() {
   var result = compute_(events, sessions, new Date());
   Object.keys(result.tabs).forEach(function (name) { write_(ss, name, result.tabs[name].cols, result.tabs[name].rows); });
   writeInsights_(ss, result.insights);
+  buildDashboard_(ss, result.insights, result.dash);
+  writeSnapshot_(ss, result.snapshot);
   return result;
 }
 
@@ -233,7 +272,7 @@ function compute_(events, sessions, nowDate) {
     var s = S[sid] || (S[sid] = newSession_(sid, r[4], date, 1, 'New', '', '', 'Direct', 'Desktop'));
     var pg = r[5], type = r[6], sec = r[7], label = r[8], detail = r[9], val = r[10];
     s.events++;
-    if (type === 'pageview') { s.pageviews++; s.pages[pg] = true; if (pg === 'contact') s.contact = true; }
+    if (type === 'pageview') { s.pageviews++; s.pages[pg] = true; if (pg === 'contact') s.contact = true; if (pg === 'pricing') s.decisionHit = true; }
     else if (type === 'section') {
       var ms = Number(val) || 0; s.dwell += ms;
       var k = pg + '|' + sec; s.sec[k] = (s.sec[k] || 0) + ms;
@@ -285,6 +324,7 @@ function compute_(events, sessions, nowDate) {
     s.inter.forEach(function (it) { addInter_(inter, D, it[0], it[1], s.sid); });
     if (s.leakMax) addInter_(inter, D, 'Register leaks caught (best per visit)', s.leakMax + ' of 5', s.sid);
     if (s.calcStaff !== '') addInter_(inter, D, 'Calculator: staff size', bucket_(s.calcStaff), s.sid);
+    if (s.estStaff !== '') addInter_(inter, D, 'Price estimator: staff size', bucket_(s.estStaff), s.sid);
     if (s.auditMax) addInter_(inter, D, 'Owner audit (best per visit)', s.auditMax + ' of 3', s.sid);
     // Clicks
     s.clicks.forEach(function (c) {
@@ -336,13 +376,13 @@ function compute_(events, sessions, nowDate) {
   tabs.Devices = { cols: ['Date', 'Device', 'Sessions', 'Engaged sessions', 'Leads'],
     rows: sortedRows_(devices, function (k, o) { var p = k.split('|'); return [p[0], p[1], o.sessions || 0, o.engaged || 0, o.leads || 0]; }) };
 
-  return { tabs: tabs, sessions: list, insights: insights_(list, nowDate) };
+  return { tabs: tabs, sessions: list, insights: insights_(list, nowDate, 30), dash: dashData_(list, nowDate, 30), snapshot: snapshots_(list, nowDate) };
 }
 
 function newSession_(sid, vid, date, visit, type, lp, ref, channel, device) {
   return { sid: sid, vid: vid, date: date, visit: visit, type: type || 'New', lp: lp, ref: ref || '', channel: channel || 'Direct', device: device || 'Desktop',
     events: 0, pageviews: 0, pages: {}, dwell: 0, activeSec: 0, sec: {}, pageDwell: {}, depth: {}, clicks: [], inter: [], cards: [], widgets: 0,
-    decisionHit: false, leakMax: 0, auditMax: 0, calcStaff: '', contact: false, formStart: false, lead: false, engaged: false, decision: false };
+    decisionHit: false, leakMax: 0, auditMax: 0, calcStaff: '', estStaff: '', contact: false, formStart: false, lead: false, engaged: false, decision: false };
 }
 
 function widget_(s, kind, detail, val) {
@@ -355,6 +395,7 @@ function widget_(s, kind, detail, val) {
   else if (kind === 'leak') { if (Number(val) > s.leakMax) s.leakMax = Number(val); }
   else if (kind === 'audit') { if (Number(val) > s.auditMax) s.auditMax = Number(val); if (Number(val) >= 3) s.decisionHit = true; }
   else if (kind === 'calc') { s.calcStaff = Number(val) || s.calcStaff; s.decisionHit = true; }
+  else if (kind === 'est') { s.estStaff = Number(val) || s.estStaff; s.decisionHit = true; }
 }
 
 function k_(t) { return String(t).replace(/\|/g, '/'); }
@@ -382,11 +423,13 @@ function fmtDate_(v) { return v instanceof Date ? day_(v.getTime()) : String(v).
 /* ---------------------------------------------------------------- insights */
 
 // Plain-English headlines for the last 30 days against the 30 before, each with a "so what".
-function insights_(list, nowDate) {
-  var end = day_(nowDate.getTime()), start = day_(nowDate.getTime() - 29 * 864e5), pStart = day_(nowDate.getTime() - 59 * 864e5), pEnd = day_(nowDate.getTime() - 30 * 864e5);
+function insights_(list, nowDate, days) {
+  days = days || 30;
+  var end = day_(nowDate.getTime()), start = day_(nowDate.getTime() - (days - 1) * 864e5), pStart = day_(nowDate.getTime() - (2 * days - 1) * 864e5), pEnd = day_(nowDate.getTime() - days * 864e5);
+  var minSessions = Math.max(8, Math.round(CFG.MIN_SESSIONS_FOR_INSIGHTS * days / 30));
   var cur = list.filter(function (s) { return s.date >= start && s.date <= end; });
   var prev = list.filter(function (s) { return s.date >= pStart && s.date <= pEnd; });
-  var out = { updated: Utilities.formatDate(nowDate, CFG.TZ, 'dd MMM yyyy, HH:mm') + ' IST', headlines: [], numbers: [], enough: cur.length >= CFG.MIN_SESSIONS_FOR_INSIGHTS, sessions: cur.length };
+  var out = { updated: Utilities.formatDate(nowDate, CFG.TZ, 'dd MMM yyyy, HH:mm') + ' IST', headlines: [], numbers: [], days: days, min: minSessions, enough: cur.length >= minSessions, sessions: cur.length };
 
   function agg(arr) {
     var vis = {}, o = { sessions: arr.length, visitors: 0, engaged: 0, leads: 0, active: 0, mobile: 0, returning: 0 };
@@ -407,11 +450,11 @@ function insights_(list, nowDate) {
     ['Mobile share', pct(a.mobile, a.sessions) + '%', pct(b.mobile, b.sessions) + '%', ''],
     ['Returning visitors (sessions)', a.returning, b.returning, chg(a.returning, b.returning)]
   ];
-  if (!out.enough) { out.headlines.push(['Not enough data yet', 'Insights appear once there are at least ' + CFG.MIN_SESSIONS_FOR_INSIGHTS + ' sessions in the last 30 days (now ' + cur.length + ').']); return out; }
+  if (!out.enough) { out.headlines.push(['Not enough data yet', 'Insights appear once there are at least ' + minSessions + ' sessions in the last ' + days + ' days (now ' + cur.length + ').']); return out; }
 
   function H(t, why) { out.headlines.push([t, why]); }
 
-  H('Traffic: ' + a.sessions + ' sessions, ' + a.visitors + ' visitors (' + chg(a.sessions, b.sessions) + ' vs the previous 30 days). ' + pct(a.engaged, a.sessions) + '% were engaged.',
+  H('Traffic: ' + a.sessions + ' sessions, ' + a.visitors + ' visitors (' + chg(a.sessions, b.sessions) + ' vs the previous ' + days + ' days). ' + pct(a.engaged, a.sessions) + '% were engaged.',
     'Engaged = 15+ seconds reading, 2+ pages, or used a widget. Below ~35% usually means the first screen or the traffic source is off.');
 
   // pages
@@ -459,6 +502,10 @@ function insights_(list, nowDate) {
   var csK = Object.keys(cs).sort(function (x, y) { return cs[y] - cs[x]; });
   if (csN >= 5) H('Loss calculator: most visitors try ' + csK[0] + ' (' + pct(cs[csK[0]], csN) + '% of ' + csN + ' who used it).', 'Roughly the size of business that is looking at you. Price and message for it.');
 
+  var es = {}, esN = 0; cur.forEach(function (s) { if (s.estStaff !== '') { var eb = bucket_(s.estStaff); es[eb] = (es[eb] || 0) + 1; esN++; } });
+  var esK = Object.keys(es).sort(function (x, y) { return es[y] - es[x]; });
+  if (esN >= 5) H('Price estimator: most visitors try ' + esK[0] + ' (' + pct(es[esK[0]], esN) + '% of ' + esN + ' who used it).', 'The size of business that is checking your price. Make sure your quote and your device options fit it.');
+
   // CTAs
   var ctas = {}; cur.forEach(function (s) { s.clicks.forEach(function (c) { if (clickType_(c) === 'CTA' || clickType_(c) === 'Contact link') { var k = (c.label || c.href) + ' | ' + PAGE_LABEL[c.pg || 'home'] + ' / ' + (SECTION_LABEL[c.sec] || c.sec || 'header'); ctas[k] = (ctas[k] || 0) + 1; } }); });
   var ck = Object.keys(ctas).sort(function (x, y) { return ctas[y] - ctas[x]; });
@@ -504,4 +551,128 @@ function writeInsights_(ss, ins) {
   sh.getRange(numStart, 1, 1, w).setFontWeight('bold').setBackground('#0B4EA2').setFontColor('#FFFFFF');
   sh.setColumnWidth(1, 560); sh.setColumnWidth(2, 520); sh.setColumnWidth(3, 130); sh.setColumnWidth(4, 90);
   sh.getRange(5, 1, Math.max(ins.headlines.length, 1), 2).setWrap(true).setVerticalAlignment('top');
+}
+
+/* --------------------------------------------------------------- dashboard */
+
+// Small tables for the last 30 days, shaped for charts. Pure function (no Sheets calls) so it can be tested.
+function dashData_(list, nowDate, days) {
+  days = days || 30;
+  var end = day_(nowDate.getTime()), start = day_(nowDate.getTime() - (days - 1) * 864e5);
+  var cur = list.filter(function (s) { return s.date >= start && s.date <= end; });
+  var d = {};
+
+  var byDay = {}; cur.forEach(function (s) { var o = byDay[s.date] || (byDay[s.date] = { n: 0, l: 0 }); o.n++; if (s.lead) o.l++; });
+  d.trend = []; for (var i = days - 1; i >= 0; i--) { var D = day_(nowDate.getTime() - i * 864e5), o = byDay[D] || { n: 0, l: 0 }; d.trend.push([D, o.n, o.l]); }
+  if (!cur.length) d.trend = [];
+
+  var pv = {}; cur.forEach(function (s) { Object.keys(s.pages).forEach(function (p) { pv[p] = (pv[p] || 0) + 1; }); });
+  d.pages = PAGES.filter(function (p) { return pv[p]; }).map(function (p) { return [PAGE_LABEL[p], pv[p]]; });
+
+  var homeSessions = pv.home || 0, stat = {};
+  cur.forEach(function (s) { Object.keys(s.sec).forEach(function (k) { if (k.indexOf('home|') !== 0) return; var o = stat[k] || (stat[k] = { saw: 0, dwell: 0 }); if (s.sec[k] >= 1000) { o.saw++; o.dwell += s.sec[k]; } }); });
+  d.sections = homeSessions ? ORDER.home.map(function (sec) { var o = stat['home|' + sec] || { saw: 0, dwell: 0 };
+    return [SECTION_LABEL[sec] || sec, round_(o.saw / homeSessions * 100, 1), o.saw ? round_(o.dwell / o.saw / 1000, 1) : 0]; }) : [];
+
+  function top(kind, n) {
+    var c = {}; cur.forEach(function (s) { var seen = {}; s.inter.forEach(function (it) { if (it[0] === kind && !seen[it[1]]) { seen[it[1]] = 1; c[it[1]] = (c[it[1]] || 0) + 1; } }); });
+    return Object.keys(c).sort(function (x, y) { return c[y] - c[x]; }).slice(0, n).map(function (k) { return [k, c[k]]; });
+  }
+  d.industries = top('Industry picked', 8);
+  d.faq = top('FAQ question opened', 8);
+
+  var STEPS = ['Visited', 'Engaged', 'Showed interest', 'Opened Contact', 'Started a form', 'Became a lead'];
+  var counts = [cur.length, cur.filter(function (s) { return s.engaged; }).length, cur.filter(function (s) { return s.decision; }).length,
+    cur.filter(function (s) { return s.contact; }).length, cur.filter(function (s) { return s.formStart; }).length, cur.filter(function (s) { return s.lead; }).length];
+  d.funnel = cur.length ? STEPS.map(function (n, i) { return [n, counts[i]]; }) : [];
+
+  var src = {}; cur.forEach(function (s) { var o = src[s.channel] || (src[s.channel] = { n: 0, l: 0 }); o.n++; if (s.lead) o.l++; });
+  d.sources = Object.keys(src).sort(function (x, y) { return src[y].n - src[x].n; }).slice(0, 8).map(function (k) { return [k, src[k].n, src[k].l]; });
+
+  var dev = {}; cur.forEach(function (s) { dev[s.device] = (dev[s.device] || 0) + 1; });
+  d.devices = Object.keys(dev).sort(function (x, y) { return dev[y] - dev[x]; }).map(function (k) { return [k, dev[k]]; });
+
+  var cards = {}; cur.forEach(function (s) { s.cards.forEach(function (c) { var o = cards[c[0]] || (cards[c[0]] = { show: 0, done: 0 }); if (c[1] === 'show') o.show++; if (c[1] === 'done') o.done++; }); });
+  d.cards = Object.keys(cards).filter(function (k) { return cards[k].show; }).sort(function (x, y) { return cards[y].show - cards[x].show; }).map(function (k) { return [k, cards[k].show, cards[k].done]; });
+
+  var BK = ['1-9 staff', '10-19 staff', '20-49 staff', '50-99 staff', '100+ staff'], bc = {};
+  cur.forEach(function (s) { if (s.calcStaff !== '') { var b = bucket_(s.calcStaff); bc[b] = (bc[b] || 0) + 1; } });
+  d.calc = Object.keys(bc).length ? BK.map(function (b) { return [b, bc[b] || 0]; }) : [];
+  return d;
+}
+
+// Writes the chart tables to DashData and draws the charts on the Dashboard tab. Rebuilt on every aggregate().
+function buildDashboard_(ss, ins, d) {
+  var dd = sheet_(ss, 'DashData'), db = sheet_(ss, 'Dashboard');
+  dd.clearContents(); db.clear();
+  db.getCharts().forEach(function (c) { db.removeChart(c); });
+
+  var T = [
+    { k: 'trend', head: ['Date', 'Sessions', 'Leads'], title: 'Sessions and leads per day (last 30 days)', type: Charts.ChartType.LINE },
+    { k: 'pages', head: ['Page', 'Sessions'], title: 'Which pages are used (sessions)', type: Charts.ChartType.COLUMN },
+    { k: 'sections', head: ['Home section', 'Reach %', 'Avg seconds'], title: 'Home: how many reach each section (%), in reading order', type: Charts.ChartType.COLUMN, cols: 2 },
+    { k: 'sections', head: ['Home section', 'Reach %', 'Avg seconds'], title: 'Home: average seconds spent in each section', type: Charts.ChartType.COLUMN, cols: 'secs' },
+    { k: 'industries', head: ['Industry', 'Visitors who picked it'], title: 'Which industry visitors pick', type: Charts.ChartType.BAR },
+    { k: 'faq', head: ['FAQ question', 'Visitors who opened it'], title: 'Which FAQ questions get opened', type: Charts.ChartType.BAR },
+    { k: 'funnel', head: ['Step', 'Sessions'], title: 'Funnel: from visit to lead', type: Charts.ChartType.COLUMN },
+    { k: 'sources', head: ['Channel', 'Sessions', 'Leads'], title: 'Where visitors come from, and which channel gives leads', type: Charts.ChartType.COLUMN },
+    { k: 'devices', head: ['Device', 'Sessions'], title: 'Phone, tablet or desktop', type: Charts.ChartType.PIE },
+    { k: 'cards', head: ['Lead card', 'Shown', 'Left a number'], title: 'Lead cards: shown vs answered', type: Charts.ChartType.COLUMN },
+    { k: 'calc', head: ['Staff size', 'Visitors'], title: 'Loss calculator: staff size visitors try', type: Charts.ChartType.COLUMN }
+  ];
+
+  // data tables, one block of columns each (the Sections table is shared by two charts)
+  var placed = {}, col = 1;
+  T.forEach(function (t) {
+    if (placed[t.k]) { t.col = placed[t.k].col; t.n = placed[t.k].n; return; }
+    var rows = d[t.k] || [];
+    dd.getRange(1, col, 1, t.head.length).setValues([t.head]).setFontWeight('bold');
+    if (rows.length) dd.getRange(2, col, rows.length, t.head.length).setValues(rows);
+    t.col = col; t.n = rows.length; placed[t.k] = { col: col, n: rows.length }; col += t.head.length + 1;
+  });
+
+  // heading and key numbers
+  db.getRange(1, 1).setValue('Rozka dashboard').setFontSize(18).setFontWeight('bold');
+  db.getRange(2, 1).setValue('Updated ' + ins.updated + ' | last 30 days | headlines are in the Insights tab').setFontColor('#5B6067');
+  var nums = ins.numbers, labels = [], values = [];
+  [0, 1, 3, 5, 6].forEach(function (i) { if (nums[i]) { labels.push(nums[i][0]); values.push(nums[i][1]); } });
+  db.getRange(4, 1, 1, labels.length).setValues([labels]).setFontWeight('bold').setBackground('#0B4EA2').setFontColor('#FFFFFF');
+  db.getRange(5, 1, 1, values.length).setValues([values]).setFontSize(20).setFontWeight('bold').setHorizontalAlignment('left');
+  for (var c = 1; c <= 14; c++) db.setColumnWidth(c, 80);
+  if (!ins.enough) db.getRange(6, 1).setValue('Not enough data yet: charts fill in as visits arrive (' + ins.sessions + ' sessions in the last 30 days).').setFontColor('#5B6067');
+
+  // charts: two per row
+  var slot = 0;
+  T.forEach(function (t) {
+    if (!t.n) return;
+    var row = 8 + Math.floor(slot / 2) * 17, anchorCol = slot % 2 ? 8 : 1;
+    var ncols = t.cols === 2 ? 2 : t.cols === 'secs' ? 2 : t.head.length;
+    var rng = t.cols === 'secs'
+      ? dd.getRange(1, t.col, t.n + 1, 1)
+      : dd.getRange(1, t.col, t.n + 1, ncols);
+    var b = db.newChart().setChartType(t.type).addRange(rng);
+    if (t.cols === 'secs') b.addRange(dd.getRange(1, t.col + 2, t.n + 1, 1));
+    b.setNumHeaders(1).setPosition(row, anchorCol, 0, 0).setOption('title', t.title).setOption('width', 560).setOption('height', 300)
+      .setOption('legend', { position: ncols > 2 || t.type === Charts.ChartType.PIE ? 'bottom' : 'none' });
+    db.insertChart(b.build());
+    slot++;
+  });
+}
+
+/* ---------------------------------------------------- html dashboard data */
+
+// One snapshot per range, computed hourly so the page opens instantly.
+function snapshots_(list, nowDate) {
+  var snap = { updated: Utilities.formatDate(nowDate, CFG.TZ, 'dd MMM yyyy, HH:mm') + ' IST', ranges: {} };
+  CFG.RANGES.forEach(function (days) { snap.ranges[days] = { days: days, insights: insights_(list, nowDate, days), dash: dashData_(list, nowDate, days) }; });
+  return snap;
+}
+
+function writeSnapshot_(ss, snap) {
+  var sh = sheet_(ss, 'DashJson');
+  sh.clearContents();
+  sh.getRange(1, 1, 1, 3).setValues([['Part', 'Parts', 'Dashboard JSON (read by the HTML dashboard)']]).setFontWeight('bold');
+  var json = JSON.stringify(snap), n = Math.max(1, Math.ceil(json.length / CFG.SNAP_CHUNK)), rows = [];
+  for (var i = 0; i < n; i++) rows.push([i + 1, n, json.slice(i * CFG.SNAP_CHUNK, (i + 1) * CFG.SNAP_CHUNK)]);
+  sh.getRange(2, 1, rows.length, 3).setValues(rows);
 }
