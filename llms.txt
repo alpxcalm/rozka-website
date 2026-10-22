@@ -6,9 +6,17 @@
 
 - [Home](https://rozka.work/): what Rozka does, how one day becomes a payslip, who it is for, and answers to common questions
 - [Automation](https://rozka.work/automation/): small repeated jobs (job cards, stuck-job alerts, stock reminders, daily summaries) built to order into the same system
-- [Pricing](https://rozka.work/pricing/): prices start at ₹29 per employee per month, customised to each business; a starting-price estimator
+- [Pricing](https://rozka.work/pricing/): prices start at ₹119 per employee per month, inclusive of all taxes, customised to each business; a starting-price estimator for 20 or more employees
 - [About](https://rozka.work/about/): where the name and the product come from
 - [Book a 1-month demo](https://rozka.work/contact/): request a call back and run Rozka on your own staff for a month
+
+## Languages
+
+The whole site is available in English, Hindi and Marathi, with the same pages and prices.
+
+- English: https://rozka.work/
+- हिन्दी (Hindi): https://rozka.work/hi/
+- मराठी (Marathi): https://rozka.work/mr/
 
 ## Key facts
 
@@ -17,7 +25,7 @@
 - Rozka does not send salaries from your bank account. You pay as you do today; marking a month paid records who got what, locks it and makes payslips.
 - PF, ESI and TDS are entered as deductions and shown on the payslip. Rozka does not calculate them.
 - Shift times, breaks, half-day limits, overtime and penalties are settings. Small customisations are available.
-- Prices start at ₹29 per employee per month and may vary based on your business requirements. Everything is customised to the request.
+- Prices start at ₹119 per employee per month, inclusive of all taxes, and may vary based on your business requirements. Everything is customised to the request. Contact for exact pricing.
 - No setup cost and a no-cost business analysis. The punch device is priced separately, by the model chosen.
 - A free one-month trial on your own staff comes first, then you decide.
 

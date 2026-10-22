@@ -16,15 +16,17 @@
  *     it is built by this script, charts included, with nothing to set up. Insights holds the plain-English headlines.
  *  7. Optional: for a shareable version, connect Looker Studio to the aggregated tabs (apps-script/Looker-Studio-guide.md).
  *  After editing this file later: Deploy > Manage deployments > Edit > New version (the URL stays the same).
+ *  Upgrading from the English-only version: paste the new file (and Dashboard.html), run setup() once, then Edit > New version. Sessions gets a
+ *  "Site language" column at the END (older rows read as English) and a Languages tab appears after the next aggregate().
  *  Opt yourself out of the counts: visit https://rozka.work/?an=off once in each browser you use (?an=on turns it back on).
  *
  * WHAT THE WEBSITE SENDS (POST, text/plain JSON, batched every ~15s and when the tab is closed)
- *  { v:1, bid, seq, s:{ sid, vid, t0, visit, lp, ref(host only), utm, w, h, touch, lang, tz }, ev:[ { t, k, pg, ... } ] }
+ *  { v:1, bid, seq, s:{ sid, vid, t0, visit, lp, ref(host only), utm, w, h, touch, lang, tz, ul (site language: en | hi | mr) }, ev:[ { t, k, pg, ... } ] }
  *  Only from rozka.work, never from localhost, bots, or browsers that send Do-Not-Track / Global Privacy Control.
  *
  * TABS
  *  Raw (appended to):    Events, Sessions
- *  For Looker Studio:    Daily, Pages, Sections, Interactions, Clicks, Funnel, Sources, Cards, Devices   (rebuilt hourly)
+ *  For Looker Studio:    Daily, Pages, Sections, Interactions, Clicks, Funnel, Sources, Cards, Devices, Languages   (rebuilt hourly)
  *  For people:           Dashboard (charts, rebuilt hourly), Insights (plain-English headlines + key numbers, last 30 days vs the 30 before)
  *  Chart data:           DashData (the small tables behind the Dashboard charts)
  */
@@ -61,7 +63,8 @@ var SECTION_LABEL = { hero: 'Hero', problem: 'Register problem + loss calculator
 
 var EVENT_COLS = ['Received', 'Date', 'Hour', 'Session', 'Visitor', 'Page', 'Type', 'Section', 'Label', 'Detail', 'Value'];
 var SESSION_COLS = ['Session', 'Visitor', 'Started', 'Date', 'Visit #', 'Visitor type', 'Landing', 'Referrer', 'Channel',
-  'UTM source', 'UTM medium', 'UTM campaign', 'Device', 'Width', 'Language', 'Time zone'];
+  'UTM source', 'UTM medium', 'UTM campaign', 'Device', 'Width', 'Language', 'Time zone', 'Site language'];
+var SITE_LANGS = { en: 'English', hi: 'Hindi', mr: 'Marathi' };
 var ID = /^[a-z0-9-]{6,48}$/;
 
 /* ------------------------------------------------------------------ setup */
@@ -71,7 +74,7 @@ function setup() {
   ss.setSpreadsheetTimeZone(CFG.TZ);        // so dates read back from the Sheet match the dates written
   var ev = sheet_(ss, 'Events'), se = sheet_(ss, 'Sessions');
   head_(ev, EVENT_COLS, '#0B4EA2'); head_(se, SESSION_COLS, '#0B4EA2');
-  ['Dashboard', 'Insights', 'Daily', 'Pages', 'Sections', 'Interactions', 'Clicks', 'Funnel', 'Sources', 'Cards', 'Devices', 'DashData', 'DashJson'].forEach(function (n) { sheet_(ss, n); });
+  ['Dashboard', 'Insights', 'Daily', 'Pages', 'Sections', 'Interactions', 'Clicks', 'Funnel', 'Sources', 'Cards', 'Devices', 'Languages', 'DashData', 'DashJson'].forEach(function (n) { sheet_(ss, n); });
   ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'aggregate') ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger('aggregate').timeBased().everyHours(1).create();
   Logger.log('Setup finished. Deploy as a Web app, paste the /exec URL into scripts/build.mjs (ANALYTICS_ENDPOINT).');
@@ -190,7 +193,7 @@ function sessionRow_(s) {
   var utm = s.utm || {}, t0 = Number(s.t0);
   return [str_(s.sid, 48), str_(s.vid, 48), new Date(t0), day_(t0), Number(s.visit) || 1, (Number(s.visit) || 1) > 1 ? 'Returning' : 'New',
     PAGES.indexOf(s.lp) >= 0 ? s.lp : '', hostOf_(s.ref), channel_(s.ref, utm), str_(utm.utm_source, 60), str_(utm.utm_medium, 60), str_(utm.utm_campaign, 80),
-    device_(s.w, s.touch), Number(s.w) || '', str_(s.lang, 12), str_(s.tz, 40)];
+    device_(s.w, s.touch), Number(s.w) || '', str_(s.lang, 12), str_(s.tz, 40), Object.prototype.hasOwnProperty.call(SITE_LANGS, s.ul) ? SITE_LANGS[s.ul] : 'English'];
 }
 
 function eventRow_(s, e, received) {
@@ -264,6 +267,7 @@ function compute_(events, sessions, nowDate) {
     var date = fmtDate_(r[3]);
     if (!r[0] || date < cutoff) return;
     S[r[0]] = newSession_(r[0], r[1], date, Number(r[4]) || 1, r[5], r[6], r[7], r[8], r[12]);
+    S[r[0]].siteLang = r[16] || 'English';
   });
 
   events.forEach(function (r) {
@@ -298,7 +302,7 @@ function compute_(events, sessions, nowDate) {
   });
 
   var T = {}, tabs = {};
-  var daily = {}, pages = {}, sections = {}, inter = {}, clicks = {}, funnel = {}, sources = {}, cards = {}, devices = {};
+  var daily = {}, pages = {}, sections = {}, inter = {}, clicks = {}, funnel = {}, sources = {}, cards = {}, devices = {}, languages = {};
   var visitorsByDay = {}, newByDay = {};
 
   list.forEach(function (s) {
@@ -337,6 +341,7 @@ function compute_(events, sessions, nowDate) {
     // Sources / Devices
     var sk = D + '|' + s.channel + '|' + s.ref; bump_(sources, sk, 'sessions'); if (s.engaged) bump_(sources, sk, 'engaged'); if (s.lead) bump_(sources, sk, 'leads');
     var dk = D + '|' + s.device; bump_(devices, dk, 'sessions'); if (s.engaged) bump_(devices, dk, 'engaged'); if (s.lead) bump_(devices, dk, 'leads');
+    var lk = D + '|' + s.siteLang; bump_(languages, lk, 'sessions'); if (s.engaged) bump_(languages, lk, 'engaged'); if (s.lead) bump_(languages, lk, 'leads');
     // Cards
     s.cards.forEach(function (c) {
       var key = D + '|' + c[0], f = { show: 'shown', close: 'closed', later: 'later', wa: 'whatsapp', done: 'submitted', min: 'minimised' }[c[1]];
@@ -376,12 +381,15 @@ function compute_(events, sessions, nowDate) {
   tabs.Devices = { cols: ['Date', 'Device', 'Sessions', 'Engaged sessions', 'Leads'],
     rows: sortedRows_(devices, function (k, o) { var p = k.split('|'); return [p[0], p[1], o.sessions || 0, o.engaged || 0, o.leads || 0]; }) };
 
+  tabs.Languages = { cols: ['Date', 'Site language', 'Sessions', 'Engaged sessions', 'Leads'],
+    rows: sortedRows_(languages, function (k, o) { var p = k.split('|'); return [p[0], p[1], o.sessions || 0, o.engaged || 0, o.leads || 0]; }) };
+
   return { tabs: tabs, sessions: list, insights: insights_(list, nowDate, 30), dash: dashData_(list, nowDate, 30), snapshot: snapshots_(list, nowDate) };
 }
 
 function newSession_(sid, vid, date, visit, type, lp, ref, channel, device) {
   return { sid: sid, vid: vid, date: date, visit: visit, type: type || 'New', lp: lp, ref: ref || '', channel: channel || 'Direct', device: device || 'Desktop',
-    events: 0, pageviews: 0, pages: {}, dwell: 0, activeSec: 0, sec: {}, pageDwell: {}, depth: {}, clicks: [], inter: [], cards: [], widgets: 0,
+    siteLang: 'English', events: 0, pageviews: 0, pages: {}, dwell: 0, activeSec: 0, sec: {}, pageDwell: {}, depth: {}, clicks: [], inter: [], cards: [], widgets: 0,
     decisionHit: false, leakMax: 0, auditMax: 0, calcStaff: '', estStaff: '', contact: false, formStart: false, lead: false, engaged: false, decision: false };
 }
 
@@ -592,6 +600,9 @@ function dashData_(list, nowDate, days) {
   var dev = {}; cur.forEach(function (s) { dev[s.device] = (dev[s.device] || 0) + 1; });
   d.devices = Object.keys(dev).sort(function (x, y) { return dev[y] - dev[x]; }).map(function (k) { return [k, dev[k]]; });
 
+  var lg = {}; cur.forEach(function (s) { lg[s.siteLang] = (lg[s.siteLang] || 0) + 1; });
+  d.languages = Object.keys(lg).sort(function (x, y) { return lg[y] - lg[x]; }).map(function (k) { return [k, lg[k]]; });
+
   var cards = {}; cur.forEach(function (s) { s.cards.forEach(function (c) { var o = cards[c[0]] || (cards[c[0]] = { show: 0, done: 0 }); if (c[1] === 'show') o.show++; if (c[1] === 'done') o.done++; }); });
   d.cards = Object.keys(cards).filter(function (k) { return cards[k].show; }).sort(function (x, y) { return cards[y].show - cards[x].show; }).map(function (k) { return [k, cards[k].show, cards[k].done]; });
 
@@ -617,6 +628,7 @@ function buildDashboard_(ss, ins, d) {
     { k: 'funnel', head: ['Step', 'Sessions'], title: 'Funnel: from visit to lead', type: Charts.ChartType.COLUMN },
     { k: 'sources', head: ['Channel', 'Sessions', 'Leads'], title: 'Where visitors come from, and which channel gives leads', type: Charts.ChartType.COLUMN },
     { k: 'devices', head: ['Device', 'Sessions'], title: 'Phone, tablet or desktop', type: Charts.ChartType.PIE },
+    { k: 'languages', head: ['Site language', 'Sessions'], title: 'Which site language visitors read', type: Charts.ChartType.PIE },
     { k: 'cards', head: ['Lead card', 'Shown', 'Left a number'], title: 'Lead cards: shown vs answered', type: Charts.ChartType.COLUMN },
     { k: 'calc', head: ['Staff size', 'Visitors'], title: 'Loss calculator: staff size visitors try', type: Charts.ChartType.COLUMN }
   ];

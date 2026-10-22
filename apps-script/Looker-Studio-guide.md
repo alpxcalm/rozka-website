@@ -13,7 +13,7 @@ so the report stays current by itself. Each tab is a flat table (one row per dat
 ## 1. Connect the data (once)
 1. Go to lookerstudio.google.com, click **Create > Report**.
 2. **Add data > Google Sheets > Rozka Analytics >** pick the worksheet **Daily**, keep "Use first row as headers" ticked, click **Add**.
-3. Repeat **Add data** for: **Pages, Sections, Interactions, Clicks, Funnel, Sources, Cards, Devices** (nine data sources in total).
+3. Repeat **Add data** for: **Pages, Sections, Interactions, Clicks, Funnel, Sources, Cards, Devices, Languages** (ten data sources in total).
 4. Open **Resource > Manage added data sources**, and for each one set **Data freshness** to 1 hour.
 
 ## 2. Calculated fields (Resource > Manage added data sources > Edit > Add a field)
@@ -29,7 +29,7 @@ Always divide sums, never average the rate columns, so busy days weigh more than
 | Sections | Reach % | `SUM(Sessions that saw it (1s+)) / SUM(Page sessions)` |
 | Sections | Read % | `SUM(Sessions that read it (5s+)) / SUM(Page sessions)` |
 | Sections | Avg seconds when seen | `SUM(Total seconds) / SUM(Sessions that saw it (1s+))` |
-| Sources, Devices | Lead rate % | `SUM(Leads) / SUM(Sessions)` |
+| Sources, Devices, Languages | Lead rate % | `SUM(Leads) / SUM(Sessions)` |
 | Cards | Conversion % | `SUM(Submitted) / SUM(Shown)` |
 
 Set each of the % fields to type **Percent**.
@@ -40,7 +40,7 @@ Add a **Date range control** and (on pages 2 and 3) a **Drop-down list** on `Pag
 **Page 1: Overview**
 - Scorecards (Daily): Sessions, Visitors, Engagement rate %, Avg active seconds, Leads, Lead rate %.
 - Time series (Daily): Date vs Sessions and Leads.
-- Bar chart (Pages): Page vs Sessions. Pie (Devices): Device vs Sessions.
+- Bar chart (Pages): Page vs Sessions. Pie (Devices): Device vs Sessions. Pie (Languages): Site language vs Sessions.
 
 **Page 2: Which page and which section**
 - Table (Pages): Page, Sessions, Avg seconds per session, Reached 75% scroll %. Sort by Sessions.
