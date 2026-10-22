@@ -204,6 +204,7 @@ svg.trend{width:100%;height:auto;display:block}
     out += card('Which questions owners open', 'FAQ questions opened', bars(D.faq));
     out += card('Where visitors come from', 'Sessions, and the leads each channel produced', bars(D.sources, { val: function (r) { return n(r[1]) + ' · ' + n(r[2]) + (r[2] === 1 ? ' lead' : ' leads'); } }));
     out += card('Phone, tablet or desktop', 'Share of sessions', devices(D.devices));
+    out += card('Site language', 'English, Hindi or Marathi: the language of the page the visitor read', devices(D.languages));
     out += card('Lead cards', 'How often each card was shown, and how often it won a phone number', cards(D.cards));
     out += card('Loss calculator: staff size', 'Staff count visitors try in the calculator', cols(D.calc));
     $('charts').innerHTML = out;

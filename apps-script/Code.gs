@@ -14,9 +14,12 @@
  *     Project Settings > Script properties as TURNSTILE_SECRET (never in the repo). Without it the other layers still
  *     run, but anyone who posts straight to the web app URL can fake them.
  *  After editing this file later: Deploy > Manage deployments > Edit > New version (the URL stays the same).
+ *  Upgrading from the English-only version: paste the new file, run setup() once, then Edit > New version. Leads gets a "Site language"
+ *  column (English / Hindi / Marathi) at the END, so no existing column moves. The Quarantine tab's "Bot score" and "Reasons" columns
+ *  now sit one column to the right, so clear the old Quarantine rows first (or ignore them).
  *
  * WHAT THE WEBSITE SENDS (POST, text/plain JSON)
- *  { v, id, ts, source, page, section, fields:{name,phone,...}, ctx:{score,calc,industry,...},
+ *  { v, id, ts, source, page, section, ui (site language: en | hi | mr), fields:{name,phone,...}, ctx:{score,calc,industry,...},
  *    host, visitor, env, ref, utm, hp, hm, tk, trail:{ vid, sessions:[{ sid, t0, ev:[...] }] } }
  *  The trail holds what the visitor did (pages, sections, clicks, scroll, widget use), never what they typed.
  *
@@ -47,11 +50,13 @@ var LEAD_COLS = [
   'Lead ID', 'Received', 'Alert', 'Status', 'Name', 'Phone', 'Business', 'City', 'Wants', 'Staff', 'Message',
   'Idea: WHEN', 'Idea: THEN', 'Source', 'Page', 'Section', 'Intent score', 'Industry', 'Calc: staff', 'Calc: loss/month',
   'Visit #', 'Sessions', 'Events', 'Active seconds', 'First seen', 'Referrer', 'UTM source', 'UTM medium', 'UTM campaign',
-  'Device', 'Language / TZ', 'Journey', 'Notes'
+  'Device', 'Language / TZ', 'Journey', 'Notes', 'Site language'
 ];
+// Language of the site page the visitor was reading (payload field ui); the browser language is in 'Language / TZ'.
+var SITE_LANGS = { en: 'English', hi: 'Hindi', mr: 'Marathi' };
 var COL = {}; LEAD_COLS.forEach(function (c, i) { COL[c] = i + 1; });
 var TEXT_COLS = ['Lead ID', 'Name', 'Phone', 'Business', 'City', 'Wants', 'Staff', 'Message', 'Idea: WHEN', 'Idea: THEN', 'Source', 'Page',
-  'Section', 'Industry', 'Referrer', 'UTM source', 'UTM medium', 'UTM campaign', 'Device', 'Language / TZ', 'Journey', 'Notes'];
+  'Section', 'Industry', 'Referrer', 'UTM source', 'UTM medium', 'UTM campaign', 'Device', 'Language / TZ', 'Journey', 'Notes', 'Site language'];
 
 /* ------------------------------------------------------------------ setup */
 
@@ -226,6 +231,7 @@ function buildRow_(d, bot) {
   m['Language / TZ'] = str_((env.lang || '') + ' / ' + (env.tz || ''), 60);
   m['Journey'] = journey_(trail, d.id);
   m['Notes'] = (bot && bot.score >= CFG.FLAG_AT) ? 'Bot score ' + bot.score + ': ' + bot.why.join('; ') : '';
+  m['Site language'] = Object.prototype.hasOwnProperty.call(SITE_LANGS, d.ui) ? SITE_LANGS[d.ui] : 'English';
   return LEAD_COLS.map(function (name) { return m[name]; });
 }
 
