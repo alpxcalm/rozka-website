@@ -174,6 +174,17 @@ svg.i{width:1em;height:1em;flex:none;display:inline-block;vertical-align:-.125em
 .chip i{width:8px;height:8px;border-radius:50%;background:var(--green-soft);box-shadow:0 0 0 4px rgba(143,227,180,.18)}
 .hero h1{font-size:clamp(42px,5.6vw,76px);line-height:.98;letter-spacing:-.035em;margin-top:22px;font-stretch:104%}
 .hero h1 .y{color:var(--cad)}
+.hero h1 .hl{display:block}
+@media (prefers-reduced-motion:no-preference){
+  .hero h1 .hl{animation:hlIn .7s var(--ease) both}
+  .hero h1 .hl:nth-child(2){animation-delay:.25s}
+  .hero h1 .hl:nth-child(3){animation-delay:.5s}
+  .hero h1 .hl.y::after{animation:hlMark .6s 1.2s var(--ease) both}
+}
+.hero h1 .hl.y{width:fit-content;max-width:100%}
+.hero h1 .hl.y::after{content:"";display:block;height:5px;margin-top:8px;border-radius:3px;background:var(--cad);transform-origin:left}
+@keyframes hlIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes hlMark{from{transform:scaleX(0)}to{transform:none}}
 .hero-sub{font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--on-blue);max-width:30em;margin-top:22px}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
 .assure{display:flex;flex-wrap:wrap;gap:8px 22px;margin:28px 0 0;padding:0;list-style:none;font-size:14.5px;color:var(--on-blue)}
@@ -204,6 +215,7 @@ svg.i{width:1em;height:1em;flex:none;display:inline-block;vertical-align:-.125em
 .feed li.new{animation:slidein .55s var(--ease)}
 @keyframes slidein{from{background:var(--cobalt-wash);transform:translateY(-14px);opacity:.2}to{background:var(--paper);transform:none;opacity:1}}
 .av{width:34px;height:34px;border-radius:6px;background:var(--cobalt-tint);color:var(--cobalt-deep);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;position:relative;flex:none}
+.av img{width:100%;height:100%;object-fit:cover;border-radius:6px}
 .av svg{position:absolute;right:-5px;bottom:-5px;width:16px;height:16px;padding:2px;background:var(--cobalt);color:#fff;border-radius:4px}
 .who{min-width:0}
 .who .n{display:block;font-size:14.5px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -235,6 +247,8 @@ svg.i{width:1em;height:1em;flex:none;display:inline-block;vertical-align:-.125em
 .kc-face{aspect-ratio:3/4;border-radius:6px;background:var(--cobalt-deep);position:relative;overflow:hidden}
 .kc-face::before{content:"";position:absolute;left:28%;right:28%;top:16%;aspect-ratio:1;border-radius:50%;background:#2c6ac0}
 .kc-face::after{content:"";position:absolute;left:12%;right:12%;top:60%;bottom:-20%;border-radius:50% 50% 0 0;background:#2c6ac0}
+.kc-face.photo{background-size:cover;background-position:center 30%}
+.kc-face.photo::before,.kc-face.photo::after{display:none}
 .kc-face .scan{position:absolute;left:8%;right:8%;height:2px;background:var(--cad);box-shadow:0 0 10px var(--cad);top:20%;z-index:2;animation:scan 2.4s var(--ease) infinite}
 @keyframes scan{0%,100%{top:18%}50%{top:78%}}
 .kc-face .fr{position:absolute;inset:9%;border:2px solid var(--cad);border-radius:6px;z-index:1;clip-path:polygon(0 0,30% 0,30% 4%,70% 4%,70% 0,100% 0,100% 30%,96% 30%,96% 70%,100% 70%,100% 100%,70% 100%,70% 96%,30% 96%,30% 100%,0 100%,0 70%,4% 70%,4% 30%,0 30%)}
@@ -378,61 +392,61 @@ input[type=range].slider{width:100%;margin-top:8px;accent-color:var(--cad);heigh
 
 /* ---------- RUN A DAY ---------- */
 .run{background:var(--ink);background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:22px 22px}
-.scen{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
-.scen button{font-family:var(--display);font-weight:600;font-size:15px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;border-radius:30px;padding:10px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:44px}
-.scen button:hover{border-color:#fff}
-.scen button[aria-pressed="true"]{background:var(--cad);color:var(--ink);border-color:var(--cad)}
-.scen button span{font-family:var(--mono);font-size:11px;opacity:.8;font-weight:400}
-.chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;position:relative}
-.node{position:relative;padding-right:18px}
-.node-top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.node-n{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--ink);background:#2a2f36;transition:background .3s;flex:none}
-.node.lit .node-n{background:var(--cad)}
-.node.lit.done .node-n{background:var(--green-soft)}
-.rail{flex:1;height:2px;background:rgba(255,255,255,.14);position:relative;overflow:hidden;border-radius:2px}
-.rail span{position:absolute;inset:0;background:var(--cad);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
-.node.lit .rail span{transform:none}
-.node:last-child .rail{display:none}
-.node .w{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--on-ink)}
-.node .val{font-size:clamp(22px,2.2vw,30px);font-weight:700;letter-spacing:-.025em;margin-top:4px;line-height:1.1;font-variant-numeric:tabular-nums;opacity:.35;transition:opacity .3s}
-.node.lit .val{opacity:1}
-.node .d{font-size:14px;color:var(--on-ink);margin-top:6px;line-height:1.4}
-.run-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-top:40px}
-.rules{border:1px solid rgba(255,255,255,.14);border-radius:var(--r-lg);overflow:hidden}
-.rules-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.14);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--on-ink)}
-.rules table{width:100%;border-collapse:collapse}
-.rules th{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--ink300);font-weight:400;text-align:left;padding:10px 18px 8px;text-transform:uppercase}
-.rules td{padding:12px 18px;border-top:1px solid rgba(255,255,255,.1);font-size:15px;color:var(--on-ink);transition:background .3s,color .3s;vertical-align:middle}
-.rules td:first-child{font-family:var(--mono);font-size:13px;white-space:nowrap}
-.rules tr.hit td{background:rgba(255,192,46,.12);color:#fff}
-.rules tbody tr[data-s]{cursor:pointer}
-.rules tbody tr[data-s]:hover td{background:rgba(255,255,255,.06);color:#fff}
-.rules tbody tr.hit:hover td{background:rgba(255,192,46,.18)}
-.rules tbody tr[data-s]:active td{background:rgba(255,192,46,.22)}
-.rule-pick{all:unset;font:inherit;color:inherit;cursor:pointer;display:inline-block;border-radius:4px}
-.rule-pick:focus-visible{outline:2.5px solid var(--cad);outline-offset:5px}
-.rules-tip{display:flex;align-items:center;gap:8px;padding:9px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--cad);background:rgba(255,192,46,.07);border-bottom:1px solid rgba(255,255,255,.1)}
-.rules-tip svg{width:14px;height:14px;flex:none}
-.rules-res{padding:16px 18px 20px;border-top:1px solid rgba(255,255,255,.1)}
-.rules-res .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--ink300);text-transform:uppercase}
-.rules-res .v{font-size:15.5px;line-height:1.55;color:#fff;margin-top:8px}
-.rules-res .v b{font-weight:600}
-.rules-res .v em{font-style:normal;font-weight:600;color:var(--cad)}
-.rules tr.hit td:first-child{box-shadow:inset 3px 0 0 var(--cad)}
-.month{border:1px solid rgba(255,255,255,.14);border-radius:var(--r-lg);padding:18px 20px;display:flex;flex-direction:column;gap:14px}
-.month-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.month-h .t{font-weight:700;font-size:17px}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.cal i{aspect-ratio:1.5;border-radius:4px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--mono);font-size:10px;color:var(--ink300)}
-.cal i.f{background:rgba(143,227,180,.22);color:#d9f7e6}
-.cal i.o{background:rgba(255,192,46,.25);color:#ffe7ad}
-.cal i.p{background:rgba(217,230,247,.2);color:#e3ecf9}
-.cal i.a{background:rgba(199,54,47,.35);color:#ffd7d3}
-.cal i.h{background:rgba(255,192,46,.12);color:#ffe7ad;box-shadow:inset 0 0 0 1px rgba(255,192,46,.4)}
-.cal i.off{background:transparent;border:1px dashed rgba(255,255,255,.14)}
-.cal i.today{outline:2px solid var(--cad);outline-offset:1px;color:#fff}
-.month-f{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px dashed rgba(255,255,255,.18);padding-top:12px}
-.month-f b{font-size:26px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.run-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
+.month{border:1px solid rgba(255,255,255,.14);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:16px;background:rgba(16,20,24,.6)}
+.month-h{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.month-h .t{font-weight:700;font-size:19px}
+.tap-tip{display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--cad);background:rgba(255,192,46,.1);border-radius:20px;padding:5px 12px}
+.tap-tip svg{width:15px;height:15px}
+/* day types: --c is the solid colour (dot, pill, edge), --bg the soft cell fill */
+.t-full{--c:#8FE3B4;--bg:rgba(143,227,180,.18)}
+.t-ot{--c:#FFC02E;--bg:rgba(255,192,46,.26)}
+.t-late,.t-early{--c:#FF9F5A;--bg:rgba(255,159,90,.2)}
+.t-half{--c:#C7B4FF;--bg:rgba(199,180,255,.2)}
+.t-abs{--c:#FF7A70;--bg:rgba(199,54,47,.38)}
+.t-leave,.t-hol{--c:#8FB4FF;--bg:rgba(120,165,255,.2)}
+.t-off{--c:#6B7178;--bg:transparent}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal .wd{font-family:var(--mono);font-size:11px;color:var(--ink300);text-align:center;padding-bottom:2px}
+.cal button{all:unset;box-sizing:border-box;cursor:pointer;min-height:54px;border-radius:7px;background:var(--bg);box-shadow:inset 0 -3px 0 var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;transition:transform .15s var(--ease),box-shadow .15s,opacity .3s}
+.cal button b{font-family:var(--mono);font-size:14px;font-weight:500;line-height:1.1}
+.cal button small{font-size:11px;line-height:1.1;color:var(--c);font-weight:600;white-space:nowrap}
+.cal button.t-off{box-shadow:none;border:1px dashed rgba(255,255,255,.16);color:var(--ink300)}
+.cal button.t-off small{color:var(--ink300);font-weight:400}
+.cal button:hover{transform:translateY(-2px)}
+.cal button[aria-pressed="true"]{outline:2.5px solid #fff;outline-offset:2px;transform:none}
+.cal button:focus-visible{outline:2.5px solid var(--cad);outline-offset:2px}
+.cal button.pre{opacity:0;transform:scale(.85)}
+.cal button.dim{opacity:.28}
+.dd{border-top:1px dashed rgba(255,255,255,.18);padding-top:16px}
+.dd.enter{animation:ddIn .35s var(--ease)}
+@keyframes ddIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.dd-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.dd-date{font-weight:700;font-size:18px}
+.dd-pill{display:inline-flex;align-items:center;font-size:14px;font-weight:600;padding:4px 12px;border-radius:20px;background:var(--c);color:var(--ink)}
+.dd-pill.t-off{background:rgba(255,255,255,.12);color:#fff}
+.dd-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.3fr);gap:10px;margin-top:14px}
+.dd-row>div{background:rgba(255,255,255,.05);border-radius:8px;padding:10px 12px}
+.dd-row span{display:block;font-size:13px;color:var(--ink300)}
+.dd-row b{display:block;font-family:var(--mono);font-weight:500;font-size:18px;margin-top:2px;font-variant-numeric:tabular-nums}
+.dd-row .dd-earn{background:rgba(255,192,46,.12)}
+.dd-row .dd-earn span{color:var(--cad)}
+.dd-row .dd-earn b{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:-.02em;color:#fff;margin-top:0}
+.dd-why{font-size:16px;color:#fff;margin-top:14px;line-height:1.5}
+.dd-proof{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--green-soft);margin-top:8px}
+.dd-proof svg{width:15px;height:15px}
+.msum{border:1px solid rgba(255,255,255,.14);border-radius:var(--r-lg);padding:20px;background:rgba(16,20,24,.6)}
+.msum-h{font-size:19px}
+.msum-list{list-style:none;margin:14px 0 0;padding:0}
+.msum-list button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:6px;font-size:15.5px;color:var(--on-ink);min-height:40px}
+.msum-list button:hover,.msum-list button[aria-pressed="true"]{background:rgba(255,255,255,.07);color:#fff}
+.msum-list button:focus-visible{outline:2.5px solid var(--cad);outline-offset:1px}
+.msum-list i{width:12px;height:12px;border-radius:3px;background:var(--c);flex:none}
+.msum-list .t-off i{background:transparent;border:1px dashed rgba(255,255,255,.4)}
+.msum-list em{font-style:normal;margin-left:auto;font-family:var(--mono);font-size:13.5px;color:var(--ink300);white-space:nowrap}
+.msum-tot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px dashed rgba(255,255,255,.18);margin-top:12px;padding-top:14px;color:var(--on-ink)}
+.msum-tot b{font-size:30px;letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}
+.msum-note{font-size:14.5px;color:var(--on-ink);margin-top:10px;line-height:1.5}
 .run-note{font-size:13px;color:var(--ink300);margin-top:18px}
 
 /* ---------- INDUSTRIES ---------- */
@@ -544,8 +558,8 @@ html:lang(hi-IN) h1,html:lang(mr-IN) h1,html:lang(hi-IN) .px-price b,html:lang(m
 html:lang(hi-IN) h2,html:lang(mr-IN) h2,html:lang(hi-IN) h3,html:lang(mr-IN) h3,html:lang(hi-IN) h4,html:lang(mr-IN) h4,html:lang(hi-IN) .h2,html:lang(mr-IN) .h2,html:lang(hi-IN) .why-q,html:lang(mr-IN) .why-q{line-height:1.28}
 html:lang(hi-IN) body,html:lang(mr-IN) body{line-height:1.65}
 /* small mono labels: Devanagari falls back to a proportional face, so close the wide mono word gap and keep the tiny ones legible (the English-only mock screens are left alone) */
-html:is(:lang(hi-IN),:lang(mr-IN)) :is(.kick,.k,.ap-k,.ap-p,.lc-tag,.lc-step,.foot-note,.foot-bot,.rules th,.rules-h,.rules-tip,.compare thead th,.yours .lb,.tk-row .w,.tk-row .st,.rpanel .rh,.rs .w,.ip-col h4,.after .n,.gl-row .e,.meta-row,.segleg,.slip-h .m,.spark-leg):not(.stage *,.cap-vis *){word-spacing:-.2em}
-html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th,.rules-res .k,.lc-step,.foot-note,.rs .w,.yours .lb,.rpanel .rh):not(.stage *,.cap-vis *){font-size:12px}
+html:is(:lang(hi-IN),:lang(mr-IN)) :is(.kick,.k,.ap-k,.ap-p,.lc-tag,.lc-step,.foot-note,.foot-bot,.compare thead th,.yours .lb,.tk-row .w,.tk-row .st,.rpanel .rh,.rs .w,.ip-col h4,.after .n,.gl-row .e,.meta-row,.segleg,.slip-h .m,.spark-leg):not(.stage *,.cap-vis *){word-spacing:-.2em}
+html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.lc-step,.foot-note,.rs .w,.yours .lb,.rpanel .rh):not(.stage *,.cap-vis *){font-size:12px}
 .foot .lang{margin-left:0;border-color:rgba(255,255,255,.3)}
 .foot .lang a{color:var(--ink300);padding:0 14px;min-height:38px}
 .foot .lang a+a{border-left-color:rgba(255,255,255,.2)}
@@ -678,7 +692,6 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th
   .kiosk-card{left:-8px}
   .prob-grid,.caps,.why,.beyond-grid,.faq-grid,.close-grid,.recipes,.yours,.meaning,.story,.contact-grid{grid-template-columns:minmax(0,1fr)}
   .cap-stage{position:static;min-height:0}
-  .chain{grid-template-columns:repeat(5,minmax(150px,1fr));overflow-x:auto;padding-bottom:10px;scrollbar-width:thin}
   .run-grid{grid-template-columns:minmax(0,1fr)}
   .principles{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pr:nth-child(3){padding-left:0;border-left:0}
@@ -708,13 +721,6 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th
   .cmp-f{padding:12px 14px 14px;font-size:14px}
   .catch b{font-size:19px}
   .dots5 i{width:12px}
-  .rules thead{display:none}
-  .rules tr{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1)}
-  .rules td{border:0;padding:0}
-  .rules td:nth-child(3){grid-column:1/-1;font-size:14px}
-  .rules tr.hit{background:rgba(255,192,46,.12);box-shadow:inset 3px 0 0 var(--cad)}
-  .rules tr.hit td{background:transparent}
-  .rules tr.hit td:first-child{box-shadow:none}
   .proof{display:grid;grid-template-columns:24px minmax(0,1fr);gap:2px 12px;padding-block:16px}
   .proof h3{margin-top:0}
   .proof p{grid-column:2}
@@ -723,12 +729,14 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th
   .vk{grid-template-columns:96px minmax(0,1fr);gap:14px}
   .vk .say{font-size:18px}
   .more ul{grid-template-columns:minmax(0,1fr)}
-  .chain{grid-template-columns:minmax(0,1fr);overflow:visible}
-  .node{padding-right:0;display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 14px;padding-bottom:18px}
-  .node-top{grid-row:1/4;flex-direction:column;align-items:center;margin:0;gap:6px;height:100%}
-  .rail{width:2px;height:auto;flex:1}
-  .rail span{transform:scaleY(0);transform-origin:top}
-  .node .val{font-size:22px}
+  .month,.msum{padding:16px 14px}
+  .cal{gap:4px}
+  .cal button{min-height:48px;border-radius:6px}
+  .cal button b{font-size:13px}
+  .cal button small{font-size:9.5px}
+  .dd-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dd-row .dd-earn{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between}
+  .dd-row b{font-size:16px}
   .proofs{grid-template-columns:minmax(0,1fr)}
   .proof:nth-child(2n){padding-left:0;border-left:0}
   .proof{padding-right:0}
@@ -744,6 +752,10 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th
   .hero-cta .btn{flex:1 1 auto}
   .close-grid{padding-block:72px 32px}
 }
+@media (max-width:380px){
+  .cal button small{display:none}
+  .cal button{min-height:40px}
+}
 
 
 /* ---------- capability progress ---------- */
@@ -755,7 +767,6 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th
 .seen.done .seen-bar i{background:var(--green)}
 .cap .ic{position:relative}
 .cap.seen-cap .ic::after{content:"";position:absolute;right:-3px;top:-3px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--surface)}
-.scen button.tried::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--green-soft);margin-left:2px}
 
 /* ---------- owner's audit tracker ---------- */
 .audit{position:relative;margin-left:auto;margin-right:22px}
@@ -799,8 +810,9 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.rules th
 @media (max-width:700px){
   .audit-l{display:none}
   .audit-chip{padding:5px 12px 5px 5px}
-  .audit-chip::after{content:"Audit";font-size:14px}
-  html:lang(hi-IN) .audit-chip::after,html:lang(mr-IN) .audit-chip::after{content:"ऑडिट"}
+  .audit-chip::after{content:"Check";font-size:14px}
+  html:lang(hi-IN) .audit-chip::after{content:"जाँच"}
+  html:lang(mr-IN) .audit-chip::after{content:"तपासणी"}
   .audit-pop{position:fixed;left:12px;right:12px;width:auto;max-width:none;top:calc(76px + env(safe-area-inset-top,0px))}
   .audit-toast{left:12px;right:12px;justify-content:flex-start;border-radius:12px}
   .seen{padding:12px 4px 0}
@@ -908,18 +920,18 @@ img{max-width:100%}
   <div class="wrap head-row">
     <a class="logo" href="/" aria-label="Rozka home" data-ia="aria-label"><span class="wm wm-sm" role="img" aria-label="Rozka"><span aria-hidden="true">R</span><span class="wm-o">o<svg class="clock" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="50" class="cf"/><g class="tk"><rect x="-2.6" y="-44" width="5.2" height="9" rx="1.5"/><rect x="-2.6" y="35" width="5.2" height="9" rx="1.5"/><rect x="35" y="-2.6" width="9" height="5.2" rx="1.5"/><rect x="-44" y="-2.6" width="9" height="5.2" rx="1.5"/></g><g class="hand hh"><line y1="6" y2="-23"/></g><g class="hand mh"><line y1="7" y2="-35"/></g><g class="sh"><line y1="10" y2="-38"/></g><circle r="5.5" class="hub"/></svg></span><span aria-hidden="true">zka</span></span></a>
     <div class="audit">
-      <button type="button" class="audit-chip" id="auditChip" aria-expanded="false" aria-controls="auditPop"><span class="ring" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" class="rb"/><circle cx="18" cy="18" r="15" class="rf" id="auditRing"/></svg><span id="auditN">0</span></span><span class="audit-l" data-i>Owner's audit</span></button>
+      <button type="button" class="audit-chip" id="auditChip" aria-expanded="false" aria-controls="auditPop"><span class="ring" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" class="rb"/><circle cx="18" cy="18" r="15" class="rf" id="auditRing"/></svg><span id="auditN">0</span></span><span class="audit-l" data-i>Owner's check</span></button>
       <div class="audit-pop" id="auditPop" role="region" aria-labelledby="auditH" hidden>
         <button type="button" class="ap-x" data-close aria-label="Close the audit checklist" data-ia="aria-label"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></svg></button>
         <p class="ap-k" data-i>THREE CHECKS, ABOUT TWO MINUTES</p>
-        <h2 class="ap-h" id="auditH" data-i>Your owner's audit</h2>
+        <h2 class="ap-h" id="auditH" data-i>Your owner's check</h2>
         <ol class="ap-list">
-          <li data-t="leaks"><span class="ap-st"></span><div><a href="/#problem" data-i>Catch the leaks in a register</a><span class="ap-p" data-p="leaks" data-i>0 of 5 caught</span></div></li>
+          <li data-t="leaks"><span class="ap-st"></span><div><a href="/#problem" data-i>Find the mistakes in a register</a><span class="ap-p" data-p="leaks" data-i>0 of 5 found</span></div></li>
           <li data-t="parts"><span class="ap-st"></span><div><a href="/#product" data-i>See all five parts of Rozka</a><span class="ap-p" data-p="parts" data-i>1 of 5 seen</span></div></li>
-          <li data-t="day"><span class="ap-st"></span><div><a href="/#how" data-i>Run Sunita's day two different ways</a><span class="ap-p" data-p="day" data-i>0 of 2 run</span></div></li>
+          <li data-t="day"><span class="ap-st"></span><div><a href="/#how" data-i>Tap 2 days on Sunita's calendar</a><span class="ap-p" data-p="day" data-i>0 of 2 tapped</span></div></li>
         </ol>
         <div class="ap-done" id="apDone" hidden>
-          <p data-i><b>Audit complete.</b> You've now checked what most owners never do: where hours leak, how pay is worked out, and how every rupee is proven.</p>
+          <p data-i><b>All checks done.</b> You've now seen what most owners never check: where hours go missing, how salary is counted, and how every rupee is proven.</p>
           <a class="btn lc-wa" id="apWa" href="https://wa.me/919175212447" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg><span data-i>Send me my audit summary</span></a>
           <a class="btn btn-line" href="/contact/" style="width:100%;margin-top:8px"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg><span data-i>Book a 1-month demo</span></a>
           <button type="button" class="ap-later" data-close data-i>Maybe later</button>
@@ -947,12 +959,12 @@ img{max-width:100%}
 <section class="hero on-dark" aria-labelledby="hero-h">
   <div class="wrap hero-grid">
     <div>
-      <span class="chip" data-i><i></i>Attendance &amp; payroll for businesses that run on people</span>
-      <h1 id="hero-h" data-i>Attendance in. Salaries out. <span class="y">No register in between.</span></h1>
-      <p class="hero-sub" data-i>Rozka records every punch at your door, works out each day's pay by your rules, and locks every payout with proof. Then it takes on the rest of your daily work.</p>
+      <span class="chip" data-i><i></i>Attendance &amp; salary app for shops, factories and offices</span>
+      <h1 id="hero-h" data-i><span class="hl">No register.</span> <span class="hl">No calculator.</span> <span class="hl y">No salary fights.</span></h1>
+      <p class="hero-sub" data-i>Staff mark attendance at the door with their face. Rozka works out every day's salary for you, and keeps proof of every rupee you pay.</p>
       <div class="hero-cta">
         <a class="btn btn-cad" href="/contact/"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg><span data-i>Book a 1-month demo</span></a>
-        <a class="btn btn-line-light" href="/#how"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"/> <circle cx="12" cy="12" r="10"/></svg><span data-i>Watch a day become a payslip</span></a>
+        <a class="btn btn-line-light" href="/#how"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"/> <circle cx="12" cy="12" r="10"/></svg><span data-i>See how salary is counted</span></a>
       </div>
       <ul class="assure">
         <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i>Try it on your real staff for a month</span></li>
@@ -978,9 +990,9 @@ img{max-width:100%}
             <ul class="feed" id="feed"></ul>
           </div>
           <div class="win-pay">
-            <div><div class="k">Today's payroll</div><div class="pay-big" id="payBig">₹8,654</div><div class="pay-sub">updates with every punch</div></div>
+            <div><div class="k">Today's salary total</div><div class="pay-big" id="payBig">₹8,654</div><div class="pay-sub">goes up as staff come in</div></div>
             <div class="depts" id="depts"></div>
-            <div class="next-up"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/> <path d="M14 2v5a1 1 0 0 0 1 1h5"/> <path d="M10 9H8"/> <path d="M16 13H8"/> <path d="M16 17H8"/></svg><span>Payslips for all 20 staff, ready at month end.</span></div>
+            <div class="next-up"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/> <path d="M14 2v5a1 1 0 0 0 1 1h5"/> <path d="M10 9H8"/> <path d="M16 13H8"/> <path d="M16 17H8"/></svg><span>Salary slips for all 20 staff, ready at month end.</span></div>
           </div>
         </div>
         <div class="win-log">
@@ -1005,40 +1017,40 @@ img{max-width:100%}
         <div class="kick" data-i>The problem</div>
         <h2 class="h2" id="prob-h" data-i>Your register can't tell you the truth.</h2>
       </div>
-      <p class="lede" style="margin-top:0;max-width:28em" data-i>Five entries from a real-looking register. Audit them yourself: tap each one you wouldn't trust.</p>
+      <p class="lede" style="margin-top:0;max-width:28em" data-i>Five lines from a normal register. Tap the ones that look wrong to you.</p>
     </div>
 
     <div class="prob-grid">
       <div>
         <div class="cmp rv" id="cmp">
           <div class="cmp-h">
-            <div class="catch"><span class="k" data-i>LEAKS CAUGHT</span><b id="catchN">0 / 5</b><span class="dots5" id="catchDots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
+            <div class="catch"><span class="k" data-i>MISTAKES FOUND</span><b id="catchN">0 / 5</b><span class="dots5" id="catchDots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
             <button type="button" class="reveal" id="revealAll" data-i>Show me all five</button>
           </div>
           <ul class="cmp-rows">
             <li data-k="0"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Ramesh's entry" data-ia="aria-label"><span class="nm" data-i>Ramesh<em class="why">rounded</em></span><span class="cell"><span class="r hand">P &nbsp; 9:00</span><span class="z truth"><s class="was">P &nbsp; 9:00</s><span class="rec" data-i>in 09:12 · photo saved</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-cad" data-i>Late 12m</span></span></button></li>
-            <li data-k="1"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Imran's entry" data-ia="aria-label"><span class="nm" data-i>Imran<em class="why">buddy punch</em></span><span class="cell"><span class="r hand" data-i>P &nbsp;✓ (by Sachin)</span><span class="z truth"><s class="was" data-i>P &nbsp;✓ (by Sachin)</s><span class="rec" data-i>no punch today</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-red" data-i>Absent</span></span></button></li>
+            <li data-k="1"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Imran's entry" data-ia="aria-label"><span class="nm" data-i>Imran<em class="why">marked by a friend</em></span><span class="cell"><span class="r hand" data-i>P &nbsp;✓ (by Sachin)</span><span class="z truth"><s class="was" data-i>P &nbsp;✓ (by Sachin)</s><span class="rec" data-i>no punch today</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-red" data-i>Absent</span></span></button></li>
             <li data-k="2"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Sunita's entry" data-ia="aria-label"><span class="nm" data-i>Sunita<em class="why">disputed</em></span><span class="cell"><span class="r hand" data-i>OT 3 hrs??</span><span class="z truth"><s class="was" data-i>OT 3 hrs??</s><span class="rec" data-i>out 20:00 · 9h 30m worked</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-tint" data-i>OT 1h @ 1.5×</span></span></button></li>
-            <li data-k="3"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Anil's entry" data-ia="aria-label"><span class="nm" data-i>Anil<em class="why">forgotten</em></span><span class="cell"><span class="r hand" data-i>Adv 2000 – returned?</span><span class="z truth"><s class="was" data-i>Adv 2000 – returned?</s><span class="rec" data-i>advance ₹2,000 · EMI cut</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-green" data-i>2 of 4 paid</span></span></button></li>
+            <li data-k="3"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Anil's entry" data-ia="aria-label"><span class="nm" data-i>Anil<em class="why">forgotten</em></span><span class="cell"><span class="r hand" data-i>Adv 2000 – returned?</span><span class="z truth"><s class="was" data-i>Adv 2000 – returned?</s><span class="rec" data-i>advance ₹2,000 · cut from salary</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-green" data-i>2 of 4 paid</span></span></button></li>
             <li data-k="4"><button type="button" class="leak-row" aria-pressed="false" aria-label="Check Vijay's entry" data-ia="aria-label"><span class="nm" data-i>Vijay<em class="why">counted twice</em></span><span class="cell"><span class="r hand" data-i>Night ✓ &nbsp;✓</span><span class="z truth"><s class="was" data-i>Night ✓ &nbsp;✓</s><span class="rec" data-i>22:00 → 06:00 · one shift</span></span></span><span class="cell tag"><span class="r chk"><span data-i>Check</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span><span class="z pill p-green" data-i>1 day</span></span></button></li>
           </ul>
-          <div class="cmp-f" aria-live="polite" id="catchMsg"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg>Tap any entry you wouldn't trust. Rozka shows what really happened.</div>
+          <div class="cmp-f" aria-live="polite" id="catchMsg"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg>Tap any line that looks wrong. Rozka shows what really happened.</div>
         </div>
       </div>
 
       <aside class="loss on-dark rv" aria-labelledby="loss-h">
         <h3 id="loss-h" data-i>How much is this costing your business?</h3>
-        <p class="sub" data-i>Set your numbers and see the damage.</p>
-        <div class="fr-row"><div class="fr-top"><label for="rWorkers" data-i>Staff on payroll</label><output id="oWorkers" for="rWorkers">20</output></div><input class="slider" type="range" id="rWorkers" min="5" max="100" step="1" value="20"></div>
+        <p class="sub" data-i>Put in your numbers and see the loss.</p>
+        <div class="fr-row"><div class="fr-top"><label for="rWorkers" data-i>Number of staff</label><output id="oWorkers" for="rWorkers">20</output></div><input class="slider" type="range" id="rWorkers" min="5" max="100" step="1" value="20"></div>
         <div class="fr-row"><div class="fr-top"><label for="rSalary" data-i>Average monthly salary</label><output id="oSalary" for="rSalary">₹15,000</output></div><input class="slider" type="range" id="rSalary" min="8000" max="40000" step="500" value="15000"></div>
-        <div class="fr-row"><div class="fr-top"><label for="rMin" data-i>Unrecorded minutes per worker, per day</label><output id="oMin" for="rMin">15 min</output></div><input class="slider" type="range" id="rMin" min="5" max="60" step="5" value="15"></div>
+        <div class="fr-row"><div class="fr-top"><label for="rMin" data-i>Minutes lost per worker, each day</label><output id="oMin" for="rMin">15 min</output></div><input class="slider" type="range" id="rMin" min="5" max="60" step="5" value="15"></div>
         <div class="loss-out" aria-live="polite">
           <div class="k" style="color:var(--ink300)" data-i>Your business loses</div>
           <div class="loss-big" id="leakMonth">−₹9,375</div>
           <div class="loss-yr" data-i>every month, paying for time nobody worked. That's <b id="leakYear">₹1,12,500</b> a year.</div>
         </div>
-        <p class="loss-note" data-i>Illustrative. 26 working days, 8-hour day, lost minutes only. Forgotten advances and days of salary maths come on top.</p>
-        <a class="btn btn-cad" href="/contact/" data-i>Stop the leak</a>
+        <p class="loss-note" data-i>Example only. 26 working days, 8 hours a day, only lost minutes counted. Forgotten advances and salary mistakes cost you more.</p>
+        <a class="btn btn-cad" href="/contact/" data-i>Stop this loss</a>
       </aside>
     </div>
   </div>
@@ -1050,18 +1062,18 @@ img{max-width:100%}
     <div class="sh-row rv">
       <div>
         <div class="kick" data-i>What Rozka does</div>
-        <h2 class="h2" id="prod-h" data-i>One record, from the door to the payslip.</h2>
+        <h2 class="h2" id="prod-h" data-i>From attendance to salary. All in one place.</h2>
       </div>
-      <p class="lede" style="margin-top:0;max-width:26em" data-i>Five parts that hand work to each other. Pick one to see it.</p>
+      <p class="lede" style="margin-top:0;max-width:26em" data-i>Five simple things Rozka does for you. Tap one to see it.</p>
     </div>
 
     <div class="caps">
       <div class="cap-list" role="tablist" aria-label="What Rozka does" aria-orientation="vertical" id="capList" data-ia="aria-label">
-        <button class="cap" role="tab" id="c-punch" aria-controls="cap-stage" aria-selected="true" data-cap="0"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/> <path d="M17 3h2a2 2 0 0 1 2 2v2"/> <path d="M21 17v2a2 2 0 0 1-2 2h-2"/> <path d="M7 21H5a2 2 0 0 1-2-2v-2"/> <path d="M8 14s1.5 2 4 2 4-2 4-2"/> <path d="M9 9h.01"/> <path d="M15 9h.01"/></svg></span><span><span class="t" data-i>Punch with proof</span><span class="s" data-i>A photo and timestamp on every punch, so nobody marks anybody else present.</span></span></button>
-        <button class="cap" role="tab" id="c-pay" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="1"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12"/> <path d="M6 8h12"/> <path d="m6 13 8.5 8"/> <path d="M6 13h3"/> <path d="M9 13c6.667 0 6.667-10 0-10"/></svg></span><span><span class="t" data-i>Pay that works itself out</span><span class="s" data-i>Each day's pay is calculated from your rules the moment someone punches out.</span></span></button>
-        <button class="cap" role="tab" id="c-adv" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="2"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/> <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/> <path d="m2 16 6 6"/> <circle cx="16" cy="9" r="2.9"/> <circle cx="6" cy="5" r="3"/></svg></span><span><span class="t" data-i>Advances that come back</span><span class="s" data-i>Give an advance once. The EMI comes out of salary until it's closed.</span></span></button>
-        <button class="cap" role="tab" id="c-lock" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="3"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/> <path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span><span class="t" data-i>Payslips and locked months</span><span class="s" data-i>Pay out and the month freezes: who got how much, and when.</span></span></button>
-        <button class="cap" role="tab" id="c-dash" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="4"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/> <rect width="7" height="5" x="14" y="3" rx="1"/> <rect width="7" height="9" x="14" y="12" rx="1"/> <rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span><span class="t" data-i>Your business at a glance</span><span class="s" data-i>Who's in, hours and trends by department, on your phone, from anywhere.</span></span></button>
+        <button class="cap" role="tab" id="c-punch" aria-controls="cap-stage" aria-selected="true" data-cap="0"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/> <path d="M17 3h2a2 2 0 0 1 2 2v2"/> <path d="M21 17v2a2 2 0 0 1-2 2h-2"/> <path d="M7 21H5a2 2 0 0 1-2-2v-2"/> <path d="M8 14s1.5 2 4 2 4-2 4-2"/> <path d="M9 9h.01"/> <path d="M15 9h.01"/></svg></span><span><span class="t" data-i>Attendance with a photo</span><span class="s" data-i>Staff mark attendance at the door with face, finger or card. A photo is saved, so nobody can mark it for a friend.</span></span></button>
+        <button class="cap" role="tab" id="c-pay" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="1"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12"/> <path d="M6 8h12"/> <path d="m6 13 8.5 8"/> <path d="M6 13h3"/> <path d="M9 13c6.667 0 6.667-10 0-10"/></svg></span><span><span class="t" data-i>Salary counted every day</span><span class="s" data-i>When someone leaves for the day, Rozka works out what they earned. No calculator needed.</span></span></button>
+        <button class="cap" role="tab" id="c-adv" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="2"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/> <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/> <path d="m2 16 6 6"/> <circle cx="16" cy="9" r="2.9"/> <circle cx="6" cy="5" r="3"/></svg></span><span><span class="t" data-i>Advances cut from salary</span><span class="s" data-i>Give an advance once. Rozka cuts a fixed amount from salary every month until it's paid back.</span></span></button>
+        <button class="cap" role="tab" id="c-lock" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="3"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/> <path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span><span class="t" data-i>Salary slip for everyone</span><span class="s" data-i>When you pay salary, Rozka saves who got how much, and when. Nobody can change it later.</span></span></button>
+        <button class="cap" role="tab" id="c-dash" aria-controls="cap-stage" aria-selected="false" tabindex="-1" data-cap="4"><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/> <rect width="7" height="5" x="14" y="3" rx="1"/> <rect width="7" height="9" x="14" y="12" rx="1"/> <rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span><span class="t" data-i>See everything on your phone</span><span class="s" data-i>Who came, who didn't, and how many hours they worked. Check from anywhere.</span></span></button>
         <div class="seen" aria-live="polite"><span class="seen-bar" id="seenBar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="seenTxt">You've seen 1 of 5 parts</span></div>
       </div>
 
@@ -1074,18 +1086,18 @@ img{max-width:100%}
               <div>
                 <div class="k">DOOR KIOSK · 09:02 · FACE</div>
                 <div class="say" style="margin-top:6px">"Ramesh, you're marked present."</div>
-                <div class="tr">Spoken aloud, so every worker knows their punch counted.</div>
+                <div class="tr">Said out loud, so every worker knows their attendance is marked.</div>
                 <div class="methods"><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/> <path d="M17 3h2a2 2 0 0 1 2 2v2"/> <path d="M21 17v2a2 2 0 0 1-2 2h-2"/> <path d="M7 21H5a2 2 0 0 1-2-2v-2"/> <path d="M8 14s1.5 2 4 2 4-2 4-2"/> <path d="M9 9h.01"/> <path d="M15 9h.01"/></svg>FACE</span><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/> <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/> <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/> <path d="M2 12a10 10 0 0 1 18-6"/> <path d="M2 16h.01"/> <path d="M21.8 16c.2-2 .131-5.354 0-6"/> <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/> <path d="M8.65 22c.21-.66.45-1.32.57-2"/> <path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg>FINGERPRINT</span><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/> <line x1="2" x2="22" y1="10" y2="10"/> <path d="M6 14h2"/></svg>CARD</span><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/> <rect width="5" height="5" x="16" y="3" rx="1"/> <rect width="5" height="5" x="3" y="16" rx="1"/> <path d="M21 16h-3a2 2 0 0 0-2 2v3"/> <path d="M21 21v.01"/> <path d="M12 7v3a2 2 0 0 1-2 2H7"/> <path d="M3 12h.01"/> <path d="M12 3h.01"/> <path d="M12 16v.01"/> <path d="M16 12h1"/> <path d="M21 12v.01"/> <path d="M12 21v-1"/></svg>QR</span></div>
               </div>
             </div>
             <div class="meta-row"><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>photo saved</span><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>works offline</span><span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>night shifts handled</span></div>
           </div>
-          <details class="more"><summary><span data-i>Everything in Punch</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
-            <li data-i>Face kiosk, fingerprint machine, card and QR, all in one record</li>
-            <li data-i>Photo and timestamp on every punch</li>
-            <li data-i>Speaks each confirmation aloud</li>
-            <li data-i>Internet down? Punches queue and upload at their true time</li>
-            <li data-i>Night shifts, lunch exits and missed check-outs flagged</li>
+          <details class="more"><summary><span data-i>More about attendance</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
+            <li data-i>Face, fingerprint, card or QR code: all in one list</li>
+            <li data-i>Photo and time saved every time someone marks attendance</li>
+            <li data-i>Says the person's name out loud, so they know it worked</li>
+            <li data-i>No internet? Attendance is saved and sent later with the right time</li>
+            <li data-i>Night shifts, lunch breaks and forgotten check-outs are handled</li>
           </ul></details>
         </div>
 
@@ -1101,51 +1113,51 @@ img{max-width:100%}
               <div class="row tot"><span class="a">Day's pay</span><span class="b">₹679</span></div>
             </div>
           </div>
-          <details class="more"><summary><span data-i>Everything in Pay</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
-            <li data-i>Payroll calculated continuously, no month-end run</li>
-            <li data-i>Overtime at your multiplier, weekly offs and holidays included</li>
-            <li data-i>Short-hours and leave penalties, all configurable</li>
-            <li data-i>Daily and monthly adjustments, each with a note</li>
-            <li data-i>Never pays out a negative day or month</li>
-            <li data-i>Every threshold is a setting your admin changes</li>
+          <details class="more"><summary><span data-i>More about daily salary</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
+            <li data-i>Salary is counted every day, so month-end takes minutes</li>
+            <li data-i>Overtime paid at your rate, with weekly offs and holidays</li>
+            <li data-i>You decide the cut for late coming, short hours and leave</li>
+            <li data-i>Add or cut any amount, with a note saying why</li>
+            <li data-i>Salary never goes below zero</li>
+            <li data-i>Change any rule yourself, any time</li>
           </ul></details>
         </div>
 
         <div class="cap-panel" data-panel="2" hidden>
           <div class="cap-vis">
             <div class="vis-h"><span class="t">Advance · Anil G.</span><span class="pill p-tint">₹6,000 left</span></div>
-            <div class="emi-amt"><b>₹12,000</b><span>EMI ₹2,000 / month</span></div>
+            <div class="emi-amt"><b>₹12,000</b><span>₹2,000 cut every month</span></div>
             <div class="segs" aria-hidden="true"><i class="d"></i><i class="d"></i><i class="s"></i><i class="d"></i><i></i><i></i></div>
-            <div class="segleg"><span><i style="background:var(--green)"></i>3 cut from salary</span><span><i style="background:var(--cad)"></i>1 skipped</span><span><i style="background:var(--ink100)"></i>re-spread over the rest</span></div>
-            <div class="emi-log"><div><span>Jun · salary</span><span>− ₹2,000</span></div><div><span>Jul · salary</span><span>− ₹2,000</span></div><div><span>Aug · skipped (festival)</span><span>re-spread</span></div><div><span>Sep · salary</span><span>− ₹2,000</span></div></div>
+            <div class="segleg"><span><i style="background:var(--green)"></i>3 cut from salary</span><span><i style="background:var(--cad)"></i>1 skipped</span><span><i style="background:var(--ink100)"></i>spread over the rest</span></div>
+            <div class="emi-log"><div><span>Jun · salary</span><span>− ₹2,000</span></div><div><span>Jul · salary</span><span>− ₹2,000</span></div><div><span>Aug · skipped (festival)</span><span>moved ahead</span></div><div><span>Sep · salary</span><span>− ₹2,000</span></div></div>
           </div>
-          <details class="more"><summary><span data-i>Everything in Advances</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
-            <li data-i>Simple or reducing interest, your tenure</li>
-            <li data-i>EMI cut from salary until the loan is closed</li>
-            <li data-i>Skip or reduce one month, the rest re-spreads</li>
-            <li data-i>Top-ups merge into one loan, one EMI</li>
-            <li data-i>Full payment ledger and progress</li>
+          <details class="more"><summary><span data-i>More about advances</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
+            <li data-i>With or without interest, for as many months as you choose</li>
+            <li data-i>A fixed amount cut from salary until it's paid back</li>
+            <li data-i>Skip a month or cut less, and the rest adjusts by itself</li>
+            <li data-i>Gave more money later? It joins the same advance</li>
+            <li data-i>See how much is paid back and how much is left</li>
           </ul></details>
         </div>
 
         <div class="cap-panel" data-panel="3" hidden>
           <div class="cap-vis slip">
-            <div class="slip-h"><div><div class="n">Sunita Jadhav</div><div class="m">FRONT DESK · SEPTEMBER 2026</div></div><span class="pill p-line">Payslip PDF</span></div>
+            <div class="slip-h"><div><div class="n">Sunita Jadhav</div><div class="m">FRONT DESK · SEPTEMBER 2026</div></div><span class="pill p-line">Salary slip PDF</span></div>
             <div class="ledger">
               <div class="row"><span class="a">Days earned (25)</span><span class="b">₹14,423</span></div>
               <div class="row"><span class="a">Overtime 6h × 1.5</span><span class="b">+ ₹611</span></div>
               <div class="row"><span class="a">Travel allowance</span><span class="b">+ ₹800</span></div>
-              <div class="row"><span class="a">Advance EMI</span><span class="b">− ₹2,000</span></div>
-              <div class="row tot"><span class="a">Paid</span><span class="stamp">PAID · LOCKED</span><span class="b">₹13,834</span></div>
+              <div class="row"><span class="a">Advance cut</span><span class="b">− ₹2,000</span></div>
+              <div class="row tot"><span class="a">Paid</span><span class="stamp">PAID · SAVED</span><span class="b">₹13,834</span></div>
             </div>
-            <div class="slip-foot"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/> <path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Paid by Aryan, 30 Sep at 19:40. Reopening needs the admin password.</span></div>
+            <div class="slip-foot"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/> <path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Paid by Aryan, 30 Sep at 19:40. Can't be changed without the owner's password.</span></div>
           </div>
-          <details class="more"><summary><span data-i>Everything in Payslips</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
-            <li data-i>Paying out freezes a snapshot: amount, who, when</li>
-            <li data-i>A closed month reopens only with the admin password</li>
-            <li data-i>Payslip PDF for every employee</li>
-            <li data-i>A warning if last month was never paid out</li>
-            <li data-i>PF, ESI and TDS entered as deductions on the slip</li>
+          <details class="more"><summary><span data-i>More about salary slips</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
+            <li data-i>When you pay, Rozka saves the amount, who got it and when</li>
+            <li data-i>A paid month can't be changed without the owner's password</li>
+            <li data-i>A salary slip (PDF) for every worker</li>
+            <li data-i>A reminder if last month's salary wasn't marked paid</li>
+            <li data-i>PF, ESI and TDS can be shown as cuts on the slip</li>
           </ul></details>
         </div>
 
@@ -1162,14 +1174,14 @@ img{max-width:100%}
               <div class="spark-leg"><span>1 Oct</span><span>dips are Sundays</span><span>14 Oct</span></div>
             </div>
           </div>
-          <details class="more"><summary><span data-i>Everything in the dashboard</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
-            <li data-i>Present, absent, hours and trends, split by department</li>
-            <li data-i>A live feed of every punch and payment</li>
-            <li data-i>Staff policy PDF that rewrites itself from your settings</li>
-            <li data-i>An extra password on sensitive screens</li>
-            <li data-i>Staff records with any custom field you need</li>
-            <li data-i>Salary revisions, allowances and increments with full history</li>
-            <li data-i>Bulk ID card printing</li>
+          <details class="more"><summary><span data-i>More about the phone view</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><ul>
+            <li data-i>Who came, who didn't, and hours worked, for each department</li>
+            <li data-i>See every attendance and payment as it happens</li>
+            <li data-i>A staff rules PDF that updates when you change a rule</li>
+            <li data-i>An extra password on private screens</li>
+            <li data-i>Staff details, with any extra info you want to keep</li>
+            <li data-i>Salary raises and allowances, with full history</li>
+            <li data-i>Print ID cards for all staff at once</li>
           </ul></details>
         </div>
 
@@ -1184,49 +1196,25 @@ img{max-width:100%}
     <div class="sh-row rv">
       <div>
         <div class="kick" data-i>See how it works</div>
-        <h2 class="h2" id="how-h" data-i>Watch one day become a payslip.</h2>
+        <h2 class="h2" id="how-h" data-i>Tap any day. See what Sunita earned.</h2>
       </div>
-      <p class="lede" style="margin-top:0;max-width:27em" data-i>Sunita earns ₹15,000 a month on a 9–7 shift with a 90-minute break. Pick how her day went.</p>
-    </div>
-
-    <div class="scen" role="group" aria-label="Pick how Sunita's day went" id="scen" data-ia="aria-label">
-      <button type="button" data-s="0" aria-pressed="false" data-i>On time <span>09:00–19:00</span></button>
-      <button type="button" data-s="1" aria-pressed="true" data-i>Stayed late <span>09:00–20:00</span></button>
-      <button type="button" data-s="2" aria-pressed="false" data-i>Left early <span>09:00–17:30</span></button>
-      <button type="button" data-s="3" aria-pressed="false" data-i>Left within the hour <span>09:00–09:40</span></button>
-      <button type="button" data-s="4" aria-pressed="false" data-i>Left at lunch <span>09:00–14:00</span></button>
-    </div>
-
-    <div class="chain" id="chain" aria-live="polite">
-      <div class="node lit"><div class="node-top"><span class="node-n">1</span><span class="rail"><span></span></span></div><div class="w" data-i>PUNCH IN</div><div class="val" data-f="in">09:00</div><div class="d" data-i>Face at the door, photo saved</div></div>
-      <div class="node lit"><div class="node-top"><span class="node-n">2</span><span class="rail"><span></span></span></div><div class="w" data-i>PUNCH OUT</div><div class="val" data-f="out">20:00</div><div class="d" data-f="outd" data-i>Photo saved</div></div>
-      <div class="node lit"><div class="node-top"><span class="node-n">3</span><span class="rail"><span></span></span></div><div class="w" data-i>HOURS WORKED</div><div class="val" data-f="hrs">9h 30m</div><div class="d" data-f="hrsd" data-i>After the 90-minute break</div></div>
-      <div class="node lit"><div class="node-top"><span class="node-n">4</span><span class="rail"><span></span></span></div><div class="w" data-i>YOUR RULE</div><div class="val" data-f="rule" data-i>Full day + OT</div><div class="d" data-f="ruled" data-i>1h extra at 1.5×</div></div>
-      <div class="node lit done"><div class="node-top"><span class="node-n">5</span><span class="rail"><span></span></span></div><div class="w" data-i>DAY'S PAY</div><div class="val" data-f="pay">₹679</div><div class="d" data-f="payd" data-i>Added to October</div></div>
+      <p class="lede" style="margin-top:0;max-width:27em" data-i>Sunita works 9 am to 7 pm and gets ₹15,000 a month. Rozka counts her salary every day, by itself.</p>
     </div>
 
     <div class="run-grid">
-      <div class="rules">
-        <div class="rules-h"><span data-i>YOUR RULEBOOK · EXAMPLE SETTINGS</span><span data-i>EDITABLE BY YOUR ADMIN</span></div>
-        <div class="rules-tip"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.1 12 6"/> <path d="m5.1 8-2.9-.8"/> <path d="m6 12-1.9 2"/> <path d="M7.2 2.2 8 5.1"/> <path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg><span data-i>Tap a row to see that kind of day run on Sunita's pay</span></div>
-        <div class="tbl-scroll"><table>
-          <thead><tr><th data-i>Hours worked</th><th data-i>Counted as</th><th data-i>What happens to pay</th></tr></thead>
-          <tbody id="rulesBody">
-            <tr data-r="abs" data-s="3"><td><button type="button" class="rule-pick" aria-pressed="false" data-i>under 1h</button></td><td><span class="pill p-red" data-i>Absent</span></td><td data-i>No pay, 1 leave counted</td></tr>
-            <tr data-r="half" data-s="4"><td><button type="button" class="rule-pick" aria-pressed="false">1h – 4.5h</button></td><td><span class="pill p-cad" data-i>Half day</span></td><td data-i>Hours paid, shortfall penalty at 1.5×</td></tr>
-            <tr data-r="part" data-s="2"><td><button type="button" class="rule-pick" aria-pressed="false">6.5h – 8.5h</button></td><td><span class="pill p-tint" data-i>Partial day</span></td><td data-i>Full day minus shortfall at 1.5×</td></tr>
-            <tr data-r="full" data-s="1" class="hit"><td><button type="button" class="rule-pick" aria-pressed="true" data-i>8.5h and up</button></td><td><span class="pill p-green" data-i>Full day</span></td><td data-i>Full pay, extra hours at 1.5×</td></tr>
-          </tbody>
-        </table></div>
-        <div class="rules-res" aria-live="polite"><div class="k" id="rulesK"></div><div class="v" id="rulesV"></div></div>
-      </div>
       <div class="month">
-        <div class="month-h"><span class="t" data-i>Sunita · October</span><span class="k" style="color:var(--ink300)" data-i>MON → SUN</span></div>
-        <div class="cal" id="cal" aria-hidden="true"></div>
-        <div class="month-f"><span style="color:var(--on-ink)" data-i>Earned so far</span><b id="monthTotal">₹7,653</b></div>
+        <div class="month-h"><span class="t" data-i>Sunita · October</span><span class="tap-tip"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.1 12 6"/> <path d="m5.1 8-2.9-.8"/> <path d="m6 12-1.9 2"/> <path d="M7.2 2.2 8 5.1"/> <path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg><span data-i>Tap any day</span></span></div>
+        <div class="cal" id="cal" role="group" aria-label="Sunita's October. Tap a day to see it." data-ia="aria-label"></div>
+        <div class="dd" id="dayCard" aria-live="polite"></div>
       </div>
+      <aside class="msum" aria-labelledby="msum-h">
+        <h3 class="msum-h" id="msum-h" data-i>Her October, added up</h3>
+        <ul class="msum-list" id="calSum"></ul>
+        <div class="msum-tot"><span data-i>Salary for October</span><b id="monthTotal">₹15,049</b></div>
+        <p class="msum-note" data-i>Rozka adds this up every day, on its own. On the last day of the month, her salary slip is ready.</p>
+      </aside>
     </div>
-    <p class="run-note" data-i>Illustrative pay: ₹15,000 ÷ 26 days = ₹577 a full day; ₹577 ÷ 8.5h = ₹68 an hour. Your own rules and numbers go in at setup.</p>
+    <p class="run-note" data-i>Example only: ₹15,000 ÷ 26 working days = ₹577 for a full day. We put in your own rules when we set it up.</p>
   </div>
 </section>
 
@@ -1242,7 +1230,7 @@ img{max-width:100%}
     </div>
     <div class="ind-tabs" role="tablist" aria-label="Choose your business" data-ia="aria-label" id="ilist"></div>
     <div class="ipanel" role="tabpanel" id="ipanel" tabindex="0"></div>
-    <!-- seo:ind:start --><noscript><div class="wrap"><article><h3>Print shops</h3><p><strong>Rush jobs, late nights and a notebook full of advances.</strong> One week is quiet, the next everyone stays till 10 to finish a wedding order. That's where hours and money go missing.</p><h4>The daily grind</h4><ul><li>Overtime in rush weeks that nobody can verify</li><li>Job slips lost between the counter and the machine</li><li>Advances to staff tracked in a notebook</li></ul><h4>Fixed from day one</h4><ul><li>Every hour of overtime recorded with a photo, paid at your multiplier</li><li>Advances cut from salary as EMI until they're closed</li><li>Salary ready the day the month ends, payslips included</li></ul><h4>We could automate next</h4><ul><li>An order at the counter becomes a job card in the right queue</li><li>Customers told when the job is ready, with the balance due</li></ul></article><article><h3>Hospitals &amp; clinics</h3><p><strong>Round-the-clock shifts, a dozen departments, no room for confusion.</strong> ICU, OT, wards, lab, pharmacy, housekeeping. Every department runs its own shifts, and the night shift ends on a different date than it started.</p><h4>The daily grind</h4><ul><li>Night shifts that cross midnight, counted wrong or twice</li><li>A separate register for every department</li><li>Staff covering for each other on paper</li></ul><h4>Fixed from day one</h4><ul><li>A shift that crosses midnight counts as one working day</li><li>Attendance and hours by department on one dashboard</li><li>Face punch with a photo, so nobody marks anybody else</li></ul><h4>We could automate next</h4><ul><li>The duty in-charge alerted when a key post is unmanned</li><li>A daily staffing summary for the administrator</li></ul></article><article><h3>Factories &amp; workshops</h3><p><strong>Shifts, overtime and machines that can't wait.</strong> When a machine stops because someone didn't turn up, you lose more than a day's wage. And overtime is where most disputes start.</p><h4>The daily grind</h4><ul><li>Proxy attendance in early and late shifts</li><li>Holiday and weekly-off overtime worked out by hand</li><li>Short hours rounded up to full days</li></ul><h4>Fixed from day one</h4><ul><li>Fingerprint or face punch at the gate, with a timestamp</li><li>Overtime at your multiplier, weekly offs and holidays included</li><li>Half days and short hours treated exactly as your rules say</li></ul><h4>We could automate next</h4><ul><li>Jobs tracked stage by stage, with a nudge when one is stuck</li><li>Low-stock reminders before a material runs out</li></ul></article><article><h3>Showrooms &amp; retail</h3><p><strong>Doors open at 10. Do your staff?</strong> A late opening or an empty counter costs you a sale you never see. And leave, late marks and weekly offs become an argument every salary day.</p><h4>The daily grind</h4><ul><li>Late openings you only hear about later</li><li>Weekly offs and leave tracked on a wall calendar</li><li>Late marks argued over at salary time</li></ul><h4>Fixed from day one</h4><ul><li>See who's in from your phone, before you reach the shop</li><li>Weekly offs, leave and late marks handled by your rules</li><li>Every deduction shown on the payslip</li></ul><h4>We could automate next</h4><ul><li>An alert when the counter is short-staffed at opening</li><li>An end-of-day summary sent to you every night</li></ul></article><article><h3>Restaurants &amp; hotels</h3><p><strong>Split shifts, late closings and advances every month.</strong> Lunch rush, a break, dinner rush, closing after midnight. Kitchen and service staff rarely work a simple 9 to 6.</p><h4>The daily grind</h4><ul><li>Split shifts with a long break in between</li><li>Closing after midnight, so one day's hours fall on two dates</li><li>Frequent small advances to staff</li></ul><h4>Fixed from day one</h4><ul><li>Lunch exits and returns recorded, breaks handled by your rules</li><li>Shifts that end after midnight counted as one day</li><li>Advances recovered as EMI, automatically</li></ul><h4>We could automate next</h4><ul><li>Low-stock reminders for the kitchen</li><li>A nightly summary of attendance and hours</li></ul></article><article><h3>Something else</h3><p><strong>Your business isn't on this list?</strong> If your business runs on people and repeats the same work every day, Rozka fits. Tell us how your day goes and we'll show you where it helps.</p></article></div></noscript><!-- seo:ind:end -->
+    <!-- seo:ind:start --><noscript><div class="wrap"><article><h3>Print shops</h3><p><strong>Rush jobs, late nights and a notebook full of advances.</strong> One week is quiet, the next everyone stays till 10 to finish a wedding order. That's where hours and money go missing.</p><h4>The daily grind</h4><ul><li>Overtime in rush weeks that nobody can verify</li><li>Job slips lost between the counter and the machine</li><li>Advances to staff tracked in a notebook</li></ul><h4>Fixed from day one</h4><ul><li>Every hour of overtime recorded with a photo, paid at your rate</li><li>Advances cut from salary every month until paid back</li><li>Salary ready the day the month ends, payslips included</li></ul><h4>We could automate next</h4><ul><li>An order at the counter becomes a job card in the right queue</li><li>Customers told when the job is ready, with the balance due</li></ul></article><article><h3>Hospitals &amp; clinics</h3><p><strong>Round-the-clock shifts, a dozen departments, no room for confusion.</strong> ICU, OT, wards, lab, pharmacy, housekeeping. Every department runs its own shifts, and the night shift ends on a different date than it started.</p><h4>The daily grind</h4><ul><li>Night shifts that cross midnight, counted wrong or twice</li><li>A separate register for every department</li><li>Staff covering for each other on paper</li></ul><h4>Fixed from day one</h4><ul><li>A shift that crosses midnight counts as one working day</li><li>Attendance and hours by department on one dashboard</li><li>Face punch with a photo, so nobody marks anybody else</li></ul><h4>We could automate next</h4><ul><li>The duty in-charge alerted when a key post is unmanned</li><li>A daily staffing summary for the administrator</li></ul></article><article><h3>Factories &amp; workshops</h3><p><strong>Shifts, overtime and machines that can't wait.</strong> When a machine stops because someone didn't turn up, you lose more than a day's wage. And overtime is where most disputes start.</p><h4>The daily grind</h4><ul><li>Proxy attendance in early and late shifts</li><li>Holiday and weekly-off overtime worked out by hand</li><li>Short hours rounded up to full days</li></ul><h4>Fixed from day one</h4><ul><li>Fingerprint or face punch at the gate, with a timestamp</li><li>Overtime paid at your rate, with weekly offs and holidays</li><li>Half days and short hours treated exactly as your rules say</li></ul><h4>We could automate next</h4><ul><li>Jobs tracked stage by stage, with a nudge when one is stuck</li><li>Low-stock reminders before a material runs out</li></ul></article><article><h3>Showrooms &amp; retail</h3><p><strong>Doors open at 10. Do your staff?</strong> A late opening or an empty counter costs you a sale you never see. And leave, late marks and weekly offs become an argument every salary day.</p><h4>The daily grind</h4><ul><li>Late openings you only hear about later</li><li>Weekly offs and leave tracked on a wall calendar</li><li>Late marks argued over at salary time</li></ul><h4>Fixed from day one</h4><ul><li>See who's in from your phone, before you reach the shop</li><li>Weekly offs, leave and late marks handled by your rules</li><li>Every deduction shown on the payslip</li></ul><h4>We could automate next</h4><ul><li>An alert when the counter is short-staffed at opening</li><li>An end-of-day summary sent to you every night</li></ul></article><article><h3>Restaurants &amp; hotels</h3><p><strong>Split shifts, late closings and advances every month.</strong> Lunch rush, a break, dinner rush, closing after midnight. Kitchen and service staff rarely work a simple 9 to 6.</p><h4>The daily grind</h4><ul><li>Split shifts with a long break in between</li><li>Closing after midnight, so one day's hours fall on two dates</li><li>Frequent small advances to staff</li></ul><h4>Fixed from day one</h4><ul><li>Lunch exits and returns recorded, breaks handled by your rules</li><li>Shifts that end after midnight counted as one day</li><li>Advances cut from salary, automatically</li></ul><h4>We could automate next</h4><ul><li>Low-stock reminders for the kitchen</li><li>A nightly summary of attendance and hours</li></ul></article><article><h3>Something else</h3><p><strong>Your business isn't on this list?</strong> If your business runs on people and repeats the same work every day, Rozka fits. Tell us how your day goes and we'll show you where it helps.</p></article></div></noscript><!-- seo:ind:end -->
   </div>
 </section>
 
@@ -1252,14 +1240,14 @@ img{max-width:100%}
     <div class="rv">
       <div class="kick" data-i>Why Rozka</div>
       <h2 class="why-q" id="why-h" data-i>Built inside a working print shop. Not in a meeting room.</h2>
-      <p class="why-p" data-i>Every feature exists because a real business needed it on a real day: the photo on every punch, the EMI that cuts itself, the month that locks once it's paid.</p>
+      <p class="why-p" data-i>Every feature is here because a real business needed it on a real day: the photo with every attendance, the advance that cuts itself from salary, the paid month nobody can change.</p>
       <p style="margin-top:22px"><a class="tlink" href="/about/"><span data-i>Read how Rozka started</span> <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></a></p>
     </div>
     <div class="proofs rv">
-      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/> <path d="M12 19H3"/> <path d="M14 3v4"/> <path d="M16 17v4"/> <path d="M21 12h-9"/> <path d="M21 19h-5"/> <path d="M21 5h-7"/> <path d="M8 10v4"/> <path d="M8 12H3"/></svg><h3 data-i>Your rules are settings</h3><p data-i>Shift times, breaks, overtime and penalties. Change them yourself, no developer.</p></div>
-      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/> <path d="m9 12 2 2 4-4"/></svg><h3 data-i>Proof instead of trust</h3><p data-i>A photo on every punch. A name and a time on every payout.</p></div>
-      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/> <path d="M8.5 16.429a5 5 0 0 1 7 0"/> <path d="M5 12.859a10 10 0 0 1 5.17-2.69"/> <path d="M19 12.859a10 10 0 0 0-2.007-1.523"/> <path d="M2 8.82a15 15 0 0 1 4.177-2.643"/> <path d="M22 8.82a15 15 0 0 0-11.288-3.764"/> <path d="m2 2 20 20"/></svg><h3 data-i>Works when the internet doesn't</h3><p data-i>Punches save on the device and upload later at their true time.</p></div>
-      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/> <path d="M20 21a8 8 0 0 0-16 0"/></svg><h3 data-i>Staff never log in</h3><p data-i>No app, no passwords. They punch at the door. You use any browser.</p></div>
+      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/> <path d="M12 19H3"/> <path d="M14 3v4"/> <path d="M16 17v4"/> <path d="M21 12h-9"/> <path d="M21 19h-5"/> <path d="M21 5h-7"/> <path d="M8 10v4"/> <path d="M8 12H3"/></svg><h3 data-i>Your rules, your way</h3><p data-i>Shift times, breaks, overtime and cuts. Change them yourself. No computer expert needed.</p></div>
+      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/> <path d="m9 12 2 2 4-4"/></svg><h3 data-i>Proof, not guesswork</h3><p data-i>A photo with every attendance. A name and time with every payment.</p></div>
+      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/> <path d="M8.5 16.429a5 5 0 0 1 7 0"/> <path d="M5 12.859a10 10 0 0 1 5.17-2.69"/> <path d="M19 12.859a10 10 0 0 0-2.007-1.523"/> <path d="M2 8.82a15 15 0 0 1 4.177-2.643"/> <path d="M22 8.82a15 15 0 0 0-11.288-3.764"/> <path d="m2 2 20 20"/></svg><h3 data-i>Works when the internet doesn't</h3><p data-i>Attendance is saved on the machine and sent later with the right time.</p></div>
+      <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/> <path d="M20 21a8 8 0 0 0-16 0"/></svg><h3 data-i>Staff need no phone or app</h3><p data-i>No app, no password. They just mark attendance at the door. You check on your phone or computer.</p></div>
       <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/> <circle cx="12" cy="10" r="3"/></svg><h3 data-i>Set up at your door</h3><p data-i>We install the device, add your staff and enter your rules.</p></div>
       <div class="proof"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/> <path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg><h3 data-i>We pick up the phone</h3><p data-i>Stuck, or need a small change? You talk to us directly.</p></div>
     </div>
@@ -1271,9 +1259,9 @@ img{max-width:100%}
   <div class="wrap beyond-grid">
     <div class="rv">
       <div class="kick" style="color:var(--ink)" data-i>Beyond attendance</div>
-      <h2 class="h2" id="bey-h" data-i>Quoted <span class="strike">lakhs</span> to automate your business?</h2>
-      <p class="lede" data-i>Attendance is where we start. Job cards, order updates, payment reminders: if your team repeats it every day, we can make it run on its own, at a price sized for your business.</p>
-      <div class="hero-cta" style="margin-top:26px"><a class="btn btn-ink" href="/automation/" data-i>See what we can automate</a><a class="btn btn-line" href="/contact/" style="background:transparent;border-color:rgba(16,20,24,.35)" data-i>Get a second quote</a></div>
+      <h2 class="h2" id="bey-h" data-i>Asked to pay <span class="strike">lakhs</span> for business software?</h2>
+      <p class="lede" data-i>Attendance is where we start. Job cards, order updates, payment reminders: if your team does it again and again every day, we can make it happen on its own, at a price that suits your business.</p>
+      <div class="hero-cta" style="margin-top:26px"><a class="btn btn-ink" href="/automation/" data-i>See what else we can do</a><a class="btn btn-line" href="/contact/" style="background:transparent;border-color:rgba(16,20,24,.35)" data-i>Get a second quote</a></div>
     </div>
     <div class="ticker rv" aria-label="Examples of automations we build to order" data-ia="aria-label">
       <div class="tk-row"><span class="w" data-i>WHEN</span><span class="x"><b data-i>An order is placed</b> <span data-i>→ a job card opens in the right queue</span></span><span class="st" data-i>TO ORDER</span></div>
@@ -1294,11 +1282,11 @@ img{max-width:100%}
     </div>
     <div class="faq">
       <details><summary><span data-i>Do my workers need a smartphone or a login?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>No. Workers only punch at the device at your door, with their face, finger, card or QR. Only you and your managers log in, from any browser.</p></details>
-      <details><summary><span data-i>What happens when the internet goes down?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>Punching carries on. Punches are stored on the device and upload with their real time once the connection is back.</p></details>
-      <details><summary><span data-i>Does Rozka send salaries from my bank account?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>No. You pay the way you do today. When you mark a month as paid, Rozka records who got how much and when, locks it, and makes a payslip for each person.</p></details>
-      <details><summary><span data-i>What about PF, ESI and TDS?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>You enter them as deductions and they show on the payslip. Rozka doesn't calculate them for you.</p></details>
+      <details><summary><span data-i>What happens when the internet goes down?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>Attendance keeps working. It is saved on the machine and sent with the right time once the internet is back.</p></details>
+      <details><summary><span data-i>Does Rozka send salaries from my bank account?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>No. You pay the way you do today. When you mark a month as paid, Rozka saves who got how much and when, so nobody can change it later, and makes a salary slip for each person.</p></details>
+      <details><summary><span data-i>What about PF, ESI and TDS?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>You type them in as cuts and they show on the salary slip. Rozka doesn't calculate them for you.</p></details>
       <details><summary><span data-i>What does it cost?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>Prices start at ₹119 per employee per month, inclusive of all taxes, and may vary based on your business requirements. We customise the price to your request, and the punch device is priced separately. Setup costs nothing, and neither does our business analysis. You can run Rozka on your own staff for a free one-month trial before you decide. Contact us for exact pricing, or <a href="/pricing/" style="color:var(--cobalt);font-weight:600">see pricing</a>.</p></details>
-      <details><summary><span data-i>Our business works differently. Will it fit?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>Shift times, breaks, half-day limits, overtime and penalties are all settings. If you need something beyond that, we make small customisations for you.</p></details>
+      <details><summary><span data-i>Our business works differently. Will it fit?</span><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg></summary><p data-i>Shift times, breaks, half-day rules, overtime and cuts can all be changed. If you need something more, we make small changes for you.</p></details>
     </div>
   </div>
 </section>
@@ -1317,7 +1305,7 @@ img{max-width:100%}
     <ul class="offer rv">
       <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg><span data-i><b>1-month demo</b>On your real staff and real salaries.</span></li>
       <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/> <path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg><span data-i><b>Always available</b>Stuck on anything? A real person picks up.</span></li>
-      <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg><span data-i><b>Small customisations</b>So Rozka fits the way you work.</span></li>
+      <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg><span data-i><b>Small changes for you</b>So Rozka fits the way you work.</span></li>
     </ul>
   </div>
   <div class="wrap signoff" aria-hidden="true"><span class="wm wm-xl" role="img" aria-label="Rozka"><span aria-hidden="true">R</span><span class="wm-o">o<svg class="clock" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="50" class="cf"/><g class="tk"><rect x="-2.6" y="-44" width="5.2" height="9" rx="1.5"/><rect x="-2.6" y="35" width="5.2" height="9" rx="1.5"/><rect x="35" y="-2.6" width="9" height="5.2" rx="1.5"/><rect x="-44" y="-2.6" width="9" height="5.2" rx="1.5"/></g><g class="hand hh"><line y1="6" y2="-23"/></g><g class="hand mh"><line y1="7" y2="-35"/></g><g class="sh"><line y1="10" y2="-38"/></g><circle r="5.5" class="hub"/></svg></span><span aria-hidden="true">zka</span></span></div>
@@ -1381,10 +1369,10 @@ img{max-width:100%}
         <thead><tr><th><span class="sr" data-i>Compared on</span></th><th data-i>THE USUAL WAY</th><th class="us" data-i>WITH ROZKA</th></tr></thead>
         <tbody>
           <tr><td data-i>Built for</td><td class="them" data-i>Big companies, cut down for you</td><td class="us" data-i>Businesses like yours, from day one</td></tr>
-          <tr><td data-i>Upfront</td><td class="them" data-i>Lakhs, before you see it work</td><td class="us" data-i>A price sized for your business, after you've tried it</td></tr>
+          <tr><td data-i>Cost at the start</td><td class="them" data-i>Lakhs, before you see it work</td><td class="us" data-i>A price sized for your business, after you've tried it</td></tr>
           <tr><td data-i>Changing a rule</td><td class="them" data-i>Call the developer, wait, pay again</td><td class="us" data-i>Often a setting you change yourself</td></tr>
           <tr><td data-i>After launch</td><td class="them" data-i>Hard to reach</td><td class="us" data-i>We pick up the phone</td></tr>
-          <tr><td data-i>Language</td><td class="them" data-i>Jargon and long manuals</td><td class="us" data-i>Plain words your staff already use</td></tr>
+          <tr><td data-i>Language</td><td class="them" data-i>Hard words and long manuals</td><td class="us" data-i>Plain words your staff already use</td></tr>
         </tbody>
       </table>
     </div>
@@ -1420,7 +1408,7 @@ img{max-width:100%}
     <div class="principles rv">
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12"/> <path d="M6 8h12"/> <path d="m6 13 8.5 8"/> <path d="M6 13h3"/> <path d="M9 13c6.667 0 6.667-10 0-10"/></svg><h3 data-i>From ₹119</h3><p data-i>Per employee, per month, inclusive of all taxes. A starting price, customised to your business and your request.</p></div>
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><h3 data-i>No setup cost</h3><p data-i>We set Rozka up with you: your staff, your shifts, your rules. Setting up is free.</p></div>
-      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><h3 data-i>No-cost business analysis</h3><p data-i>We look at how your business runs today and tell you what Rozka would cost, before you commit to anything.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><h3 data-i>Free check of your business</h3><p data-i>We look at how your business runs today and tell you what Rozka would cost, before you commit to anything.</p></div>
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/> <rect width="6" height="6" x="9" y="9" rx="1"/> <path d="M15 2v2"/> <path d="M15 20v2"/> <path d="M2 15h2"/> <path d="M2 9h2"/> <path d="M20 15h2"/> <path d="M20 9h2"/> <path d="M9 2v2"/> <path d="M9 20v2"/></svg><h3 data-i>Punch device, priced separately</h3><p data-i>Face, fingerprint, card or QR. The price depends on the model you choose, and we tell you up front.</p></div>
     </div>
   </div>
@@ -1436,8 +1424,8 @@ img{max-width:100%}
     </div>
     <aside class="loss est on-dark rv" aria-labelledby="est-h">
       <h3 id="est-h" data-i>Your starting price</h3>
-      <p class="sub" data-i>Staff on payroll × ₹119 a month, taxes included.</p>
-      <div class="fr-row"><div class="fr-top"><label for="eStaff" data-i>Staff on payroll</label><output id="oEstStaff" for="eStaff">20</output></div><input class="slider" type="range" id="eStaff" min="20" max="300" step="1" value="20"></div>
+      <p class="sub" data-i>Number of staff × ₹119 a month, taxes included.</p>
+      <div class="fr-row"><div class="fr-top"><label for="eStaff" data-i>Number of staff</label><output id="oEstStaff" for="eStaff">20</output></div><input class="slider" type="range" id="eStaff" min="20" max="300" step="1" value="20"></div>
       <div class="loss-out" aria-live="polite">
         <div class="k" style="color:var(--ink300)" data-i>Starting from</div>
         <div class="loss-big" id="estMonth">₹2,380</div>
@@ -1467,7 +1455,7 @@ img{max-width:100%}
     <div class="sh-row"><div><div class="kick" data-i>How we quote</div><h2 class="h2" id="px-how-h" style="font-size:clamp(30px,3.4vw,44px)" data-i>How we get to your price.</h2></div></div>
     <ol class="after rv">
       <li><span class="n" data-i>01 · TELL US</span><h3 data-i>Tell us about your business</h3><p data-i>Your staff, your shifts and how salary works today. A short call is enough.</p></li>
-      <li><span class="n" data-i>02 · ANALYSIS</span><h3 data-i>We analyse it, at no cost</h3><p data-i>We work out what Rozka would cost for you and give you a straight number. No setup fee, and nothing to pay for the analysis.</p></li>
+      <li><span class="n" data-i>02 · ANALYSIS</span><h3 data-i>We study it, for free</h3><p data-i>We work out what Rozka would cost for you and give you a straight number. No setup fee, and nothing to pay for the analysis.</p></li>
       <li><span class="n" data-i>03 · TRIAL</span><h3 data-i>Try it free for a month</h3><p data-i>Run Rozka on your own staff with real salaries. Then you decide.</p></li>
     </ol>
   </div>
@@ -1531,7 +1519,7 @@ img{max-width:100%}
   <div class="wrap story">
     <div class="rv"><div class="kick" data-i>Where it started</div><p class="q" id="story-h" data-i>Rozka wasn't designed in a meeting room. It was built inside a working print shop.</p></div>
     <div class="rv">
-      <p data-i>Real staff, real salaries, real arguments about who stayed till 9. Every feature exists because a real business needed it on a real day: the photo on every punch, the EMI that cuts itself, the month that locks once it's paid.</p>
+      <p data-i>Real staff, real salaries, real arguments about who stayed till 9. Every feature is here because a real business needed it on a real day: the photo with every attendance, the advance that cuts itself from salary, the paid month nobody can change.</p>
       <p data-i>We started with attendance and salary because that's where the most money leaks and the most trust is lost. Now we're bringing the same approach to orders, jobs and everything else a business repeats every day.</p>
     </div>
   </div>
@@ -1542,7 +1530,7 @@ img{max-width:100%}
     <div class="sh-row rv"><div><div class="kick" data-i>What we stand by</div><h2 class="h2" id="pr-h" data-i>Four promises we build around.</h2></div></div>
     <div class="principles rv">
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/> <path d="M12 19H3"/> <path d="M14 3v4"/> <path d="M16 17v4"/> <path d="M21 12h-9"/> <path d="M21 19h-5"/> <path d="M21 5h-7"/> <path d="M8 10v4"/> <path d="M8 12H3"/></svg><h3 data-i>Your rules, not ours</h3><p data-i>Rozka follows how your business already works, instead of making you change.</p></div>
-      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/> <path d="m9 12 2 2 4-4"/></svg><h3 data-i>Proof over trust</h3><p data-i>When every punch and payout has proof, there's nothing left to argue about.</p></div>
+      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/> <path d="m9 12 2 2 4-4"/></svg><h3 data-i>Proof, not guesswork</h3><p data-i>When every punch and payout has proof, there's nothing left to argue about.</p></div>
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 6 6"/> <path d="m4 14 6-6 2-3"/> <path d="M2 5h12"/> <path d="M7 2h1"/> <path d="m22 22-5-10-5 10"/> <path d="M14 18h6"/></svg><h3 data-i>Plain words</h3><p data-i>If your staff can't understand a screen, we've built it wrong.</p></div>
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/> <path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg><h3 data-i>We pick up the phone</h3><p data-i>You talk to us directly. When something needs to change, we change it.</p></div>
     </div>
@@ -1568,7 +1556,7 @@ img{max-width:100%}
       <ul class="offer" style="margin-top:28px">
         <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg><span data-i><b>1-month demo</b>On your real staff before you decide.</span></li>
         <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/> <path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg><span data-i><b>Always available</b>Stuck on anything? A real person picks up.</span></li>
-        <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg><span data-i><b>Small customisations</b>So it fits the way you work.</span></li>
+        <li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg><span data-i><b>Small changes for you</b>So it fits the way you work.</span></li>
       </ul>
       <div class="person">
         <div class="k" data-i>TALK TO</div>
@@ -1774,7 +1762,7 @@ img{max-width:100%}
     return parts.join('>');
   }
   function lbl(el){
-    var a=el.getAttribute&&(el.getAttribute('aria-label')||el.getAttribute('title'));
+    var a=el.getAttribute&&(el.getAttribute('data-en')||el.getAttribute('aria-label')||el.getAttribute('title'));   // data-en: the English name for labels built at run time
     if(!a&&!/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))a=el.textContent;
     return en((a||'').replace(/\s+/g,' ').trim()).slice(0,48);
   }
@@ -1849,7 +1837,7 @@ img{max-width:100%}
   function amt(){return String($('leakMonth')?$('leakMonth').textContent:'').replace(/[−-]/g,'').trim();}
   function ind(){return ((window.RZ&&RZ.data.ind)||[])[G.ind?G.ind.i:0]||{};}
   function wa(t){return 'https://wa.me/'+WA+'?text='+encodeURIComponent(t);}
-  var TOPIC={problem:_('registers and where hours leak'),product:_('how Rozka works'),how:_('how a day becomes a payslip'),industries:_('Rozka for your kind of business'),faq:_('your questions about Rozka'),recipes:_('automating your daily work'),story:_('how Rozka started'),'automation-hero':_('automating your daily work')};
+  var TOPIC={problem:_('registers and where hours leak'),product:_('how Rozka works'),how:_('how salary is counted'),industries:_('Rozka for your kind of business'),faq:_('your questions about Rozka'),recipes:_('automating your daily work'),story:_('how Rozka started'),'automation-hero':_('automating your daily work')};
   var CTX={
     price:function(){return {tag:_('Pricing'),h:_('Want a straight number?'),sub:_('Prices start at ₹119 per employee per month, inclusive of all taxes, and are customised to your business. Contact us and we\'ll give you a straight number.'),cta:_('Call me with a price'),wa:wa(_('Hi Rozka team, what would Rozka cost for my business?'))};},
     calc:function(){var w=+$('rWorkers').value,s=+$('rSalary').value,mn=+$('rMin').value,a=amt();return {tag:_('Your number'),h:_('At {w} staff you could be losing {a} a month.',{w:w,a:a}),sub:_('That\'s an illustration. Share your number and we\'ll work out your real figure.'),cta:_('Work out my real number'),wa:wa(_('Hi Rozka team, I tried the loss calculator ({w} staff, {a} a month). Can you work out my real number?',{w:w,a:a})),data:{calc:{staff:w,salary:s,min:mn,loss:a}}};},
@@ -1857,7 +1845,7 @@ img{max-width:100%}
     leaks:function(){return {tag:_('The register'),h:_('You caught {n} of 5 leaks in a sample register.',{n:G.leaks}),sub:_('Want to know how many your own register has?'),cta:_('Show me on my staff'),wa:wa(_('Hi Rozka team, I caught {n} of 5 leaks in the sample register. Can you check how many my business has?',{n:G.leaks}))};},
     product:function(){return {tag:_('See it on your staff'),h:_('Want to see this running on your own staff?'),sub:_('Run Rozka on your own staff for a month, then decide.'),cta:_('Book my 1-month demo'),wa:wa(_('Hi Rozka team, I looked through how Rozka works. I\'d like to run it on my own staff for a month.'))};},
     recipes:function(){return {tag:_('Automation'),h:_('Got a job you do by hand every day?'),sub:_('Tell us the WHEN and THEN. We\'ll say honestly if we can build it.'),cta:_('Call me back'),wa:wa(_('Hi Rozka team, I looked at the automation examples. Can you tell me if you can build one for my business?'))};},
-    audit:function(){return {tag:_('Audit complete'),h:_('You\'ve checked what most owners never do.'),sub:_('Want us to walk through it on your business?'),cta:_('Walk me through it'),wa:wa(_('Hi Rozka team, I finished the owner\'s audit on your website. Can you walk me through it for my business?'))};},
+    audit:function(){return {tag:_('All checks done'),h:_('You\'ve checked what most owners never do.'),sub:_('Want us to walk through it on your business?'),cta:_('Walk me through it'),wa:wa(_('Hi Rozka team, I finished the owner\'s audit on your website. Can you walk me through it for my business?'))};},
     exit:function(){return {tag:_('Before you go'),h:_('Not ready to commit? Just talk to us.'),sub:_('Leave your number and we\'ll call you back.'),cta:_('Call me back'),wa:wa(_('Hi Rozka team, I was looking at Rozka and have a question.'))};},
     returning:function(){var t=TOPIC[ret&&ret.top]||_('Rozka');return {tag:_('Welcome back'),h:_('Still thinking about {topic}?',{topic:t}),sub:_('Leave your number and we\'ll call you back.'),cta:_('Call me back'),wa:wa(_('Hi Rozka team, I visited before and I\'m still thinking about Rozka. Can we talk?'))};},
     depth:function(){return {tag:_('Talk to the team'),h:_('Want to hear how this works for a business like yours?'),sub:_('Leave your number and we\'ll call you back.'),cta:_('Call me back'),wa:wa(_('Hi Rozka team, I read through your site and would like to know how Rozka works for my business.'))};},
@@ -1880,9 +1868,9 @@ img{max-width:100%}
       var k=b.getAttribute('data-cap');
       if(!G.caps[k]){G.caps[k]=1;add(1);rec('w',{w:'cap',i:+k,n:lbl(b)});}
       if(count(G.caps)>=4)moment('product',{pri:5,delay:3500,ttl:60000,make:CTX.product});
-    }else if((b=t.closest('#scen button,#rulesBody tr[data-s]'))){
-      var s=b.getAttribute('data-s'),sb=document.querySelector('#scen button[data-s="'+s+'"]');
-      if(!G.scn[s]){G.scn[s]=1;add(2);rec('w',{w:'scn',i:+s,n:lbl(sb||b)});}
+    }else if((b=t.closest('#cal button[data-d],#calSum button[data-d]'))){
+      var s=b.getAttribute('data-d'),sb=document.querySelector('#cal button[data-d="'+s+'"]');
+      if(!G.scn[s]){G.scn[s]=1;add(2);rec('w',{w:'scn',i:s-1,n:lbl(sb||b)});}
       if(count(G.scn)>=2)moment('product',{pri:5,delay:3500,ttl:60000,make:CTX.product});
     }else if((b=t.closest('#ilist button,#ilist [role=tab]'))){
       var i=$$('#ilist > *').indexOf(b);
@@ -2123,7 +2111,7 @@ img{max-width:100%}
   var reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   function inr(n){n=Math.round(n);var neg=n<0;n=Math.abs(n);var s=String(n),last=s.slice(-3),rest=s.slice(0,-3);if(rest)last=','+last;return (neg?'−':'')+'₹'+rest.replace(/\B(?=(\d{2})+(?!\d))/g,',')+last;}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  var IC={'file-text':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/> <path d="M14 2v5a1 1 0 0 0 1 1h5"/> <path d="M10 9H8"/> <path d="M16 13H8"/> <path d="M16 17H8"/></svg>','clock':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 6v6l4 2"/></svg>','hand-coins':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/> <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/> <path d="m2 16 6 6"/> <circle cx="16" cy="9" r="2.9"/> <circle cx="6" cy="5" r="3"/></svg>','truck':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/> <path d="M15 18H9"/> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/> <circle cx="17" cy="18" r="2"/> <circle cx="7" cy="18" r="2"/></svg>','users':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/> <path d="M16 3.128a4 4 0 0 1 0 7.744"/> <path d="M22 21v-2a4 4 0 0 0-3-3.87"/> <circle cx="9" cy="7" r="4"/></svg>','layout-dashboard':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/> <rect width="7" height="5" x="14" y="3" rx="1"/> <rect width="7" height="9" x="14" y="12" rx="1"/> <rect width="7" height="5" x="3" y="16" rx="1"/></svg>','printer':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/> <rect x="6" y="14" width="12" height="8" rx="1"/></svg>','hospital':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v4"/> <path d="M14 21v-3a2 2 0 0 0-4 0v3"/> <path d="M14 9h-4"/> <path d="M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/> <path d="M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16"/></svg>','factory':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/> <path d="M16 16h.01"/> <path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/> <path d="M8 16h.01"/></svg>','shopping-bag':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/> <path d="M3.103 6.034h17.794"/> <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>','utensils':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/> <path d="M7 2v20"/> <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>','building-2':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/> <path d="M10 8h4"/> <path d="M14 21v-3a2 2 0 0 0-4 0v3"/> <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/> <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>','rotate':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/> <path d="M3 3v5h5"/></svg>','cal':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg>','FACE':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/> <path d="M17 3h2a2 2 0 0 1 2 2v2"/> <path d="M21 17v2a2 2 0 0 1-2 2h-2"/> <path d="M7 21H5a2 2 0 0 1-2-2v-2"/> <path d="M8 14s1.5 2 4 2 4-2 4-2"/> <path d="M9 9h.01"/> <path d="M15 9h.01"/></svg>','FINGER':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/> <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/> <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/> <path d="M2 12a10 10 0 0 1 18-6"/> <path d="M2 16h.01"/> <path d="M21.8 16c.2-2 .131-5.354 0-6"/> <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/> <path d="M8.65 22c.21-.66.45-1.32.57-2"/> <path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg>','CARD':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/> <line x1="2" x2="22" y1="10" y2="10"/> <path d="M6 14h2"/></svg>','QR':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/> <rect width="5" height="5" x="16" y="3" rx="1"/> <rect width="5" height="5" x="3" y="16" rx="1"/> <path d="M21 16h-3a2 2 0 0 0-2 2v3"/> <path d="M21 21v.01"/> <path d="M12 7v3a2 2 0 0 1-2 2H7"/> <path d="M3 12h.01"/> <path d="M12 3h.01"/> <path d="M12 16v.01"/> <path d="M16 12h1"/> <path d="M21 12v.01"/> <path d="M12 21v-1"/></svg>'};
+  var IC={'cam':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>','file-text':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/> <path d="M14 2v5a1 1 0 0 0 1 1h5"/> <path d="M10 9H8"/> <path d="M16 13H8"/> <path d="M16 17H8"/></svg>','clock':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 6v6l4 2"/></svg>','hand-coins':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/> <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/> <path d="m2 16 6 6"/> <circle cx="16" cy="9" r="2.9"/> <circle cx="6" cy="5" r="3"/></svg>','truck':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/> <path d="M15 18H9"/> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/> <circle cx="17" cy="18" r="2"/> <circle cx="7" cy="18" r="2"/></svg>','users':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/> <path d="M16 3.128a4 4 0 0 1 0 7.744"/> <path d="M22 21v-2a4 4 0 0 0-3-3.87"/> <circle cx="9" cy="7" r="4"/></svg>','layout-dashboard':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/> <rect width="7" height="5" x="14" y="3" rx="1"/> <rect width="7" height="9" x="14" y="12" rx="1"/> <rect width="7" height="5" x="3" y="16" rx="1"/></svg>','printer':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/> <rect x="6" y="14" width="12" height="8" rx="1"/></svg>','hospital':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v4"/> <path d="M14 21v-3a2 2 0 0 0-4 0v3"/> <path d="M14 9h-4"/> <path d="M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/> <path d="M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16"/></svg>','factory':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/> <path d="M16 16h.01"/> <path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/> <path d="M8 16h.01"/></svg>','shopping-bag':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/> <path d="M3.103 6.034h17.794"/> <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>','utensils':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/> <path d="M7 2v20"/> <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>','building-2':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/> <path d="M10 8h4"/> <path d="M14 21v-3a2 2 0 0 0-4 0v3"/> <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/> <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>','rotate':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/> <path d="M3 3v5h5"/></svg>','cal':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/> <path d="M16 2v3"/> <rect x="3" y="3" width="18" height="18" rx="2"/> <path d="M3 9h18"/> <path d="m9 15 2 2 4-4"/></svg>','FACE':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/> <path d="M17 3h2a2 2 0 0 1 2 2v2"/> <path d="M21 17v2a2 2 0 0 1-2 2h-2"/> <path d="M7 21H5a2 2 0 0 1-2-2v-2"/> <path d="M8 14s1.5 2 4 2 4-2 4-2"/> <path d="M9 9h.01"/> <path d="M15 9h.01"/></svg>','FINGER':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/> <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/> <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/> <path d="M2 12a10 10 0 0 1 18-6"/> <path d="M2 16h.01"/> <path d="M21.8 16c.2-2 .131-5.354 0-6"/> <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/> <path d="M8.65 22c.21-.66.45-1.32.57-2"/> <path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg>','CARD':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/> <line x1="2" x2="22" y1="10" y2="10"/> <path d="M6 14h2"/></svg>','QR':'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/> <rect width="5" height="5" x="16" y="3" rx="1"/> <rect width="5" height="5" x="3" y="16" rx="1"/> <path d="M21 16h-3a2 2 0 0 0-2 2v3"/> <path d="M21 21v.01"/> <path d="M12 7v3a2 2 0 0 1-2 2H7"/> <path d="M3 12h.01"/> <path d="M12 3h.01"/> <path d="M12 16v.01"/> <path d="M16 12h1"/> <path d="M21 12v.01"/> <path d="M12 21v-1"/></svg>'};
 
   /* ---------- menu ---------- */
   var mb=$('menuBtn'),nav=$('nav');
@@ -2139,7 +2127,7 @@ img{max-width:100%}
     var KEY='rozka_audit',st={leaks:[],parts:[0],day:[],done:false};
     try{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.leaks){st=s;}}catch(e){}
     function save(){if(window.ROZKA&&ROZKA.replay)return;try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
-    var NEED={leaks:5,parts:5,day:2},LABEL={leaks:_('Leaks caught'),parts:_('All five parts seen'),day:_('Sunita\'s day, run two ways')};
+    var NEED={leaks:5,parts:5,day:2},LABEL={leaks:_('Mistakes found'),parts:_('All five parts seen'),day:_('Two of Sunita\'s days checked')};
     var chip=$('auditChip'),pop=$('auditPop'),toastEl=$('auditToast'),tT=null;
     function ok(t){return st[t].length>=NEED[t];}
     function count(){return ['leaks','parts','day'].filter(ok).length;}
@@ -2147,11 +2135,11 @@ img{max-width:100%}
       var n=count();$('auditN').textContent=n;
       $('auditRing').style.strokeDashoffset=String(94.25*(1-n/3));
       chip.classList.toggle('done',n===3);
-      chip.setAttribute('aria-label',_('Owner\'s audit, {n} of 3 checks done',{n:n}));
+      chip.setAttribute('aria-label',_('Owner\'s check, {n} of 3 checks done',{n:n}));
       $$('.ap-list li').forEach(function(li){var t=li.getAttribute('data-t');li.classList.toggle('ok',ok(t));});
-      $$('.ap-p').forEach(function(p){var t=p.getAttribute('data-p'),v=Math.min(st[t].length,NEED[t]);p.textContent=t==='leaks'?_('{n} of 5 caught',{n:v}):t==='parts'?_('{n} of 5 seen',{n:v}):_('{n} of 2 run',{n:v});});
+      $$('.ap-p').forEach(function(p){var t=p.getAttribute('data-p'),v=Math.min(st[t].length,NEED[t]);p.textContent=t==='leaks'?_('{n} of 5 found',{n:v}):t==='parts'?_('{n} of 5 seen',{n:v}):_('{n} of 2 tapped',{n:v});});
       var d=n===3;$('apDone').hidden=!d;
-      if(d){var msg=_('Hi Rozka team, I finished the owner\'s audit on your website.\n• Caught all 5 leaks in the register\n• Saw all 5 parts of Rozka\n• Ran Sunita\'s day two ways\nI\'d like to see this working in my business. Can we set up the 1-month demo?');$('apWa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);}
+      if(d){var msg=_('Hi Rozka team, I finished the owner\'s audit on your website.\n• Caught all 5 leaks in the register\n• Saw all 5 parts of Rozka\n• Checked Sunita\'s days on the calendar\nI\'d like to see this working in my business. Can we set up the 1-month demo?');$('apWa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);}
     }
     function toast(t,sub){clearTimeout(tT);toastEl.innerHTML='<i></i>'+esc(t)+(sub?' <span>'+esc(sub)+'</span>':'');toastEl.hidden=false;toastEl.style.animation='none';void toastEl.offsetWidth;toastEl.style.animation='';tT=setTimeout(function(){toastEl.hidden=true;},3200);}
     function openPop(o){pop.hidden=!o;chip.setAttribute('aria-expanded',String(o));}
@@ -2159,7 +2147,7 @@ img{max-width:100%}
       if(st[t].indexOf(v)>=0)return;var was=ok(t),before=count();st[t].push(v);
       if(!was&&ok(t)){
         var n=count();chip.classList.remove('bump');if(!reduce){void chip.offsetWidth;chip.classList.add('bump');}
-        if(n===3&&!st.done){st.done=true;toast(_('Audit complete'),_('3 of 3 checks'));setTimeout(function(){openPop(true);},700);}
+        if(n===3&&!st.done){st.done=true;toast(_('All checks done'),_('3 of 3 checks'));setTimeout(function(){openPop(true);},700);}
         else toast(LABEL[t],_('{n} of 3 checks done',{n:n}));
       }
       save();draw();
@@ -2238,6 +2226,8 @@ img{max-width:100%}
   }
 
   /* ---------- hero product window ---------- */
+  // Photos for the door-kiosk scanner: put a square-ish photo in img/staff/ and list the person's name here. Anyone not listed keeps the outline.
+  var PHOTO={};
   var DEPT=[['Production',8],['Front desk',5],['Delivery',4],['Office',3]];
   var people=[['Ramesh Patil','Production','FACE','09:12','l','Late 12m'],['Imran Shaikh','Delivery','CARD','09:04','p','Present'],['Pooja Kulkarni','Office','FACE','09:05','p','Present'],['Sachin More','Production','QR','09:07','p','Present'],['Anil Gaikwad','Production','FINGER','09:16','l','Late 16m'],['Neha Joshi','Front desk','CARD','09:01','p','Present'],['Rahul Pawar','Delivery','FACE','09:10','p','Present'],['Kavita Shinde','Production','FACE','09:09','p','Present']];
   var seed=[['Vijay Salunkhe','Production','FACE','09:11','p','Present'],['Sunita Jadhav','Front desk','FINGER','09:00','p','Present'],['Deepak Kamble','Production','FACE','08:58','p','Present'],['Meena Bhosale','Front desk','FINGER','08:56','p','Present'],['Asha Wagh','Office','CARD','08:53','p','Present']];
@@ -2245,7 +2235,7 @@ img{max-width:100%}
   var state={present:15,late:2,dept:{'Production':6,'Front desk':4,'Delivery':3,'Office':2}};
   var feed=$('feed'),depts=$('depts');
   function initials(n){return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2);}
-  function row(p){var li=document.createElement('li');li.innerHTML='<span class="av">'+initials(p[0])+IC[p[2]]+'</span><span class="who"><span class="n">'+p[0]+'</span><span class="s">'+p[3]+' · '+p[2]+' · '+p[1].toUpperCase()+'</span></span><span class="pill '+(p[4]==='l'?'p-cad':'p-green')+'">'+p[5]+'</span>';return li;}
+  function row(p){var li=document.createElement('li');li.innerHTML='<span class="av">'+(PHOTO[p[0]]?'<img src="'+PHOTO[p[0]]+'" alt="">':initials(p[0]))+IC[p[2]]+'</span><span class="who"><span class="n">'+p[0]+'</span><span class="s">'+p[3]+' · '+p[2]+' · '+p[1].toUpperCase()+'</span></span><span class="pill '+(p[4]==='l'?'p-cad':'p-green')+'">'+p[5]+'</span>';return li;}
   function drawDepts(){depts.innerHTML=DEPT.map(function(d){var n=state.dept[d[0]];return '<div class="dept"><span>'+d[0]+'</span><b>'+n+'/'+d[1]+'</b><span class="bar"><span style="width:'+Math.round(n/d[1]*100)+'%"></span></span></div>';}).join('');}
   function drawStats(){$('cPresent').textContent=state.present;$('cLate').textContent=state.late;$('cOut').textContent=20-state.present;$('payBig').textContent=inr(state.present*DAY);}
   seed.forEach(function(p){feed.appendChild(row(p));});
@@ -2255,6 +2245,7 @@ img{max-width:100%}
     if(state.present>=20){state.present=15;state.late=2;state.dept={'Production':6,'Front desk':4,'Delivery':3,'Office':2};}
     var p=people[fi%people.length];fi++;
     state.present++;if(p[4]==='l')state.late++;state.dept[p[1]]=Math.min(state.dept[p[1]]+1,DEPT.filter(function(d){return d[0]===p[1];})[0][1]);
+    var face=kiosk.querySelector('.kc-face'),ph=PHOTO[p[0]];face.style.backgroundImage=ph?'url('+ph+')':'';face.classList.toggle('photo',!!ph);
     $('kName').textContent=p[0];$('kTime').textContent=p[3];$('kSay').textContent=p[4]==='l'?'Marked · '+p[5].toLowerCase():'Marked present';
     kiosk.classList.remove('pop');void kiosk.offsetWidth;kiosk.classList.add('pop');
     setTimeout(function(){
@@ -2274,7 +2265,7 @@ img{max-width:100%}
     var n=lrows.filter(function(li){return li.classList.contains('caught');}).length;
     $('catchN').textContent=n+' / 5';dots.forEach(function(d,k){d.classList.toggle('on',k<n);});
     cmsg.classList.toggle('done',n===5);
-    cmsg.innerHTML=n===0?SEARCH+_('Tap any entry you wouldn\'t trust. Rozka shows what really happened.'):n<5?SEARCH+_('{n} caught. {m} more hiding in plain sight.',{n:n,m:5-n}):CHECK+_('All five caught. Your register would have paid for every one.');
+    cmsg.innerHTML=n===0?SEARCH+_('Tap any line that looks wrong. Rozka shows what really happened.'):n<5?SEARCH+_('{n} found. {m} more to find.',{n:n,m:5-n}):CHECK+_('All five found. With a register, you would have paid for every one.');
     $('revealAll').hidden=n===5;
   }
   function catchRow(li,quiet){
@@ -2322,56 +2313,88 @@ img{max-width:100%}
     c.addEventListener('keydown',function(e){var n=null;if(e.key==='ArrowDown'||e.key==='ArrowRight')n=(k+1)%caps.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')n=(k-1+caps.length)%caps.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=caps.length-1;if(n!==null){e.preventDefault();selCap(n,true);}});
   });
 
-  /* ---------- run a day ---------- */
+  /* ---------- run a day: Sunita's October, tap any day ---------- */
+  // Example rules (your admin sets the real ones): 90-minute break; 8h 30m or more is a full day, each full extra hour paid 1.5×;
+  // 5h to 8h 30m is a full day minus the missing time; 1h to 5h is half a day; less than that, or no punch, is absent.
   var HOURLY=DAY/8.5;
-  var SC=[
-    {in:'09:00',out:'19:00',outd:_('Photo saved'),hrs:_('8h 30m'),hrsd:_('After the 90-minute break'),rule:_('Full day'),ruled:_('Met the 8.5h mark'),pay:577,payd:_('Added to October'),r:'full',cls:'f'},
-    {in:'09:00',out:'20:00',outd:_('Photo saved'),hrs:_('9h 30m'),hrsd:_('After the 90-minute break'),rule:_('Full day + OT'),ruled:_('1h extra at 1.5×'),pay:Math.round(DAY+HOURLY*1.5),payd:_('Added to October'),r:'full',cls:'o'},
-    {in:'09:00',out:'17:30',outd:_('Photo saved'),hrs:_('7h 00m'),hrsd:_('After the 90-minute break'),rule:_('Partial day'),ruled:_('1h 30m short, cut at 1.5×'),pay:Math.round(DAY-1.5*HOURLY*1.5),payd:_('Added to October'),r:'part',cls:'p'},
-    {in:'09:00',out:'09:40',outd:_('Photo saved'),hrs:_('0h 40m'),hrsd:_('Under the 1-hour mark'),rule:_('Absent'),ruled:_('1 leave counted'),pay:0,payd:_('Nothing added'),r:'abs',cls:'a'},
-    {in:'09:00',out:'14:00',outd:_('Photo saved'),hrs:_('3h 30m'),hrsd:_('After the 90-minute break'),rule:_('Half day'),ruled:_('Between 1h and 4.5h, hours paid'),pay:Math.round(3.5*HOURLY),payd:_('Added to October'),r:'half',cls:'h'}
-  ];
-  // October 2026 starts on a Thursday. Days 1–14 already happened (example); 15 is "today".
-  var HIST={1:'f',2:'f',3:'o',4:'off',5:'f',6:'f',7:'p',8:'f',9:'f',10:'o',11:'off',12:'f',13:'f',14:'f'};
-  var PAYOF={f:DAY,o:DAY+HOURLY*1.5,p:DAY-1.5*HOURLY*1.5,h:3.5*HOURLY,a:0,off:0};
-  var base=0;Object.keys(HIST).forEach(function(d){base+=PAYOF[HIST[d]];});
-  var cal=$('cal'),calHTML='';
-  _('M|T|W|T|F|S|S').split('|').forEach(function(d){calHTML+='<i class="off" style="border:0">'+d+'</i>';});
-  for(var b=0;b<3;b++)calHTML+='<i class="off" style="border:0"></i>';
-  for(var d=1;d<=31;d++){var c=HIST[d]||'';calHTML+='<i class="'+(d===15?'today':c)+'" data-d="'+d+'">'+d+'</i>';}
-  cal.innerHTML=calHTML;
-  var nodes=$$('#chain .node'),scBtns=$$('#scen button'),rTimers=[];
-  function setField(f,v){var el=document.querySelector('#chain [data-f="'+f+'"]');if(el)el.textContent=v;}
-  function runScenario(k,animate){
-    var s=SC[k];
-    scBtns.forEach(function(b){b.setAttribute('aria-pressed',String(+b.getAttribute('data-s')===k));});
-    setField('in',s.in);setField('out',s.out);setField('outd',s.outd);setField('hrs',s.hrs);setField('hrsd',s.hrsd);setField('rule',s.rule);setField('ruled',s.ruled);setField('pay',inr(s.pay));setField('payd',s.payd);
-    $$('#rulesBody tr').forEach(function(tr){var on=tr.getAttribute('data-r')===s.r;tr.classList.toggle('hit',on);var pk=tr.querySelector('.rule-pick');if(pk)pk.setAttribute('aria-pressed',String(on));});
-    $('rulesK').textContent=_('SUNITA, 15 OCT · PUNCHED {in} TO {out}',{'in':s.in,out:s.out});
-    $('rulesV').innerHTML=_('<b>{hrs}</b> worked, so the day counts as <em>{rule}</em>. {ruled}. Pay for today: <b>{pay}</b>, and October stands at <b>{month}</b>.',{hrs:s.hrs,rule:s.rule,ruled:s.ruled,pay:inr(s.pay),month:inr(base+s.pay)});
-    var t=cal.querySelector('[data-d="15"]');t.className='today '+s.cls;
-    $('monthTotal').textContent=inr(base+s.pay);
-    rTimers.forEach(clearTimeout);rTimers=[];
-    if(!animate||reduce){nodes.forEach(function(n){n.classList.add('lit');});nodes[4].classList.add('done');return;}
-    nodes.forEach(function(n){n.classList.remove('lit','done');});
-    nodes.forEach(function(n,j){rTimers.push(setTimeout(function(){n.classList.add('lit');if(j===4)n.classList.add('done');},120+j*380));});
+  function en(x){var M=window.I18N_EN||{};return M[x]!==undefined?M[x]:x;}   // translated text -> English, for the analytics label of a button
+  var DT={
+    full:{n:_('Full day'),s:_('Full'),sum:_('Full days')},
+    ot:{n:_('Full day + OT'),s:_('OT'),sum:_('Overtime days')},
+    late:{n:_('Came late'),s:_('Late'),sum:_('Came late')},
+    early:{n:_('Left early'),s:_('Early'),sum:_('Left early')},
+    half:{n:_('Half day'),s:_('Half'),sum:_('Half days')},
+    abs:{n:_('Absent'),s:_('Absent'),sum:_('Absent')},
+    leave:{n:_('Paid leave'),s:_('Leave'),sum:_('Paid leave')},
+    hol:{n:_('Holiday'),s:_('Holiday'),sum:_('Festival holiday')},
+    off:{n:_('Weekly off'),s:_('Off'),sum:_('Sundays off')}
+  };
+  // October 2026 starts on a Thursday. [type, in, out]
+  var OCT={1:['full','09:00','19:00'],2:['full','08:55','19:00'],3:['ot','09:00','20:00'],4:['off'],5:['full','09:00','19:00'],6:['late','09:40','19:00'],7:['full','08:58','19:00'],
+    8:['full','09:00','19:00'],9:['half','09:00','13:30'],10:['ot','09:00','21:00'],11:['off'],12:['full','09:00','19:00'],13:['full','08:56','19:00'],14:['ot','09:00','20:00'],
+    15:['early','09:00','17:30'],16:['full','09:00','19:00'],17:['full','09:00','19:02'],18:['off'],19:['full','08:57','19:00'],20:['hol'],21:['full','09:00','19:00'],
+    22:['abs'],23:['full','09:00','19:00'],24:['ot','09:00','20:00'],25:['off'],26:['leave'],27:['full','09:00','19:00'],28:['late','09:25','19:00'],29:['full','09:00','19:00'],
+    30:['full','08:59','19:00'],31:['full','09:00','19:00']};
+  function mins(t){var p=t.split(':');return +p[0]*60+(+p[1]);}
+  function dur(m){return _('{h}h {m}m',{h:Math.floor(m/60),m:('0'+(m%60)).slice(-2)});}
+  function dayOf(d){
+    var o=OCT[d],t=o[0],r={d:d,t:t,inT:o[1]||'—',outT:o[2]||'—',w:null,pay:0,why:''};
+    if(o[1]){var span=mins(o[2])-mins(o[1]);r.w=span>300?span-90:span;}
+    if(t==='full'){r.pay=DAY;r.why=_('Came on time and did the full shift. Full day\'s pay.');}
+    else if(t==='ot'){var x=Math.floor((r.w-510)/60);r.pay=DAY+x*HOURLY*1.5;r.why=x===1?_('Stayed 1 hour extra. Extra hours are paid 1½ times.'):_('Stayed {x} hours extra. Extra hours are paid 1½ times.',{x:x});}
+    else if(t==='late'){var lm=mins(o[1])-540;r.pay=DAY-lm/60*HOURLY;r.why=_('Came {m} minutes late. Only those {m} minutes are cut.',{m:lm});}
+    else if(t==='early'){var em=510-r.w;r.pay=DAY-em/60*HOURLY;r.why=_('Left {t} early. Only the missing time is cut.',{t:dur(em)});}
+    else if(t==='half'){r.pay=DAY/2;r.why=_('Worked only half the day. Half day\'s pay.');}
+    else if(t==='abs'){r.why=_('No punch at the door. No pay, and 1 leave is counted.');}
+    else if(t==='leave'){r.pay=DAY;r.why=_('Leave you approved. Paid, as your rules say.');}
+    else if(t==='hol'){r.pay=DAY;r.why=_('Festival holiday. A paid day off.');}
+    else{r.why=_('Sunday, her weekly off. Not a working day, so nothing is cut.');}
+    r.pay=Math.round(r.pay);return r;
   }
-  function pickDay(s){runScenario(s,true);scBtns[s].classList.add('tried');AUD.mark('day',s);}
-  scBtns.forEach(function(b){b.addEventListener('click',function(){pickDay(+b.getAttribute('data-s'));});});
-  // the rulebook rows run the same days: tap a row (or press Enter on its hours) to see that rule work on Sunita's pay
-  $('rulesBody').addEventListener('click',function(e){var tr=e.target.closest('tr[data-s]');if(tr)pickDay(+tr.getAttribute('data-s'));});
-  AUD.st.day.forEach(function(s){if(scBtns[s])scBtns[s].classList.add('tried');});
-  runScenario(1,false);
+  var DAYS={},total=0,counts={},firstOf={};
+  for(var d=1;d<=31;d++){var r=DAYS[d]=dayOf(d);total+=r.pay;counts[r.t]=(counts[r.t]||0)+1;if(!firstOf[r.t])firstOf[r.t]=d;}
+  var WD=_('Sun|Mon|Tue|Wed|Thu|Fri|Sat').split('|');
+  var cal=$('cal'),calHTML='';
+  _('M|T|W|T|F|S|S').split('|').forEach(function(w){calHTML+='<span class="wd" aria-hidden="true">'+w+'</span>';});
+  for(var b=0;b<3;b++)calHTML+='<span aria-hidden="true"></span>';
+  for(d=1;d<=31;d++){var y=DAYS[d];calHTML+='<button type="button" class="t-'+y.t+'" data-d="'+d+'" aria-pressed="false" data-en="'+esc(d+' October: '+en(DT[y.t].n))+'" aria-label="'+esc(_('{d} October: {type}',{d:d,type:DT[y.t].n}))+'"><b>'+d+'</b><small>'+esc(DT[y.t].s)+'</small></button>';}
+  cal.innerHTML=calHTML;
+  var sumHTML='';
+  ['full','ot','late','early','half','leave','hol','abs','off'].forEach(function(t){if(!counts[t])return;
+    sumHTML+='<li><button type="button" class="t-'+t+'" data-d="'+firstOf[t]+'" data-t="'+t+'" aria-pressed="false" data-en="'+esc(en(DT[t].sum))+'"><i></i>'+esc(DT[t].sum)+'<em>'+esc(counts[t]===1?_('1 day'):_('{n} days',{n:counts[t]}))+'</em></button></li>';});
+  $('calSum').innerHTML=sumHTML;
+  $('monthTotal').textContent=inr(total);
+  var dayBtns=$$('#cal button'),sumBtns=$$('#calSum button'),card=$('dayCard');
+  function showDay(d,anim,t){
+    var y=DAYS[d],wd=WD[(d+3)%7];
+    dayBtns.forEach(function(x){var on=+x.getAttribute('data-d')===d;x.setAttribute('aria-pressed',String(on));x.classList.toggle('dim',!!t&&x.className.indexOf('t-'+t)<0);});
+    sumBtns.forEach(function(x){x.setAttribute('aria-pressed',String(x.getAttribute('data-t')===t));});
+    card.innerHTML='<div class="dd-h"><span class="dd-date">'+esc(_('{w}, {d} October',{w:wd,d:d}))+'</span><span class="dd-pill t-'+y.t+'">'+esc(DT[y.t].n)+'</span></div>'+
+      '<div class="dd-row"><div><span>'+_('Came')+'</span><b>'+y.inT+'</b></div><div><span>'+_('Left')+'</span><b>'+y.outT+'</b></div><div><span>'+_('Worked')+'</span><b>'+(y.w===null?'—':esc(dur(y.w)))+'</b></div>'+
+      '<div class="dd-earn"><span>'+_('Earned that day')+'</span><b>'+inr(y.pay)+'</b></div></div>'+
+      '<p class="dd-why">'+esc(y.why)+'</p>'+
+      (y.w!==null?'<p class="dd-proof">'+IC.cam+'<span>'+_('Face photo saved when she came and when she left')+'</span></p>':'');
+    card.classList.remove('enter');if(anim&&!reduce){void card.offsetWidth;card.classList.add('enter');}
+  }
+  function pickDay(d,t){showDay(d,true,t);AUD.mark('day',d);}
+  cal.addEventListener('click',function(e){var x=e.target.closest('button[data-d]');if(x)pickDay(+x.getAttribute('data-d'));});
+  $('calSum').addEventListener('click',function(e){var x=e.target.closest('button[data-t]');if(x)pickDay(+x.getAttribute('data-d'),x.getAttribute('data-t'));});
+  showDay(14,false);
+  // first time the calendar scrolls into view, the month fills in day by day and the total counts up
   if(!reduce&&'IntersectionObserver' in window){
-    var played=false,io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!played){played=true;runScenario(1,true);io2.disconnect();}});},{threshold:.35});
-    io2.observe($('chain'));
+    dayBtns.forEach(function(x){x.classList.add('pre');});
+    var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;io2.disconnect();
+      var run=0,mt=$('monthTotal');
+      dayBtns.forEach(function(x,j){setTimeout(function(){x.classList.remove('pre');run+=DAYS[j+1].pay;mt.textContent=inr(run);},80+j*35);});
+    });},{threshold:.3});
+    io2.observe(cal);
   }
 
   /* ---------- industries ---------- */
   var IND=[
     {id:'print',ic:'printer',n:_('Print shops'),q:_('Running a print shop?'),h:_('Rush jobs, late nights and a notebook full of advances.'),p:_('One week is quiet, the next everyone stays till 10 to finish a wedding order. That\'s where hours and money go missing.'),
      pain:[_('Overtime in rush weeks that nobody can verify'),_('Job slips lost between the counter and the machine'),_('Advances to staff tracked in a notebook')],
-     fix:[_('Every hour of overtime recorded with a photo, paid at your multiplier'),_('Advances cut from salary as EMI until they\'re closed'),_('Salary ready the day the month ends, payslips included')],
+     fix:[_('Every hour of overtime recorded with a photo, paid at your rate'),_('Advances cut from salary every month until paid back'),_('Salary ready the day the month ends, payslips included')],
      nx:[_('An order at the counter becomes a job card in the right queue'),_('Customers told when the job is ready, with the balance due')]},
     {id:'hospital',ic:'hospital',n:_('Hospitals & clinics'),q:_('Running a hospital or clinic?'),h:_('Round-the-clock shifts, a dozen departments, no room for confusion.'),p:_('ICU, OT, wards, lab, pharmacy, housekeeping. Every department runs its own shifts, and the night shift ends on a different date than it started.'),
      pain:[_('Night shifts that cross midnight, counted wrong or twice'),_('A separate register for every department'),_('Staff covering for each other on paper')],
@@ -2379,7 +2402,7 @@ img{max-width:100%}
      nx:[_('The duty in-charge alerted when a key post is unmanned'),_('A daily staffing summary for the administrator')]},
     {id:'factory',ic:'factory',n:_('Factories & workshops'),q:_('Running a factory or workshop?'),h:_('Shifts, overtime and machines that can\'t wait.'),p:_('When a machine stops because someone didn\'t turn up, you lose more than a day\'s wage. And overtime is where most disputes start.'),
      pain:[_('Proxy attendance in early and late shifts'),_('Holiday and weekly-off overtime worked out by hand'),_('Short hours rounded up to full days')],
-     fix:[_('Fingerprint or face punch at the gate, with a timestamp'),_('Overtime at your multiplier, weekly offs and holidays included'),_('Half days and short hours treated exactly as your rules say')],
+     fix:[_('Fingerprint or face punch at the gate, with a timestamp'),_('Overtime paid at your rate, with weekly offs and holidays'),_('Half days and short hours treated exactly as your rules say')],
      nx:[_('Jobs tracked stage by stage, with a nudge when one is stuck'),_('Low-stock reminders before a material runs out')]},
     {id:'retail',ic:'shopping-bag',n:_('Showrooms & retail'),q:_('Running a showroom or store?'),h:_('Doors open at 10. Do your staff?'),p:_('A late opening or an empty counter costs you a sale you never see. And leave, late marks and weekly offs become an argument every salary day.'),
      pain:[_('Late openings you only hear about later'),_('Weekly offs and leave tracked on a wall calendar'),_('Late marks argued over at salary time')],
@@ -2387,7 +2410,7 @@ img{max-width:100%}
      nx:[_('An alert when the counter is short-staffed at opening'),_('An end-of-day summary sent to you every night')]},
     {id:'food',ic:'utensils',n:_('Restaurants & hotels'),q:_('Running a restaurant or hotel?'),h:_('Split shifts, late closings and advances every month.'),p:_('Lunch rush, a break, dinner rush, closing after midnight. Kitchen and service staff rarely work a simple 9 to 6.'),
      pain:[_('Split shifts with a long break in between'),_('Closing after midnight, so one day\'s hours fall on two dates'),_('Frequent small advances to staff')],
-     fix:[_('Lunch exits and returns recorded, breaks handled by your rules'),_('Shifts that end after midnight counted as one day'),_('Advances recovered as EMI, automatically')],
+     fix:[_('Lunch exits and returns recorded, breaks handled by your rules'),_('Shifts that end after midnight counted as one day'),_('Advances cut from salary, automatically')],
      nx:[_('Low-stock reminders for the kitchen'),_('A nightly summary of attendance and hours')]},
     {id:'other',ic:'building-2',n:_('Something else'),q:_('Tell us about your business.'),h:_('Your business isn\'t on this list?'),p:_('If your business runs on people and repeats the same work every day, Rozka fits. Tell us how your day goes and we\'ll show you where it helps.')}
   ];
