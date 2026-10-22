@@ -1,4 +1,11 @@
-# Looker Studio dashboard for Rozka (about 20 minutes)
+# Looker Studio dashboard for Rozka (optional, about 20 minutes)
+
+**You may not need this.** The Analytics project already gives you a private **HTML dashboard** (a link only you can open, with a 7 / 30 / 90 day switch), a **Dashboard** tab of
+11 charts in the Sheet, and an **Insights** tab of plain-English headlines, all rebuilt every hour by the script. Use Looker Studio only if you want a prettier, shareable report with date filters.
+
+Looker Studio cannot be built by a script: Google offers no API to create a report's charts. The nearest thing is the Linking API, a one-click
+"copy this template onto my data" link, and it still needs a template report built once by hand. If you build this report once and set it to
+"Anyone with the link can view", send me its report ID and I can generate that one-click copy link for you.
 
 Looker Studio (the new name for Google Data Studio) reads the tabs of the **Rozka Analytics** Sheet. The Sheet rebuilds those tabs every hour,
 so the report stays current by itself. Each tab is a flat table (one row per date and dimension), which is exactly what Looker Studio likes.
@@ -60,5 +67,5 @@ Click **Share** and add the people who should see it as **Viewer**. They do not 
 
 ## Words used
 - **Engaged session**: 15+ seconds of reading, or 2+ pages, or any widget used (calculator, industry tab, FAQ, etc.).
-- **Showed buying interest**: used the calculator, opened the price FAQ, picked an industry, ran a day scenario, finished the owner's audit, or caught 3+ leaks.
+- **Showed buying interest**: opened the Pricing page, used the price estimator or the calculator, opened the price FAQ, picked an industry, ran a day scenario, finished the owner's audit, or caught 3+ leaks.
 - **Saw / read a section**: 1+ / 5+ seconds with that section in the middle of the screen.

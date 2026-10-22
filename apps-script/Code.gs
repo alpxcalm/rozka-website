@@ -236,7 +236,7 @@ function heat_(d) {
   return 'NEW';
 }
 
-var PAGE_NAMES = { home: 'Home', automation: 'Automation', about: 'About', contact: 'Contact' };
+var PAGE_NAMES = { home: 'Home', automation: 'Automation', pricing: 'Pricing', about: 'About', contact: 'Contact' };
 
 // One readable line: Home > problem 24s > leaks 5/5 > industry Print shops > calc 20 staff -Rs9,375 > SUBMIT contact_form
 function journey_(trail, leadId) {
