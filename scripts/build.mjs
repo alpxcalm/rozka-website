@@ -49,6 +49,13 @@ const PAGES = {
     ldType: 'WebPage',
     crumb: 'Automation',
   },
+  pricing: {
+    path: '/pricing/',
+    title: 'Pricing from ₹29 per employee per month · Rozka',
+    description: 'Prices start at ₹29 per employee per month and may vary with your business needs. No setup cost, no-cost business analysis, customised to your request.',
+    ldType: 'WebPage',
+    crumb: 'Pricing',
+  },
   about: {
     path: '/about/',
     title: 'About Rozka · Built inside a working print shop',
@@ -84,10 +91,11 @@ function jsonLd(name) {
     {
       '@type': pg.ldType, '@id': `${url(name)}#webpage`, url: url(name), name: pg.title, description: pg.description,
       inLanguage: 'en-IN', isPartOf: { '@id': WEB }, primaryImageOfPage: { '@type': 'ImageObject', url: OG_IMAGE.url },
-      ...(name === 'home' ? { about: { '@id': APP } } : { breadcrumb: { '@id': `${url(name)}#breadcrumb` } }),
+      ...(name === 'home' || name === 'pricing' ? { about: { '@id': APP } } : {}),
+      ...(name !== 'home' ? { breadcrumb: { '@id': `${url(name)}#breadcrumb` } } : {}),
     },
   ];
-  if (name === 'home') {
+  if (name === 'home' || name === 'pricing') {
     graph.push({
       '@type': 'SoftwareApplication', '@id': APP, name: 'Rozka', url: `${SITE}/`,
       applicationCategory: 'BusinessApplication', operatingSystem: 'Web browser',
@@ -100,9 +108,11 @@ function jsonLd(name) {
         'Locked monthly payouts with a payslip for each person',
         'Owner dashboard in any browser',
       ],
+      offers: { '@type': 'AggregateOffer', priceCurrency: 'INR', lowPrice: '29', offerCount: 1, description: 'Starting price per employee per month. Customised to each business and request; the punch device is priced separately. No setup cost.' },
       provider: { '@id': ORG }, areaServed: { '@type': 'Country', name: 'India' },
     });
-  } else {
+  }
+  if (name !== 'home') {
     graph.push({
       '@type': 'BreadcrumbList', '@id': `${url(name)}#breadcrumb`,
       itemListElement: [
@@ -206,13 +216,13 @@ function render(src, name) {
   let out = between(src, 'head', '\n' + headBlock(name) + '\n');
   out = between(out, 'ind', industriesNoscript(src));
   out = between(out, 'rec', recipesNoscript(src));
-  const opener = /<div class="page" data-page="(home|automation|about|contact)" id="\1"[^>]*>/g;
+  const opener = /<div class="page" data-page="(home|automation|pricing|about|contact)" id="\1"[^>]*>/g;
   let n = 0;
   out = out.replace(opener, (_, p) => {
     n++;
     return `<div class="page" data-page="${p}" id="${p}" data-title="${esc(PAGES[p].title)}"${p === name ? '' : ' hidden'}>`;
   });
-  if (n !== 4) throw new Error(`expected 4 page containers, found ${n}`);
+  if (n !== 5) throw new Error(`expected 5 page containers, found ${n}`);
   return out;
 }
 
@@ -255,6 +265,7 @@ write('llms.txt', `# Rozka
 
 - [Home](${url('home')}): what Rozka does, how one day becomes a payslip, who it is for, and answers to common questions
 - [Automation](${url('automation')}): small repeated jobs (job cards, stuck-job alerts, stock reminders, daily summaries) built to order into the same system
+- [Pricing](${url('pricing')}): prices start at ₹29 per employee per month, customised to each business; a starting-price estimator
 - [About](${url('about')}): where the name and the product come from
 - [Book a 1-month demo](${url('contact')}): request a call back and run Rozka on your own staff for a month
 
@@ -265,7 +276,9 @@ write('llms.txt', `# Rozka
 - Rozka does not send salaries from your bank account. You pay as you do today; marking a month paid records who got what, locks it and makes payslips.
 - PF, ESI and TDS are entered as deductions and shown on the payslip. Rozka does not calculate them.
 - Shift times, breaks, half-day limits, overtime and penalties are settings. Small customisations are available.
-- Pricing depends on staff count and the punch device chosen. A 1-month demo on your own staff comes first.
+- Prices start at ₹29 per employee per month and may vary based on your business requirements. Everything is customised to the request.
+- No setup cost and a no-cost business analysis. The punch device is priced separately, by the model chosen.
+- A free one-month trial on your own staff comes first, then you decide.
 
 ## Contact
 
