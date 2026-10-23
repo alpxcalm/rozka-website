@@ -647,6 +647,7 @@ html:is(:lang(hi-IN),:lang(mr-IN)) :is(.k,.ap-k,.tk-row .w,.tk-row .st,.lc-step,
 .principles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line-strong)}
 .pr{padding:24px 22px 8px 0}
 .pr+.pr{padding-left:22px;border-left:1px solid var(--line)}
+@media (min-width:1081px){.principles.p3{grid-template-columns:repeat(3,minmax(0,1fr))}}   /* pricing: three cards, not four */
 .pr svg{width:24px;height:24px;color:var(--cobalt)}
 .pr h3{font-size:19px;margin-top:14px;line-height:1.2}
 .pr p{color:var(--ink600);margin-top:8px;font-size:15.5px}
@@ -1405,9 +1406,8 @@ img{max-width:100%}
 <section class="sec" aria-labelledby="px-what-h">
   <div class="wrap">
     <div class="sh-row rv"><div><div class="kick" data-i>What you pay</div><h2 class="h2" id="px-what-h" data-i>No setup cost. No cost to find out.</h2></div><p class="lede" style="margin-top:0;max-width:24em" data-i>Prices start at ₹119 per employee per month, inclusive of all taxes, and may vary based on your business requirements.</p></div>
-    <div class="principles rv">
+    <div class="principles rv p3">
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12"/> <path d="M6 8h12"/> <path d="m6 13 8.5 8"/> <path d="M6 13h3"/> <path d="M9 13c6.667 0 6.667-10 0-10"/></svg><h3 data-i>From ₹119</h3><p data-i>Per employee, per month, inclusive of all taxes. A starting price, customised to your business and your request.</p></div>
-      <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><h3 data-i>No setup cost</h3><p data-i>We set Rozka up with you: your staff, your shifts, your rules. Setting up is free.</p></div>
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><h3 data-i>Free check of your business</h3><p data-i>We look at how your business runs today and tell you what Rozka would cost, before you commit to anything.</p></div>
       <div class="pr"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/> <rect width="6" height="6" x="9" y="9" rx="1"/> <path d="M15 2v2"/> <path d="M15 20v2"/> <path d="M2 15h2"/> <path d="M2 9h2"/> <path d="M20 15h2"/> <path d="M20 9h2"/> <path d="M9 2v2"/> <path d="M9 20v2"/></svg><h3 data-i>Punch device, priced separately</h3><p data-i>Face, fingerprint, card or QR. The price depends on the model you choose, and we tell you up front.</p></div>
     </div>
