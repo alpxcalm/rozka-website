@@ -27,7 +27,7 @@ const STRICT = process.argv.includes('--strict');
 const SITE = 'https://rozka.work';
 const PHONE_DISPLAY = '+91 91752 12447';
 const PHONE_E164 = '+91-91752-12447';
-const EMAIL = 'team@alpxcalm.cloud';
+const EMAIL = 'socials@rozka.work';
 const GA_ID = 'G-VFS8DRQ3D7'; // Google Analytics 4; set to '' to leave the tag out
 // Apps Script web app URL (see apps-script/Code.gs, ends in /exec). While '' the forms save nothing online and fall back to WhatsApp.
 const LEAD_ENDPOINT = process.env.LEAD_ENDPOINT ?? 'https://script.google.com/macros/s/AKfycbxobz6jdyG8KKNSDXl5aA3EFlAUoG9xIZqqBkaHe1CYkbcgHDsRzwU6qZOXW2TcTOfm/exec';
